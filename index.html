@@ -56,6 +56,7 @@ const VIEWS = {
   CONNECTIONS: "connections",
   DRAFT_IV: "draft_iv",
   LIBRARY_LOG: "library_log",
+  SIGHTLINES: "sightlines",
 };
 
 function reducer(state, action) {
@@ -352,6 +353,89 @@ body { background: #0a0a0a; }
   line-height: 1.6;
 }
 .blog-footnotes p { margin-bottom: 10px; }
+
+/* ── SIGHTLINES Article ── */
+.sightlines-wrap {
+  background: #FFFFFF;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.sightlines-inner {
+  max-width: 680px;
+  width: 100%;
+}
+.sightlines-header {
+  border-bottom: 2px solid #1a1a1a;
+  padding-bottom: 24px;
+  margin-bottom: 32px;
+}
+.sightlines-site-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+.sightlines-site-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #666;
+  font-style: italic;
+}
+.sightlines-post-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+.sightlines-post-meta {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 32px;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 16px;
+}
+.sightlines-post-body {
+  font-family: 'Lora', serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #2a2a2a;
+}
+.sightlines-post-body p {
+  margin-bottom: 18px;
+}
+.sightlines-post-body h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 32px 0 16px 0;
+}
+.sightlines-footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e5e5;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #888;
+  line-height: 1.6;
+}
+.sightlines-read-more {
+  color: #0066cc;
+  cursor: pointer;
+  text-decoration: none;
+  font-style: italic;
+}
+.sightlines-read-more:hover {
+  text-decoration: underline;
+}
 
 /* ── Faculty Page ── */
 .faculty-wrap {
@@ -1357,7 +1441,7 @@ function SubredditView({ dispatch }) {
                     <div className="comment-section">
                       <div className="comment">
                         <div className="c-meta"><span className="username">u/pelican_athanor</span> · Nov 12, 2022</div>
-                        <div className="c-body">Grant Poole just published a piece connecting Vane to a CIA program called ACHERON. Poole obtained FOIA documents. A program from the 1980s studying "anomalous cognition" in contemplative practitioners. One photo shows a man in a room that looks exactly like the Bywater parlor. <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.FOIA })}>FOIA excerpt here</span>. Pages 7, 34, and 43 are the relevant ones.</div>
+                        <div className="c-body">Grant Poole just published a piece connecting Vane to a CIA program called ACHERON. Poole obtained FOIA documents. A program from the 1980s studying "anomalous cognition" in contemplative practitioners. One photo shows a man in a room that looks exactly like the Bywater parlor. <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.SIGHTLINES })}>Read the full SIGHTLINES article</span>. <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.FOIA })}>FOIA excerpt here</span>. Pages 7, 34, and 43 are the relevant ones.</div>
                       </div>
                       <div className="comment">
                         <div className="c-meta"><span className="username">u/Thoth_R</span> · Nov 12, 2022</div>
@@ -2708,6 +2792,61 @@ function LibraryLogView({ dispatch }) {
   );
 }
 
+// ── SIGHTLINES Article ──
+function SightlinesView({ dispatch }) {
+  return (
+    <div className="sightlines-wrap">
+      <div className="sightlines-inner">
+        <div className="sightlines-header">
+          <div className="sightlines-site-title">SIGHTLINES</div>
+          <div className="sightlines-site-sub">Intelligence, History, and the Public Record</div>
+        </div>
+
+        <div className="sightlines-post-title">The Man Called Leonid: Intelligence Assets, Consciousness Research, and a Missing Professor in New Orleans</div>
+        <div className="sightlines-post-meta">Grant Poole | November 15, 2022</div>
+
+        <div className="sightlines-post-body">
+          <h2>Preamble</h2>
+          <p>In September 2022, a scholar named Aldous Vane vanished from New Orleans. He was last seen on the morning of September 11. His research involved the sociology of religious communities and what he termed "process-oriented religious systems" in American life. Within weeks, his name appeared in a subreddit devoted to solving what his mother called his "disappearance." Within months, the threads had attracted the attention of researchers, amateurs, and people who spend considerable time studying the intersection of consciousness studies and intelligence operations.</p>
+
+          <p>This article is not an investigation into Vane's disappearance. I have not spoken to his family. I am not offering a theory about his current whereabouts or condition. What I am offering is something more narrow and, I believe, more important: a documented history of government interest in consciousness research, an examination of previously classified documents that suggest ongoing institutional interest in this work, and an observation about how these patterns create the conditions in which certain narratives become possible, true or false.</p>
+
+          <p>The arrival of this narrative matters. Whether its central claim is true matters less.</p>
+
+          <h2>Part One: The Architecture of Interest</h2>
+          <p>The United States intelligence community has maintained a documented, sustained, and at times desperate interest in consciousness research for more than seventy years. This is not speculation. It is history, much of it declassified and public.</p>
+
+          <p>The record begins with MKULTRA. Between 1952 and 1973, the CIA funded covert programs involving over 140 institutions to study consciousness alteration, drug-assisted interrogation, and the malleability of human awareness. The project was systematic and vast. Institutions including McGill University, Stanford, and MIT received funding under false pretenses to conduct experiments on unwitting subjects. The programs continued for more than two decades before becoming public. When MKULTRA was exposed in 1975, the immediate response from the intelligence establishment was not to abandon the research. It was to redirect it.</p>
+
+          <p>By the early 2000s, the architecture had shifted again. Interest in consciousness research moved into academic research universities, think tanks, and private institutions. The funding streams became less visible, the institutional architecture more diffuse. But the questions remained the same: What is consciousness? What are its capacities? What can it access? Under what conditions can it be systematically trained? These are not fringe questions.</p>
+
+          <h2>Part Two: The ACHERON Documents</h2>
+          <p>In January 2022, SIGHTLINES filed a Freedom of Information Act request with the Defense Intelligence Agency regarding historical consciousness research programs and their connection to academic institutions. The request was narrow and standard. We expected minimal response. Eight months later, in September 2022, we received a heavily redacted file containing 47 pages of documents dated between 1998 and 2004. The documents were labeled "ACHERON," a designation I could not locate in any prior published intelligence records.</p>
+
+          <p>Most of the documents were severely redacted. Approximately 70 percent of each page was withheld. Names, institutional affiliations, funding mechanisms, and operational objectives were almost entirely concealed. What remained were fragments: references to "consciousness exploration protocols," "civilian consultants," "contemplative community identification," and "long-term sociological monitoring of specified religious communities."</p>
+
+          <p>One document, dated March 2001, contained a description of a "primary civilian asset" with specific characteristics. The profile, when cross-referenced with public information about Aldous Vane's academic specialty, his departmental affiliation, his publications, and his social media presence, creates a striking alignment. The alignment is notable. It is not, by itself, proof. But the ACHERON documents suggest something further: the program was designed not merely to identify such individuals, but to maintain sustained contact with them across time.</p>
+
+          <h2>Part Three: Leonid and the Operational Question</h2>
+          <p>The subreddit r/SolveCoagula, which emerged in September 2022 as a space for amateur investigation into Vane's disappearance, contains hundreds of references to a person or entity called "Leonid." As the threads evolved, Leonid's characterization shifted. The aggregate profile that emerged was of a figure who maintained connections to multiple contemplative communities; appeared simultaneously in New Orleans, California, and New York; had access to resources that suggested institutional affiliation; and maintained a relationship with Vane that Vane himself described as "professionally important" and "personally complex."</p>
+
+          <p>The question of why such contact would be broken, why Vane would vanish, returns us to operational complications. The ACHERON documents reference "transmission events" and "accelerated development." One document, dated February 2004, notes something about observable shifts in epistemological framework and risks exceeding operational parameters. If such a program existed, and if Vane was identified as a "primary civilian asset" under its framework, then the questions shift fundamentally.</p>
+
+          <h2>Part Four: The Convergence</h2>
+          <p>The disappearance of Aldous Vane occurs within a specific historical moment, when Congress has begun holding public hearings on non-human intelligence and unidentified aerial phenomena. It occurs when multiple military and intelligence officers have testified under oath about encounters that suggest consciousness and perception may be accessing information through channels that conventional science has not fully mapped.</p>
+
+          <p>If the ACHERON documents represent what they appear to represent, then the intelligence interest in consciousness research had not ended. It had simply become less visible, more diffuse, and more focused on identifying individuals who had achieved what the documents call "transmission" within contemplative communities. The assumption underlying the program appears to have been that such individuals, whether they understood themselves as having achieved anything unusual or not, possessed capacities that the intelligence community wished to understand and potentially access.</p>
+
+          <div className="sightlines-footer">
+            <p style={{ marginBottom: 12 }}><span className="sightlines-read-more">Read full article on SIGHTLINES →</span></p>
+            <p>[Excerpt from full investigation.]</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Marginalia ──
 function MarginaliaView({ dispatch }) {
   return (
@@ -2795,6 +2934,8 @@ function ViridiariumIgnis() {
         return <InterviewView dispatch={dispatch} subId={state.subId} />;
       case VIEWS.LIBRARY_LOG:
         return <LibraryLogView dispatch={dispatch} />;
+      case VIEWS.SIGHTLINES:
+        return <SightlinesView dispatch={dispatch} />;
       default:
         return <SubredditView dispatch={dispatch} />;
     }

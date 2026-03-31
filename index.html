@@ -66,6 +66,10 @@ const VIEWS = {
   LIBRARY_LOG: "library_log",
   SIGHTLINES: "sightlines",
   SEVENTH: "seventh",
+  MAP: "map",
+  TEXTS: "texts",
+  WHITEBOARD: "whiteboard",
+  ACCESS_LOG: "access_log",
 };
 
 function reducer(state, action) {
@@ -843,6 +847,262 @@ body { background: #0a0a0a; }
 }
 .hidden-light::selection { color: #999; background: #eee; }
 
+/* ── Map View ── */
+.map-wrap {
+  min-height: 100vh;
+  background: #f5f0e8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+.map-frame {
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 2px 3px 12px rgba(0,0,0,0.1);
+  padding: 24px;
+  max-width: 700px;
+  width: 100%;
+  transform: rotate(-0.3deg);
+}
+.map-label {
+  font-family: 'Special Elite', 'Courier Prime', monospace;
+  font-size: 11px;
+  color: #666;
+  margin-top: 16px;
+  text-align: center;
+  line-height: 1.6;
+}
+.map-evidence-tag {
+  display: inline-block;
+  background: #c0392b;
+  color: #fff;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  padding: 2px 8px;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+.map-annotation {
+  font-family: 'Special Elite', monospace;
+  font-size: 12px;
+  fill: #8B0000;
+}
+
+/* ── Text Messages ── */
+.texts-wrap {
+  min-height: 100vh;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  padding: 30px 20px;
+}
+.phone-frame {
+  width: 375px;
+  background: #000;
+  border-radius: 40px;
+  border: 3px solid #333;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+}
+.phone-notch {
+  height: 44px;
+  background: #1c1c1e;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 6px;
+}
+.phone-notch span {
+  font-family: -apple-system, sans-serif;
+  font-size: 11px;
+  color: #999;
+}
+.phone-chat-header {
+  background: #1c1c1e;
+  border-bottom: 1px solid #333;
+  padding: 8px 16px 12px;
+  text-align: center;
+}
+.phone-chat-header .name {
+  font-family: -apple-system, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+.phone-chat-header .status {
+  font-family: -apple-system, sans-serif;
+  font-size: 11px;
+  color: #8e8e93;
+}
+.phone-messages {
+  background: #000;
+  padding: 16px 12px;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.msg-date {
+  text-align: center;
+  font-family: -apple-system, sans-serif;
+  font-size: 11px;
+  color: #8e8e93;
+  margin: 12px 0 4px;
+}
+.msg-bubble {
+  max-width: 75%;
+  padding: 8px 12px;
+  border-radius: 18px;
+  font-family: -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+.msg-sent {
+  align-self: flex-end;
+  background: #0b93f6;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+.msg-received {
+  align-self: flex-start;
+  background: #2c2c2e;
+  color: #fff;
+  border-bottom-left-radius: 4px;
+}
+.msg-time {
+  font-size: 10px;
+  color: #8e8e93;
+  margin-top: 2px;
+  padding: 0 4px;
+}
+.msg-time-sent { text-align: right; }
+.msg-time-recv { text-align: left; }
+.msg-read {
+  font-size: 10px;
+  color: #8e8e93;
+  text-align: right;
+  padding: 0 4px;
+}
+
+/* ── Whiteboard ── */
+.wb-wrap {
+  min-height: 100vh;
+  background: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+.wb-photo-frame {
+  max-width: 800px;
+  width: 100%;
+  background: #2a2a2a;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+}
+.wb-board {
+  background: #f8f8f2;
+  width: 100%;
+  aspect-ratio: 4/3;
+  position: relative;
+  overflow: hidden;
+}
+.wb-marker {
+  font-family: 'Special Elite', monospace;
+  position: absolute;
+  line-height: 1.3;
+}
+.wb-marker-blue { color: #1a5276; }
+.wb-marker-red { color: #922b21; }
+.wb-marker-green { color: #1e8449; }
+.wb-marker-black { color: #1c1c1c; }
+.wb-line {
+  position: absolute;
+  background: #922b21;
+  transform-origin: left center;
+  height: 2px;
+  opacity: 0.7;
+}
+.wb-circle {
+  position: absolute;
+  border: 2px solid;
+  border-radius: 50%;
+}
+.wb-meta {
+  padding: 12px 16px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: #888;
+  line-height: 1.6;
+}
+
+/* ── Access Log ── */
+.log-wrap {
+  min-height: 100vh;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+.log-page {
+  max-width: 700px;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #ddd;
+  font-family: 'Courier Prime', 'Courier New', monospace;
+  font-size: 11px;
+  line-height: 1.7;
+  padding: 32px;
+}
+.log-header {
+  text-align: center;
+  border-bottom: 2px solid #333;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+.log-header .institution {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.log-header .dept {
+  font-size: 10px;
+  color: #666;
+  letter-spacing: 1px;
+}
+.log-row {
+  display: flex;
+  gap: 8px;
+  padding: 2px 0;
+  border-bottom: 1px dotted #eee;
+}
+.log-row.anomaly {
+  background: #fff3cd;
+  padding: 2px 4px;
+  margin: 0 -4px;
+}
+.log-row.flagged {
+  background: #f8d7da;
+  padding: 2px 4px;
+  margin: 0 -4px;
+}
+.log-date { width: 90px; color: #666; flex-shrink: 0; }
+.log-time { width: 60px; flex-shrink: 0; }
+.log-loc { width: 180px; color: #555; flex-shrink: 0; }
+.log-note { color: #888; font-style: italic; }
+.log-stamp {
+  margin-top: 24px;
+  padding-top: 12px;
+  border-top: 1px solid #ccc;
+  color: #999;
+  font-size: 10px;
+}
+
 /* ── Terminal / Cipher ── */
 .terminal-wrap {
   background: #0D0D0D;
@@ -1345,6 +1605,8 @@ const DRIVE_FILES = [
   { name: "CONNECTIONS.docx", modified: "Nov 12, 2021", size: "847 KB", icon: "📄", view: VIEWS.CONNECTIONS },
   { name: "Draft IV.docx", modified: "Nov 28, 2021", size: "2.1 MB", icon: "📄", view: VIEWS.DRAFT_IV },
   { name: "VIG_final.enc", modified: "Dec 14, 2021", size: "12.7 KB", icon: "🔒", view: VIEWS.CIPHER },
+  { name: "office_whiteboard_photo.jpg", modified: "Jan 8, 2022", size: "3.4 MB", icon: "📷", view: VIEWS.WHITEBOARD },
+  { name: "french_quarter_map_annotated.jpg", modified: "Jan 8, 2022", size: "1.8 MB", icon: "📷", view: VIEWS.MAP },
   { name: "source_card_eckhart.md", modified: "Oct 3, 2021", size: "4 KB", icon: "📝", view: null },
   { name: "atwood_notes.md", modified: "Sep 15, 2021", size: "6 KB", icon: "📝", view: VIEWS.MARGINALIA },
   { name: "1887_letters_translation.pdf", modified: "Apr 2, 2021", size: "340 KB", icon: "📁", view: null },
@@ -2152,6 +2414,18 @@ function PIMemoView({ dispatch, subId }) {
             style={{ padding: "4px 10px", fontSize: 11, cursor: "pointer", background: "#f0f0f0", color: "#1B4332", borderRadius: 2, fontFamily: "'Oswald', sans-serif" }}
           >
             Interviews
+          </span>
+          <span
+            onClick={() => dispatch({ type: "navigate", view: VIEWS.TEXTS })}
+            style={{ padding: "4px 10px", fontSize: 11, cursor: "pointer", background: "#f0f0f0", color: "#666", borderRadius: 2, fontFamily: "'Oswald', sans-serif" }}
+          >
+            Text Records
+          </span>
+          <span
+            onClick={() => dispatch({ type: "navigate", view: VIEWS.ACCESS_LOG })}
+            style={{ padding: "4px 10px", fontSize: 11, cursor: "pointer", background: "#f0f0f0", color: "#666", borderRadius: 2, fontFamily: "'Oswald', sans-serif" }}
+          >
+            Access Log
           </span>
         </div>
 
@@ -3028,6 +3302,412 @@ function MarginaliaView({ dispatch }) {
 }
 
 // ═══════════════════════════════════════════════════════
+// MAP VIEW: French Quarter alchemical stations
+// ═══════════════════════════════════════════════════════
+
+function MapView() {
+  return (
+    <div className="map-wrap">
+      <div className="map-frame">
+        <div className="map-evidence-tag">EVIDENCE ITEM 14-C</div>
+        <svg viewBox="0 0 650 480" style={{ width: "100%", height: "auto", display: "block" }}>
+          <defs>
+            <filter id="pencil">
+              <feTurbulence type="turbulence" baseFrequency="0.03" numOctaves="4" result="noise" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.2" />
+            </filter>
+            <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#8B0000" />
+            </marker>
+          </defs>
+
+          <rect x="0" y="0" width="650" height="480" fill="#f5f0e8" />
+
+          <rect x="40" y="20" width="140" height="100" fill="none" stroke="#999" strokeWidth="0.5" strokeDasharray="4 2" />
+          <text x="110" y="55" textAnchor="middle" fontFamily="'IBM Plex Mono', monospace" fontSize="8" fill="#999">ST. LOUIS</text>
+          <text x="110" y="67" textAnchor="middle" fontFamily="'IBM Plex Mono', monospace" fontSize="8" fill="#999">CEMETERY No. 1</text>
+          <rect x="55" y="75" width="16" height="10" fill="#ddd" stroke="#aaa" strokeWidth="0.5" />
+          <rect x="80" y="72" width="12" height="14" fill="#ddd" stroke="#aaa" strokeWidth="0.5" />
+          <rect x="105" y="76" width="18" height="8" fill="#ddd" stroke="#aaa" strokeWidth="0.5" />
+          <rect x="130" y="70" width="14" height="12" fill="#ddd" stroke="#aaa" strokeWidth="0.5" />
+
+          <circle cx="95" cy="80" r="22" fill="none" stroke="#1a1a1a" strokeWidth="2.5" filter="url(#pencil)" />
+          <text className="map-annotation" x="95" y="115" textAnchor="middle" fontSize="11" fontFamily="'Special Elite', monospace" fill="#8B0000">I. NIGREDO</text>
+          <text x="95" y="130" textAnchor="middle" fontSize="8" fontFamily="'Special Elite', monospace" fill="#8B0000">"the graves are not burials"</text>
+          <text x="95" y="142" textAnchor="middle" fontSize="8" fontFamily="'Special Elite', monospace" fill="#8B0000">"they are architectural descriptions"</text>
+
+          <line x1="160" y1="100" x2="280" y2="180" stroke="#8B0000" strokeWidth="1.5" strokeDasharray="6 4" markerEnd="url(#arrowhead)" filter="url(#pencil)" />
+
+          <rect x="250" y="170" width="200" height="30" fill="none" stroke="#999" strokeWidth="0.5" />
+          <text x="350" y="190" textAnchor="middle" fontFamily="'IBM Plex Mono', monospace" fontSize="7" fill="#999">PIRATE'S ALLEY</text>
+          <line x1="260" y1="185" x2="440" y2="185" stroke="#aaa" strokeWidth="0.5" />
+          <rect x="250" y="155" width="200" height="15" fill="#e8e4dc" stroke="#ccc" strokeWidth="0.5" />
+          <rect x="250" y="200" width="200" height="18" fill="#e8e4dc" stroke="#ccc" strokeWidth="0.5" />
+
+          <circle cx="350" cy="185" r="28" fill="none" stroke="#1a5276" strokeWidth="2.5" filter="url(#pencil)" />
+          <text x="350" y="235" textAnchor="middle" fontSize="11" fontFamily="'Special Elite', monospace" fill="#1a5276">II. ALBEDO</text>
+          <text x="350" y="250" textAnchor="middle" fontSize="8" fontFamily="'Special Elite', monospace" fill="#1a5276">"the stripping away"</text>
+          <text x="350" y="262" textAnchor="middle" fontSize="8" fontFamily="'Special Elite', monospace" fill="#1a5276">"apophatic architecture"</text>
+
+          <line x1="440" y1="190" x2="510" y2="280" stroke="#1a5276" strokeWidth="1.5" strokeDasharray="6 4" markerEnd="url(#arrowhead)" filter="url(#pencil)" />
+
+          <rect x="480" y="270" width="130" height="80" fill="none" stroke="#999" strokeWidth="0.5" strokeDasharray="4 2" />
+          <text x="545" y="295" textAnchor="middle" fontFamily="'IBM Plex Mono', monospace" fontSize="7" fill="#999">FRENCH QUARTER</text>
+          <text x="545" y="305" textAnchor="middle" fontFamily="'IBM Plex Mono', monospace" fontSize="7" fill="#999">EMERGENCE</text>
+
+          <circle cx="530" cy="310" r="24" fill="none" stroke="#B7950B" strokeWidth="2.5" filter="url(#pencil)" />
+          <text x="530" y="360" textAnchor="middle" fontSize="11" fontFamily="'Special Elite', monospace" fill="#B7950B">III. CITRINITAS</text>
+          <text x="530" y="375" textAnchor="middle" fontSize="8" fontFamily="'Special Elite', monospace" fill="#B7950B">"I am no longer what I was"</text>
+
+          <line x1="510" y1="340" x2="400" y2="390" stroke="#B7950B" strokeWidth="1.5" strokeDasharray="6 4" markerEnd="url(#arrowhead)" filter="url(#pencil)" />
+
+          <rect x="310" y="380" width="120" height="70" fill="none" stroke="#999" strokeWidth="0.5" />
+          <text x="370" y="400" textAnchor="middle" fontFamily="'IBM Plex Mono', monospace" fontSize="7" fill="#999">JACKSON SQUARE</text>
+          <rect x="340" y="405" width="60" height="35" fill="#e8e4dc" stroke="#ccc" strokeWidth="0.5" />
+          <line x1="370" y1="405" x2="370" y2="395" stroke="#ccc" strokeWidth="1" />
+          <text x="370" y="432" textAnchor="middle" fontFamily="'IBM Plex Mono', monospace" fontSize="6" fill="#999">CATHEDRAL</text>
+
+          <circle cx="370" cy="420" r="30" fill="none" stroke="#922b21" strokeWidth="2.5" filter="url(#pencil)" />
+          <text x="370" y="465" textAnchor="middle" fontSize="11" fontFamily="'Special Elite', monospace" fill="#922b21">IV. RUBEDO</text>
+          <text x="370" y="478" textAnchor="middle" fontSize="8" fontFamily="'Special Elite', monospace" fill="#922b21">"the vessel and the work are the same"</text>
+
+          <text x="40" y="470" fontSize="9" fontFamily="'Special Elite', monospace" fill="#999">New Orleans, LA</text>
+
+          <text x="600" y="40" textAnchor="end" fontSize="9" fontFamily="'Special Elite', monospace" fill="#8B0000" transform="rotate(-12, 600, 40)">the map is the territory</text>
+          <text x="590" y="55" textAnchor="end" fontSize="8" fontFamily="'Special Elite', monospace" fill="#8B0000" transform="rotate(-12, 590, 55)">the territory is the reader</text>
+
+          <line x1="95" y1="80" x2="350" y2="185" stroke="#666" strokeWidth="0.5" strokeDasharray="2 3" opacity="0.3" />
+          <line x1="350" y1="185" x2="530" y2="310" stroke="#666" strokeWidth="0.5" strokeDasharray="2 3" opacity="0.3" />
+          <line x1="530" y1="310" x2="370" y2="420" stroke="#666" strokeWidth="0.5" strokeDasharray="2 3" opacity="0.3" />
+          <line x1="370" y1="420" x2="95" y2="80" stroke="#666" strokeWidth="0.5" strokeDasharray="2 3" opacity="0.3" />
+        </svg>
+        <div className="map-label">
+          Recovered from Dr. Vane's office, Beaumont University, Room 412 Loyola Hall.{"\n"}
+          Found pinned above desk. Handwriting confirmed as subject's.{"\n"}
+          Photographed by campus security, January 8, 2022.{"\n"}
+          Four locations correspond to sites referenced in encrypted file VIG_final.enc.
+        </div>
+      </div>
+      <span className="hidden-vane" style={{ marginTop: 20, maxWidth: 700 }}>the four stations form a closed loop. the loop is not a metaphor. he walked this route every tuesday night for three months. the security cameras on pirate's alley recorded him eleven times between october and december 2021. this footage has not been requested by anyone.</span>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════
+// TEXT MESSAGES: Vane and Clara
+// ═══════════════════════════════════════════════════════
+
+function TextsView() {
+  const [month, setMonth] = useState("oct");
+
+  var months = [
+    { key: "oct", label: "Oct 2021" },
+    { key: "nov", label: "Nov 2021" },
+    { key: "dec", label: "Dec 2021" },
+    { key: "jan", label: "Jan 2022" },
+  ];
+
+  return (
+    <div className="texts-wrap">
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
+        <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+          {months.map(function(m) {
+            return (
+              <span
+                key={m.key}
+                onClick={function() { setMonth(m.key); }}
+                style={{
+                  padding: "4px 12px",
+                  fontSize: 11,
+                  cursor: "pointer",
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  background: m.key === month ? "#fff" : "transparent",
+                  color: m.key === month ? "#000" : "#666",
+                  borderRadius: 12,
+                }}
+              >
+                {m.label}
+              </span>
+            );
+          })}
+        </div>
+        <div style={{ fontSize: 10, color: "#555", fontFamily: "'IBM Plex Mono', monospace", marginBottom: 4 }}>
+          EVIDENCE ITEM 22-A: TEXT MESSAGE RECORDS (SUBPOENA RESPONSE, AT&T)
+        </div>
+        <div className="phone-frame">
+          <div className="phone-notch">
+            <span>{month === "oct" ? "October 2021" : month === "nov" ? "November 2021" : month === "dec" ? "December 2021" : "January 2022"}</span>
+          </div>
+          <div className="phone-chat-header">
+            <div className="name">Aldous</div>
+            <div className="status">iMessage</div>
+          </div>
+          <div className="phone-messages">
+            {month === "oct" && (<>
+              <div className="msg-date">Oct 3, 2021</div>
+              <div className="msg-bubble msg-received">Running late. The Tuesday group went long. Something came up in the discussion I need to think about.</div>
+              <div className="msg-time msg-time-recv">9:47 PM</div>
+              <div className="msg-bubble msg-sent">Ok. Dinner is in the oven. How late?</div>
+              <div className="msg-time msg-time-sent">9:48 PM</div>
+              <div className="msg-bubble msg-received">Hour maybe. Leonid said something I want to write down before I lose it.</div>
+              <div className="msg-time msg-time-recv">9:52 PM</div>
+              <div className="msg-bubble msg-sent">Is this the man from the Bywater?</div>
+              <div className="msg-time msg-time-sent">9:53 PM</div>
+              <div className="msg-bubble msg-received">Yes.</div>
+              <div className="msg-time msg-time-recv">9:55 PM</div>
+              <div className="msg-date">Oct 11, 2021</div>
+              <div className="msg-bubble msg-sent">You missed Dr. Chen's thing tonight. She asked about you.</div>
+              <div className="msg-time msg-time-sent">8:12 PM</div>
+              <div className="msg-bubble msg-received">I forgot. I'm sorry. I was in the archive.</div>
+              <div className="msg-time msg-time-recv">10:34 PM</div>
+              <div className="msg-bubble msg-sent">The archive closes at 9.</div>
+              <div className="msg-time msg-time-sent">10:35 PM</div>
+              <div className="msg-read">Read 10:35 PM</div>
+              <div className="msg-date">Oct 19, 2021</div>
+              <div className="msg-bubble msg-sent">Are you coming home tonight?</div>
+              <div className="msg-time msg-time-sent">11:02 PM</div>
+              <div className="msg-bubble msg-received">Yes. Soon.</div>
+              <div className="msg-time msg-time-recv">11:41 PM</div>
+            </>)}
+            {month === "nov" && (<>
+              <div className="msg-date">Nov 2, 2021</div>
+              <div className="msg-bubble msg-sent">Hartley called. She says you missed your office hours again.</div>
+              <div className="msg-time msg-time-sent">4:15 PM</div>
+              <div className="msg-bubble msg-received">I know. I'll call her.</div>
+              <div className="msg-time msg-time-recv">6:22 PM</div>
+              <div className="msg-bubble msg-sent">Aldous what is happening</div>
+              <div className="msg-time msg-time-sent">6:23 PM</div>
+              <div className="msg-bubble msg-received">I am trying to describe something that does not have a description. The closer I get to it the less I can say about it. This is not evasion. This is accuracy.</div>
+              <div className="msg-time msg-time-recv">6:31 PM</div>
+              <div className="msg-bubble msg-sent">That's not an answer.</div>
+              <div className="msg-time msg-time-sent">6:32 PM</div>
+              <div className="msg-read">Read 6:32 PM</div>
+              <div className="msg-date">Nov 14, 2021</div>
+              <div className="msg-bubble msg-sent">Your mother called. She wants to know about Christmas.</div>
+              <div className="msg-time msg-time-sent">2:08 PM</div>
+              <div className="msg-date">Nov 15, 2021</div>
+              <div className="msg-bubble msg-sent">Aldous</div>
+              <div className="msg-time msg-time-sent">9:15 AM</div>
+              <div className="msg-date">Nov 17, 2021</div>
+              <div className="msg-bubble msg-received">I'm here. I'm sorry. Tell her I'll call.</div>
+              <div className="msg-time msg-time-recv">1:42 AM</div>
+              <div className="msg-bubble msg-sent">It's 2 in the morning. Where are you?</div>
+              <div className="msg-time msg-time-sent">1:43 AM</div>
+              <div className="msg-read">Read 1:43 AM</div>
+            </>)}
+            {month === "dec" && (<>
+              <div className="msg-date">Dec 4, 2021</div>
+              <div className="msg-bubble msg-sent">I watered the garden. The jasmine is coming back.</div>
+              <div className="msg-time msg-time-sent">7:30 AM</div>
+              <div className="msg-bubble msg-received">Thank you.</div>
+              <div className="msg-time msg-time-recv">7:32 AM</div>
+              <div className="msg-bubble msg-received">Clara. The garden is the most honest thing in our life. You know this.</div>
+              <div className="msg-time msg-time-recv">7:33 AM</div>
+              <div className="msg-bubble msg-sent">You're scaring me.</div>
+              <div className="msg-time msg-time-sent">7:34 AM</div>
+              <div className="msg-bubble msg-received">I know. I'm sorry. I don't mean to. I am seeing something clearly for the first time and clarity is not the same as comfort.</div>
+              <div className="msg-time msg-time-recv">7:38 AM</div>
+              <div className="msg-date">Dec 18, 2021</div>
+              <div className="msg-bubble msg-sent">Please come to Christmas dinner. Your mother is flying in. Please.</div>
+              <div className="msg-time msg-time-sent">5:45 PM</div>
+              <div className="msg-bubble msg-received">I will be there.</div>
+              <div className="msg-time msg-time-recv">11:14 PM</div>
+              <div className="msg-date">Dec 25, 2021</div>
+              <div className="msg-bubble msg-sent">Where are you. Everyone is here. Your mother is asking.</div>
+              <div className="msg-time msg-time-sent">6:12 PM</div>
+              <div className="msg-bubble msg-sent">Aldous please</div>
+              <div className="msg-time msg-time-sent">7:45 PM</div>
+              <div className="msg-bubble msg-sent">She's crying</div>
+              <div className="msg-time msg-time-sent">8:30 PM</div>
+              <div className="msg-read">Read 8:31 PM</div>
+            </>)}
+            {month === "jan" && (<>
+              <div className="msg-date">Jan 3, 2022</div>
+              <div className="msg-bubble msg-sent">Calloway called. She says you stopped coming to sessions.</div>
+              <div className="msg-time msg-time-sent">10:20 AM</div>
+              <div className="msg-date">Jan 5, 2022</div>
+              <div className="msg-bubble msg-received">I am going to write you something tonight. I don't know if I will send it. I don't know if the words exist for what I need to say. But I am going to try.</div>
+              <div className="msg-time msg-time-recv">9:18 PM</div>
+              <div className="msg-bubble msg-sent">Ok. I'll be here.</div>
+              <div className="msg-time msg-time-sent">9:19 PM</div>
+              <div className="msg-bubble msg-received">Water the garden.</div>
+              <div className="msg-time msg-time-recv">11:57 PM</div>
+              <div className="msg-date">Jan 6, 2022</div>
+              <div className="msg-bubble msg-sent">Aldous?</div>
+              <div className="msg-time msg-time-sent">7:15 AM</div>
+              <div className="msg-date">Jan 6, 2022</div>
+              <div className="msg-bubble msg-sent">Your car is here but you're not here</div>
+              <div className="msg-time msg-time-sent">7:22 AM</div>
+              <div className="msg-date">Jan 6, 2022</div>
+              <div className="msg-bubble msg-sent">Aldous where are you</div>
+              <div className="msg-time msg-time-sent">8:04 AM</div>
+              <div className="msg-date">Jan 6, 2022</div>
+              <div className="msg-bubble msg-sent">please answer me</div>
+              <div className="msg-time msg-time-sent">9:30 AM</div>
+              <div className="msg-date">Jan 6, 2022</div>
+              <div className="msg-bubble msg-sent">I'm calling the police</div>
+              <div className="msg-time msg-time-sent">12:15 PM</div>
+              <div className="msg-read">Delivered</div>
+            </>)}
+          </div>
+        </div>
+        <div style={{ fontSize: 10, color: "#444", fontFamily: "'IBM Plex Mono', monospace", marginTop: 12, textAlign: "center", maxWidth: 375, lineHeight: 1.6 }}>
+          Records obtained via subpoena, NOPD Case 2022-004471.{"\n"}
+          Clara Broussard-Vane device. Partial extraction.{"\n"}
+          Last outgoing message from subject device: Jan 5, 2022 11:57 PM.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════
+// WHITEBOARD: Vane's office
+// ═══════════════════════════════════════════════════════
+
+function WhiteboardView() {
+  return (
+    <div className="wb-wrap">
+      <div style={{ fontSize: 10, color: "#666", fontFamily: "'IBM Plex Mono', monospace", marginBottom: 12, letterSpacing: 2 }}>
+        EVIDENCE ITEM 08-B: OFFICE PHOTOGRAPH
+      </div>
+      <div className="wb-photo-frame">
+        <div className="wb-board">
+          <div className="wb-marker wb-marker-black" style={{ top: "5%", left: "5%", fontSize: 16, fontWeight: "bold" }}>THE INTERIOR CAMPAIGN</div>
+          <div className="wb-marker wb-marker-black" style={{ top: "12%", left: "5%", fontSize: 10 }}>Chapter outline / working structure</div>
+
+          <div className="wb-marker wb-marker-blue" style={{ top: "22%", left: "5%", fontSize: 12 }}>I. Observer Position</div>
+          <div className="wb-marker wb-marker-blue" style={{ top: "28%", left: "7%", fontSize: 9 }}>James, Varieties</div>
+          <div className="wb-marker wb-marker-blue" style={{ top: "33%", left: "7%", fontSize: 9 }}>Goffman, dramaturgical self</div>
+          <div className="wb-marker wb-marker-blue" style={{ top: "38%", left: "7%", fontSize: 9 }}>the problem of studying belief</div>
+          <div className="wb-marker wb-marker-blue" style={{ top: "43%", left: "7%", fontSize: 9 }}>from outside belief</div>
+
+          <div className="wb-marker wb-marker-blue" style={{ top: "22%", left: "35%", fontSize: 12 }}>II. Marginal Communities</div>
+          <div className="wb-marker wb-marker-blue" style={{ top: "28%", left: "37%", fontSize: 9 }}>Hitchcock circle</div>
+          <div className="wb-marker wb-marker-blue" style={{ top: "33%", left: "37%", fontSize: 9 }}>Theosophical lodges, 1880-1920</div>
+          <div className="wb-marker wb-marker-blue" style={{ top: "38%", left: "37%", fontSize: 9 }}>persistence of transmission</div>
+
+          <div className="wb-marker wb-marker-blue" style={{ top: "22%", left: "68%", fontSize: 12 }}>III. The Turn</div>
+          <div className="wb-marker wb-marker-red" style={{ top: "28%", left: "70%", fontSize: 9 }}>when does the observer become</div>
+          <div className="wb-marker wb-marker-red" style={{ top: "33%", left: "70%", fontSize: 9 }}>the subject?</div>
+          <div className="wb-marker wb-marker-red" style={{ top: "38%", left: "70%", fontSize: 9, textDecoration: "underline" }}>is this chapter about me?</div>
+
+          <div className="wb-circle" style={{ top: "25%", left: "67%", width: 180, height: 100, borderColor: "#922b21" }} />
+
+          <div className="wb-marker wb-marker-green" style={{ top: "55%", left: "5%", fontSize: 12 }}>IV. Source Texts</div>
+          <div className="wb-marker wb-marker-green" style={{ top: "61%", left: "7%", fontSize: 9 }}>Corpus Hermeticum (Tractate XIII)</div>
+          <div className="wb-marker wb-marker-green" style={{ top: "66%", left: "7%", fontSize: 9 }}>Eckhart, Sermon 52</div>
+          <div className="wb-marker wb-marker-green" style={{ top: "71%", left: "7%", fontSize: 9 }}>Pseudo-Dionysius</div>
+          <div className="wb-marker wb-marker-green" style={{ top: "76%", left: "7%", fontSize: 9 }}>Atwood, Suggestive Inquiry</div>
+          <div className="wb-marker wb-marker-green" style={{ top: "81%", left: "7%", fontSize: 9 }}>Boehme, Aurora</div>
+
+          <div className="wb-marker wb-marker-red" style={{ top: "55%", left: "40%", fontSize: 12 }}>V. ????</div>
+          <div className="wb-marker wb-marker-red" style={{ top: "62%", left: "42%", fontSize: 10 }}>what comes after the framework</div>
+          <div className="wb-marker wb-marker-red" style={{ top: "68%", left: "42%", fontSize: 10 }}>dissolves?</div>
+          <div className="wb-marker wb-marker-red" style={{ top: "76%", left: "42%", fontSize: 9 }}>this is the chapter I cannot write</div>
+          <div className="wb-marker wb-marker-red" style={{ top: "82%", left: "42%", fontSize: 9 }}>because writing it would rebuild</div>
+          <div className="wb-marker wb-marker-red" style={{ top: "87%", left: "42%", fontSize: 9 }}>the framework</div>
+
+          <div className="wb-circle" style={{ top: "53%", left: "38%", width: 220, height: 130, borderColor: "#922b21", borderStyle: "dashed" }} />
+
+          <div className="wb-marker wb-marker-black" style={{ top: "58%", left: "72%", fontSize: 10 }}>Leonid:</div>
+          <div className="wb-marker wb-marker-black" style={{ top: "64%", left: "72%", fontSize: 9 }}>"stop studying the fire</div>
+          <div className="wb-marker wb-marker-black" style={{ top: "69%", left: "72%", fontSize: 9 }}>and stand in it"</div>
+
+          <div className="wb-marker wb-marker-red" style={{ top: "80%", left: "70%", fontSize: 8, opacity: 0.6 }}>the wall is made of eyes</div>
+          <div className="wb-marker wb-marker-red" style={{ top: "85%", left: "70%", fontSize: 8, opacity: 0.6 }}>the eyes are mine</div>
+          <div className="wb-marker wb-marker-red" style={{ top: "90%", left: "70%", fontSize: 8, opacity: 0.4 }}>viridarium ignis</div>
+
+          <div className="wb-line" style={{ top: "50%", left: "20%", width: 180, transform: "rotate(15deg)" }} />
+          <div className="wb-line" style={{ top: "52%", left: "55%", width: 120, transform: "rotate(-8deg)" }} />
+        </div>
+        <div className="wb-meta">
+          Photographed: January 8, 2022, Loyola Hall Rm 412, Beaumont University{"\n"}
+          Campus Security Officer M. Thibodaux{"\n"}
+          Nikon D3500, flash, no post-processing{"\n"}
+          Note: board had not been erased. Office otherwise orderly.{"\n"}
+          Subject's personal effects remain in room per department hold request.
+        </div>
+      </div>
+      <span className="hidden-vane" style={{ marginTop: 20, maxWidth: 700 }}>chapter five has no title because it cannot be written. every attempt to write it recreates the analytical distance the chapter is about dissolving. this is not writer's block. this is the subject matter asserting itself against the form.</span>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════
+// ACCESS LOG: Campus security card swipes
+// ═══════════════════════════════════════════════════════
+
+function AccessLogView() {
+  return (
+    <div className="log-wrap">
+      <div className="log-page">
+        <div className="log-header">
+          <div className="institution">Beaumont University</div>
+          <div className="dept">Office of Campus Security · Card Access Report</div>
+          <div style={{ fontSize: 10, marginTop: 6 }}>
+            Subject: VANE, ALDOUS R. · ID: BU-2008-0734{"\n"}
+            Period: September 1, 2021 through January 6, 2022{"\n"}
+            Generated: January 9, 2022 · Requested by: NOPD Det. R. Tureaud
+          </div>
+        </div>
+
+        <div style={{ fontWeight: "bold", marginBottom: 8 }}>SEPTEMBER 2021</div>
+        <div className="log-row"><span className="log-date">09/01/2021</span><span className="log-time">8:42 AM</span><span className="log-loc">LOYOLA HALL MAIN</span></div>
+        <div className="log-row"><span className="log-date">09/01/2021</span><span className="log-time">5:18 PM</span><span className="log-loc">LOYOLA HALL MAIN</span><span className="log-note">exit</span></div>
+        <div className="log-row"><span className="log-date">09/03/2021</span><span className="log-time">9:01 AM</span><span className="log-loc">LOYOLA HALL MAIN</span></div>
+        <div className="log-row"><span className="log-date">09/03/2021</span><span className="log-time">12:15 PM</span><span className="log-loc">SPECIAL COLLECTIONS</span></div>
+        <div className="log-row"><span className="log-date">09/03/2021</span><span className="log-time">4:45 PM</span><span className="log-loc">LOYOLA HALL MAIN</span><span className="log-note">exit</span></div>
+        <div className="log-row"><span className="log-date">09/07/2021</span><span className="log-time">8:55 AM</span><span className="log-loc">LOYOLA HALL MAIN</span></div>
+        <div className="log-row"><span className="log-date">09/10/2021</span><span className="log-time">8:48 AM</span><span className="log-loc">LOYOLA HALL MAIN</span></div>
+        <div className="log-row"><span className="log-date">09/14/2021</span><span className="log-time">9:10 AM</span><span className="log-loc">LOYOLA HALL MAIN</span></div>
+        <div className="log-row"><span className="log-date">09/14/2021</span><span className="log-time">6:30 PM</span><span className="log-loc">LOYOLA HALL MAIN</span><span className="log-note">exit</span></div>
+
+        <div style={{ fontWeight: "bold", marginTop: 16, marginBottom: 8 }}>OCTOBER 2021</div>
+        <div className="log-row"><span className="log-date">10/04/2021</span><span className="log-time">10:22 AM</span><span className="log-loc">LOYOLA HALL MAIN</span><span className="log-note">late arrival</span></div>
+        <div className="log-row"><span className="log-date">10/07/2021</span><span className="log-time">11:47 PM</span><span className="log-loc">SPECIAL COLLECTIONS</span><span className="log-note">after hours</span></div>
+        <div className="log-row anomaly"><span className="log-date">10/12/2021</span><span className="log-time">2:14 AM</span><span className="log-loc">LOYOLA HALL REAR</span><span className="log-note">off-hours entry</span></div>
+        <div className="log-row"><span className="log-date">10/12/2021</span><span className="log-time">5:50 AM</span><span className="log-loc">LOYOLA HALL REAR</span><span className="log-note">exit</span></div>
+        <div className="log-row"><span className="log-date">10/19/2021</span><span className="log-time">8:30 AM</span><span className="log-loc">LOYOLA HALL MAIN</span></div>
+        <div className="log-row"><span className="log-date">10/22/2021</span><span className="log-time">11:58 PM</span><span className="log-loc">SPECIAL COLLECTIONS</span><span className="log-note">after hours</span></div>
+        <div className="log-row anomaly"><span className="log-date">10/28/2021</span><span className="log-time">3:33 AM</span><span className="log-loc">LOYOLA HALL REAR</span><span className="log-note">off-hours entry</span></div>
+
+        <div style={{ fontWeight: "bold", marginTop: 16, marginBottom: 8 }}>NOVEMBER 2021</div>
+        <div className="log-row"><span className="log-date">11/01/2021</span><span className="log-time">1:15 PM</span><span className="log-loc">LOYOLA HALL MAIN</span></div>
+        <div className="log-row anomaly"><span className="log-date">11/08/2021</span><span className="log-time">11:42 PM</span><span className="log-loc">LOYOLA HALL REAR</span><span className="log-note">off-hours entry</span></div>
+        <div className="log-row"><span className="log-date">11/08/2021</span><span className="log-time">11:58 PM</span><span className="log-loc">SPECIAL COLLECTIONS</span></div>
+        <div className="log-row anomaly"><span className="log-date">11/09/2021</span><span className="log-time">4:12 AM</span><span className="log-loc">SPECIAL COLLECTIONS</span><span className="log-note">exit, 4+ hours</span></div>
+        <div className="log-row"><span className="log-date">11/15/2021</span><span className="log-time">2:00 PM</span><span className="log-loc">LOYOLA HALL MAIN</span></div>
+        <div className="log-row"><span className="log-date">11/15/2021</span><span className="log-time">2:22 PM</span><span className="log-loc">LOYOLA HALL MAIN</span><span className="log-note">exit, 22 min</span></div>
+        <div className="log-row anomaly"><span className="log-date">11/22/2021</span><span className="log-time">1:05 AM</span><span className="log-loc">LOYOLA HALL REAR</span><span className="log-note">off-hours</span></div>
+        <div className="log-row anomaly"><span className="log-date">11/22/2021</span><span className="log-time">5:44 AM</span><span className="log-loc">LOYOLA HALL REAR</span><span className="log-note">exit</span></div>
+
+        <div style={{ fontWeight: "bold", marginTop: 16, marginBottom: 8 }}>DECEMBER 2021</div>
+        <div className="log-row anomaly"><span className="log-date">12/02/2021</span><span className="log-time">12:30 AM</span><span className="log-loc">SPECIAL COLLECTIONS</span><span className="log-note">off-hours</span></div>
+        <div className="log-row anomaly"><span className="log-date">12/02/2021</span><span className="log-time">4:55 AM</span><span className="log-loc">SPECIAL COLLECTIONS</span><span className="log-note">exit</span></div>
+        <div className="log-row anomaly"><span className="log-date">12/14/2021</span><span className="log-time">10:15 PM</span><span className="log-loc">LOYOLA HALL REAR</span><span className="log-note">off-hours</span></div>
+        <div className="log-row anomaly"><span className="log-date">12/14/2021</span><span className="log-time">11:47 PM</span><span className="log-loc">LOYOLA HALL REAR</span><span className="log-note">exit</span></div>
+        <div style={{ fontSize: 10, color: "#922b21", marginLeft: 16, marginTop: 2, marginBottom: 4 }}>Note: 12/14 exit time coincides with VIG_final.enc upload timestamp (23:47:33 UTC)</div>
+
+        <div style={{ fontWeight: "bold", marginTop: 16, marginBottom: 8 }}>JANUARY 2022</div>
+        <div className="log-row flagged"><span className="log-date">01/05/2022</span><span className="log-time">8:15 PM</span><span className="log-loc">LOYOLA HALL REAR</span><span className="log-note">LAST RECORDED ENTRY</span></div>
+        <div className="log-row flagged"><span className="log-date">01/05/2022</span><span className="log-time">11:23 PM</span><span className="log-loc">LOYOLA HALL REAR</span><span className="log-note">LAST RECORDED EXIT</span></div>
+        <div style={{ fontSize: 10, color: "#922b21", marginLeft: 16, marginTop: 2 }}>Note: No further card activity. Subject reported missing January 6, 2022.</div>
+        <div style={{ fontSize: 10, color: "#922b21", marginLeft: 16 }}>Note: Unsent email draft timestamp: January 5, 2022, 11:58 PM.</div>
+        <div style={{ fontSize: 10, color: "#922b21", marginLeft: 16 }}>35 minutes between last exit and email draft time. Subject was not on campus.</div>
+
+        <div className="log-stamp">
+          Report generated by AccessControl v4.2 · Beaumont University Campus Security{"\n"}
+          Authorized release: Det. R. Tureaud, NOPD 6th District{"\n"}
+          Distribution: NOPD, Osei Investigations (per engagement letter)
+        </div>
+        <span className="hidden-vane">pattern: every off-hours entry at loyola hall uses the rear door. the rear door is closest to the parking lot on freret street. the parking lot on freret street is a seven minute walk from leonid's house in the bywater. he was coming from leonid's. every time. the tuesday meetings ended and he went to campus to write about what happened. he was translating the experience into scholarship. until he could not.</span>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════
 // THE SEVENTH (hidden: accessible only via #seventh)
 // ═══════════════════════════════════════════════════════
 
@@ -3185,6 +3865,10 @@ function ViridiariumIgnis() {
       drive_folder: "%c someone accessed this directory on january 5. the same night as the unsent email.",
       sightlines: "%c poole is brilliant. poole is wrong. both of these are permanent.",
       seventh: "%c you found it.",
+      map: "%c he walked this route. every tuesday. the stations are real. the transformation was real. or it was not. the map does not resolve this.",
+      texts: "%c the last message she sent said: i'm calling the police. the last message he sent said: water the garden. they were having two different conversations.",
+      whiteboard: "%c chapter five has no title. he circled it in red and wrote: this is the chapter i cannot write. he was right.",
+      access_log: "%c the pattern changes in october. before october: regular hours. after october: 2am, 3am, alone in the building. something happened in october.",
     };
     var msg = messages[state.view];
     if (msg) {
@@ -3256,6 +3940,14 @@ function ViridiariumIgnis() {
         return <SightlinesView dispatch={dispatch} />;
       case VIEWS.SEVENTH:
         return <SeventhView />;
+      case VIEWS.MAP:
+        return <MapView />;
+      case VIEWS.TEXTS:
+        return <TextsView />;
+      case VIEWS.WHITEBOARD:
+        return <WhiteboardView />;
+      case VIEWS.ACCESS_LOG:
+        return <AccessLogView />;
       default:
         return <SubredditView dispatch={dispatch} />;
     }

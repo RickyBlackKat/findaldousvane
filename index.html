@@ -1210,14 +1210,14 @@ const BLOG_POSTS_INDEX = [
 ];
 
 const DRIVE_FILES = [
-  { name: "CONNECTIONS.docx", modified: "Nov 12, 2021", size: "847 KB", icon: "\ud83d\udcc4", view: VIEWS.CONNECTIONS },
-  { name: "Draft IV.docx", modified: "Nov 28, 2021", size: "2.1 MB", icon: "\ud83d\udcc4", view: VIEWS.DRAFT_IV },
-  { name: "VIG_final.enc", modified: "Dec 14, 2021", size: "12.7 KB", icon: "\ud83d\udd12", view: VIEWS.CIPHER },
-  { name: "source_card_eckhart.md", modified: "Oct 3, 2021", size: "4 KB", icon: "\ud83d\udcdd", view: null },
-  { name: "atwood_notes.md", modified: "Sep 15, 2021", size: "6 KB", icon: "\ud83d\udcdd", view: VIEWS.MARGINALIA },
-  { name: "1887_letters_translation.pdf", modified: "Apr 2, 2021", size: "340 KB", icon: "\ud83d\udcc1", view: null },
-  { name: "Tractate_XIII_annotations.pdf", modified: "Aug 2021", size: "1.2 MB", icon: "\ud83d\udcc1", view: VIEWS.MARGINALIA },
-  { name: "meeting_notes_combined.docx", modified: "Dec 2021", size: "156 KB", icon: "\ud83d\udcc4", view: VIEWS.MEETING_NOTES },
+  { name: "CONNECTIONS.docx", modified: "Nov 12, 2021", size: "847 KB", icon: "📄", view: VIEWS.CONNECTIONS },
+  { name: "Draft IV.docx", modified: "Nov 28, 2021", size: "2.1 MB", icon: "📄", view: VIEWS.DRAFT_IV },
+  { name: "VIG_final.enc", modified: "Dec 14, 2021", size: "12.7 KB", icon: "🔒", view: VIEWS.CIPHER },
+  { name: "source_card_eckhart.md", modified: "Oct 3, 2021", size: "4 KB", icon: "📝", view: null },
+  { name: "atwood_notes.md", modified: "Sep 15, 2021", size: "6 KB", icon: "📝", view: VIEWS.MARGINALIA },
+  { name: "1887_letters_translation.pdf", modified: "Apr 2, 2021", size: "340 KB", icon: "📁", view: null },
+  { name: "Tractate_XIII_annotations.pdf", modified: "Aug 2021", size: "1.2 MB", icon: "📁", view: VIEWS.MARGINALIA },
+  { name: "meeting_notes_combined.docx", modified: "Dec 2021", size: "156 KB", icon: "📄", view: VIEWS.MEETING_NOTES },
 ];
 
 const MEMO_INDEX = [
@@ -1249,7 +1249,7 @@ function NavBreadcrumb({ history, dispatch, current }) {
   if (history.length === 0) return null;
   return (
     <button className="vig-back" onClick={() => dispatch({ type: "back" })}>
-      \u2190 Back
+      ← Back
     </button>
   );
 }
@@ -1262,7 +1262,7 @@ function SubredditView({ dispatch }) {
     <div className="reddit-wrap">
       <div className="reddit-header">
         <h1>r/SolveCoagula</h1>
-        <span className="sub-desc">1,427 members \u00b7 23 online</span>
+        <span className="sub-desc">1,427 members · 23 online</span>
       </div>
       <div className="reddit-body">
         <div className="reddit-sidebar">
@@ -1284,15 +1284,15 @@ function SubredditView({ dispatch }) {
         {SUBREDDIT_POSTS.map((post) => (
           <div className="post-card" key={post.id} style={post.special ? { borderColor: "#FF4500", borderWidth: 2 } : {}}>
             <div className="vote-col">
-              <span className="vote-arrow">\u25b2</span>
+              <span className="vote-arrow">▲</span>
               <span className="vote-count">{post.votes >= 1000 ? (post.votes / 1000).toFixed(1) + "k" : post.votes}</span>
-              <span className="vote-arrow">\u25bc</span>
+              <span className="vote-arrow">▼</span>
             </div>
             <div className="post-content">
               <div className="post-meta">
-                <span className="username">{post.user}</span> \u00b7 {post.time}
+                <span className="username">{post.user}</span> · {post.time}
                 {post.flair && <span style={{ marginLeft: 8, padding: "1px 6px", background: post.flair === "ACHERON" ? "rgba(139,0,0,0.2)" : "rgba(79,188,255,0.1)", color: post.flair === "ACHERON" ? "#ff6666" : "#4FBCFF", borderRadius: 2, fontSize: 10 }}>{post.flair}</span>}
-                {post.hot && <span style={{ marginLeft: 6, fontSize: 10, color: "#FF4500" }}>\ud83d\udd25</span>}
+                {post.hot && <span style={{ marginLeft: 6, fontSize: 10, color: "#FF4500" }}>🔥</span>}
               </div>
               <div
                 className="post-title"
@@ -1316,11 +1316,11 @@ function SubredditView({ dispatch }) {
                   {post.id === "calloway_leak" && (
                     <div className="comment-section">
                       <div className="comment">
-                        <div className="c-meta"><span className="username">u/MarquezWD</span> \u00b7 Oct 14, 2022</div>
+                        <div className="c-meta"><span className="username">u/MarquezWD</span> · Oct 14, 2022</div>
                         <div className="c-body">The notes are clinical shorthand. Whoever wrote these was trained. The <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.CLINICAL_NOTE })}>session from September 16</span> is the one everyone needs to read. He reads Eckhart aloud to his therapist.</div>
                       </div>
                       <div className="comment">
-                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> \u00b7 Oct 14, 2022, 2:33 AM</div>
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · Oct 14, 2022, 2:33 AM</div>
                         <div className="c-body">Whoever leaked this violated a person's privacy to satisfy curiosity. The notes are real. That is not permission.</div>
                       </div>
                     </div>
@@ -1328,7 +1328,7 @@ function SubredditView({ dispatch }) {
                   {post.id === "cipher" && (
                     <div className="comment-section">
                       <div className="comment">
-                        <div className="c-meta"><span className="username">u/Thoth_R</span> \u00b7 Oct 29, 2022</div>
+                        <div className="c-meta"><span className="username">u/Thoth_R</span> · Oct 29, 2022</div>
                         <div className="c-body">The file is still on the Beaumont server. <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.CIPHER })}>View the encrypted file</span>. The keyword is POORINSPIRIT. From Eckhart's Sermon 52 on the poverty of spirit. The decrypted text... I need someone else to read it.</div>
                       </div>
                     </div>
@@ -1336,11 +1336,11 @@ function SubredditView({ dispatch }) {
                   {post.id === "sightlines" && (
                     <div className="comment-section">
                       <div className="comment">
-                        <div className="c-meta"><span className="username">u/pelican_athanor</span> \u00b7 Nov 12, 2022</div>
+                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · Nov 12, 2022</div>
                         <div className="c-body"><span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.FOIA })}>FOIA excerpt here</span>. Pages 7, 34, and 43. Heavily redacted. But page 34 has a photograph. I don't know what to make of it.</div>
                       </div>
                       <div className="comment">
-                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> \u00b7 Nov 13, 2022, 1:12 AM</div>
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · Nov 13, 2022, 1:12 AM</div>
                         <div className="c-body">Poole is asking the right questions for the wrong reasons. ACHERON is real. Its connection to Aldous is not. The right question is what you would see if someone looked at you that way.</div>
                       </div>
                     </div>
@@ -1348,34 +1348,34 @@ function SubredditView({ dispatch }) {
                   {post.id === "darkwater" && (
                     <div className="comment-section">
                       <div className="comment">
-                        <div className="c-meta"><span className="username">u/darkwater_nola</span> \u00b7 Aug 3, 2022</div>
+                        <div className="c-meta"><span className="username">u/darkwater_nola</span> · Aug 3, 2022</div>
                         <div className="c-body">Kevin Marsh is findable. He's in Portland. I spoke with his sister. Thomas Harker, Sedona, cause of death listed as cardiac arrest, he was 34. Look at the connections to this Bywater group and tell me it's coincidence.</div>
                       </div>
                       <div className="comment" style={{ marginLeft: 16 }}>
-                        <div className="c-meta"><span className="username">u/pelican_athanor</span> \u00b7 Aug 3, 2022</div>
+                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · Aug 3, 2022</div>
                         <div className="c-body">This needs evidence, not a narrative. What is the documented connection between Marsh and the Bywater group? How do you know Harker attended?</div>
                       </div>
                       <div className="comment">
-                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> \u00b7 Aug 4, 2022, 3:07 AM</div>
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · Aug 4, 2022, 3:07 AM</div>
                         <div className="c-body" style={{ color: "#818384" }}>The deaths are real. The connections are not.</div>
                       </div>
                       <div className="comment" style={{ marginLeft: 16 }}>
-                        <div className="c-meta" style={{ color: "#555" }}>\u25b2 4 \u00b7 180 replies</div>
+                        <div className="c-meta" style={{ color: "#555" }}>▲ 4 · 180 replies</div>
                       </div>
                     </div>
                   )}
                   {post.id === "priya" && (
                     <div className="comment-section">
                       <div className="comment">
-                        <div className="c-meta"><span className="username">u/archive_deep</span> \u00b7 Sep 8, 2022</div>
+                        <div className="c-meta"><span className="username">u/archive_deep</span> · Sep 8, 2022</div>
                         <div className="c-body">She's still at Beaumont. Still has everything. Has anyone reached out?</div>
                       </div>
                       <div className="comment" style={{ marginLeft: 16 }}>
-                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> \u00b7 Sep 9, 2022, 1:47 AM</div>
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · Sep 9, 2022, 1:47 AM</div>
                         <div className="c-body">Leave her alone.</div>
                       </div>
                       <div className="comment">
-                        <div className="c-meta"><span className="username">u/CasualReader92</span> \u00b7 Sep 9, 2022</div>
+                        <div className="c-meta"><span className="username">u/CasualReader92</span> · Sep 9, 2022</div>
                         <div className="c-body">The PI (<span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.INTERVIEW, subId: "mehta" })}>Osei's interview with Mehta</span>) already talked to her. Read the transcript before you go bothering a grad student.</div>
                       </div>
                     </div>
@@ -1383,11 +1383,11 @@ function SubredditView({ dispatch }) {
                   {post.id === "source_texts" && (
                     <div className="comment-section">
                       <div className="comment">
-                        <div className="c-meta"><span className="username">u/Thoth_R</span> \u00b7 May 14, 2022</div>
+                        <div className="c-meta"><span className="username">u/Thoth_R</span> · May 14, 2022</div>
                         <div className="c-body">Posts 1 through 5: Weber, Durkheim, James, Goffman, Berger. Posts 6 through 9: Corpus Hermeticum (Copenhaver 1992), Pseudo-Dionysius (Luibheid 1987), Eckhart (Colledge and McGinn 1981), Boehme (Law 1764), Atwood (1850). Also found his 2017 <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.BLOG_POST, subId: 1 })}>JAAR paper on James</span>. Read it.</div>
                       </div>
                       <div className="comment" style={{ marginLeft: 16 }}>
-                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> \u00b7 May 15, 2022, 2:03 AM</div>
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · May 15, 2022, 2:03 AM</div>
                         <div className="c-body">Read the sources he cites. Not about them. Them.</div>
                       </div>
                     </div>
@@ -1395,11 +1395,11 @@ function SubredditView({ dispatch }) {
                   {post.id === "coordinates" && (
                     <div className="comment-section">
                       <div className="comment">
-                        <div className="c-meta"><span className="username">u/Thoth_R</span> \u00b7 Nov 28, 2022</div>
+                        <div className="c-meta"><span className="username">u/Thoth_R</span> · Nov 28, 2022</div>
                         <div className="c-body">29.9511, -90.0715 is the foot of Esplanade. Right at the river. He walked toward the river that night. This is either where he went or where the manuscript tells you to look.</div>
                       </div>
                       <div className="comment">
-                        <div className="c-meta" style={{ color: "#FF4500" }}>\ud83d\udd12 Thread locked by u/pelican_athanor</div>
+                        <div className="c-meta" style={{ color: "#FF4500" }}>🔒 Thread locked by u/pelican_athanor</div>
                         <div className="c-body" style={{ color: "#818384", fontSize: 12 }}>Locking this. Coordinate threads risk attracting people who do things with information rather than thinking about it. If you want to understand what happened to Vane, read what he wrote.</div>
                       </div>
                     </div>
@@ -1410,14 +1410,14 @@ function SubredditView({ dispatch }) {
                         Account created January 6, 2023. One post. No comments. No other activity. Location metadata: New Orleans, LA.
                       </div>
                       <div className="comment">
-                        <div className="c-meta"><span className="username">u/pelican_athanor</span> \u00b7 Jan 6, 2023</div>
+                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · Jan 6, 2023</div>
                         <div className="c-body">If this is real, I don't know what to do with it. If this is someone pretending, I don't know what to do with that either.</div>
                       </div>
                       <div className="comment">
-                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> \u00b7 Jan 6, 2023, 12:47 AM</div>
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · Jan 6, 2023, 12:47 AM</div>
                         <div className="c-body">Seven.</div>
                       </div>
-                      <div style={{ padding: "8px 0", fontSize: 11, color: "#555" }}>1,203 comments \u00b7 showing top 2</div>
+                      <div style={{ padding: "8px 0", fontSize: 11, color: "#555" }}>1,203 comments · showing top 2</div>
                     </div>
                   )}
                 </div>
@@ -1434,19 +1434,19 @@ function FoundingPostExpanded({ dispatch }) {
   return (
     <div className="comment-section">
       <div className="comment">
-        <div className="c-meta"><span className="username">u/Thoth_R</span> \u00b7 April 23, 2022</div>
+        <div className="c-meta"><span className="username">u/Thoth_R</span> · April 23, 2022</div>
         <div className="c-body">ok so i just read through all 9 <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.BLOG_POST, subId: 1 })}>blog posts</span> and i need to ask the obvious thing. what is he actually writing about? around post 6 it gets weird. where is he getting these old letters from? what is acc. 1887.0034?</div>
       </div>
       <div className="comment" style={{ marginLeft: 16 }}>
-        <div className="c-meta"><span className="username">u/pelican_athanor</span> \u00b7 April 23, 2022</div>
+        <div className="c-meta"><span className="username">u/pelican_athanor</span> · April 23, 2022</div>
         <div className="c-body">The archive citation is from <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.LIBRARY_LOG })}>Beaumont's special collections</span>. He visited multiple times that year. The archive is connected to Louisiana Masonic history.</div>
       </div>
       <div className="comment">
-        <div className="c-meta"><span className="username">u/archive_deep</span> \u00b7 April 23, 2022</div>
+        <div className="c-meta"><span className="username">u/archive_deep</span> · April 23, 2022</div>
         <div className="c-body">Did anyone notice the dates? He stops posting in October. Visits the archive for the last time in November. Gone in January. Three months of silence. That <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.EMAIL_DRAFT })}>gap</span> is significant.</div>
       </div>
       <div className="comment">
-        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> \u00b7 April 24, 2022, 1:47 AM</div>
+        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · April 24, 2022, 1:47 AM</div>
         <div className="c-body" style={{ color: "#818384" }}>The last post isn't academic. The methodology he's revising toward is the one the traditions describe. He stopped writing like an observer.</div>
       </div>
     </div>
@@ -1463,7 +1463,7 @@ function BlogPostView({ dispatch, subId }) {
       <div className="blog-inner">
         <div className="blog-header">
           <div className="blog-site-title">Studies in Transmission</div>
-          <div className="blog-site-sub">Aldous Vane \u00b7 Beaumont University \u00b7 Notes from the margins of belief</div>
+          <div className="blog-site-sub">Aldous Vane · Beaumont University · Notes from the margins of belief</div>
         </div>
 
         <div style={{ marginBottom: 32 }}>
@@ -1486,14 +1486,14 @@ function BlogPostView({ dispatch, subId }) {
                 {p.id}. {p.title}
               </div>
               <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: "#999" }}>
-                {p.date} {p.id >= 7 && "\u00b7"} {p.id >= 7 && <span style={{ color: "#c5221f", fontSize: 11 }}>something shifted</span>}
+                {p.date} {p.id >= 7 && "·"} {p.id >= 7 && <span style={{ color: "#c5221f", fontSize: 11 }}>something shifted</span>}
               </div>
             </div>
           ))}
         </div>
 
         <div className="blog-post-title">{post.title}</div>
-        <div className="blog-post-meta">Aldous Vane \u00b7 {post.date}</div>
+        <div className="blog-post-meta">Aldous Vane · {post.date}</div>
         <div className="blog-post-body">
           {postIndex === 1 && (
             <>
@@ -1519,7 +1519,7 @@ function BlogPostView({ dispatch, subId }) {
           )}
           {postIndex !== 1 && postIndex !== 9 && (
             <p style={{ color: "#999", fontStyle: "italic" }}>
-              [Post {postIndex}: "{post.title}" {"\u2014"} {post.desc} Click a post number to navigate.]
+              [Post {postIndex}: "{post.title}", {post.desc}. Click a post number to navigate.]
             </p>
           )}
         </div>
@@ -1596,14 +1596,14 @@ function FacultyPageView({ dispatch }) {
 
           <div style={{ marginTop: 30, padding: "12px", background: "#fff", border: "1px solid #ddd", borderRadius: 4 }}>
             <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: "#999" }}>
-              <span style={{ cursor: "pointer", color: "#4FBCFF" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.BLOG_POST, subId: 1 })}>View Dr. Vane's blog: Studies in Transmission \u2192</span>
+              <span style={{ cursor: "pointer", color: "#4FBCFF" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.BLOG_POST, subId: 1 })}>View Dr. Vane's blog: Studies in Transmission →</span>
             </div>
           </div>
         </div>
       </div>
       <div style={{ background: "#1B4332", padding: "16px 20px", textAlign: "center" }}>
         <span style={{ fontFamily: "'Open Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.5)" }}>
-          Beaumont University \u00b7 4200 St. Charles Avenue, New Orleans, LA 70118 \u00b7 \u00a9 2020
+          Beaumont University · 4200 St. Charles Avenue, New Orleans, LA 70118 · © 2020
         </span>
       </div>
     </div>
@@ -1680,7 +1680,7 @@ function PIMemoView({ dispatch, subId }) {
       <div className="memo-page">
         <div className="memo-letterhead">
           <div className="firm-name">Osei Investigations LLC</div>
-          <div className="firm-details">3412 Magazine Street, Suite 4 \u00b7 New Orleans, LA 70115 \u00b7 (504) 555-0187 \u00b7 License: C-2016-7743</div>
+          <div className="firm-details">3412 Magazine Street, Suite 4 · New Orleans, LA 70115 · (504) 555-0187 · License: C-2016-7743</div>
         </div>
         <hr className="memo-divider" />
         <div className="memo-stamp">Internal Memo {String(memoNum).padStart(2, "0")}</div>
@@ -1726,7 +1726,7 @@ function PIMemoView({ dispatch, subId }) {
               <div className="sub-header">Case Intake</div>
               {"Client is Clara Vane, 44, spouse of subject Dr. Aldous Vane, 47, Associate Professor, Department of Religion, Psychology, and Social Thought, Beaumont University. Subject reported missing January 8, 2022. Case flagged inactive February 18, 2022. Standard protocol for adult missing persons with no evidence of foul play.\n\n"}
               <div className="sub-header">Preliminary Facts from NOPD File</div>
-              {"Last confirmed sighting January 6, 2022, approximately 11:52 PM, Whitney Bank ATM, corner Magazine and Constantinople. Subject withdrew $400. Witness from bartender at Fr\u00e8re Jacques on Frenchmen Street: subject ordered single whiskey, stayed approximately fifteen minutes, stated words consistent with \"Well. That's that, then.\" Left alone in direction of river.\n\nNo further sightings. No credit card activity. Cellular phone signal lost approximately 12:15 AM, January 7.\n\nSubject's vehicle, 2015 Subaru Outback, recovered parked on Dauphine Street, Marigny. Keys in ignition. No evidence of foul play.\n\n"}
+              {"Last confirmed sighting January 6, 2022, approximately 11:52 PM, Whitney Bank ATM, corner Magazine and Constantinople. Subject withdrew $400. Witness from bartender at Frère Jacques on Frenchmen Street: subject ordered single whiskey, stayed approximately fifteen minutes, stated words consistent with \"Well. That's that, then.\" Left alone in direction of river.\n\nNo further sightings. No credit card activity. Cellular phone signal lost approximately 12:15 AM, January 7.\n\nSubject's vehicle, 2015 Subaru Outback, recovered parked on Dauphine Street, Marigny. Keys in ignition. No evidence of foul play.\n\n"}
               <div className="sub-header">Preliminary Assessment</div>
               {"This case presents as standard adult missing person. Most missing adults of this profile are located within 90 days. I expect this case to resolve within three months through standard investigation protocols."}
             </>
@@ -1772,13 +1772,13 @@ function EmailDraftView({ dispatch }) {
   return (
     <div className="email-wrap">
       <div className="email-topbar">
-        <span className="mail-icon">\u2709</span>
+        <span className="mail-icon">✉</span>
         <span className="mail-title">Mail</span>
       </div>
       <div className="email-body-wrap">
         <div className="email-card">
           <div className="email-draft-banner">
-            \u26a0 DRAFT: This message was never sent.
+            ⚠ DRAFT: This message was never sent.
           </div>
           <div className="email-header-fields">
             <strong>From:</strong> aldous.vane@beaumont.edu{"\n"}
@@ -1883,7 +1883,7 @@ function FOIAView({ dispatch }) {
         <div className="foia-header">
           <div className="agency">CENTRAL INTELLIGENCE AGENCY</div>
           FREEDOM OF INFORMATION ACT RELEASE{"\n"}
-          Case Number: F-2022-01847 \u00b7 Release Date: 14 March 2022{"\n"}
+          Case Number: F-2022-01847 · Release Date: 14 March 2022{"\n"}
           Requester: G. Poole, SIGHTLINES Media
         </div>
         <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
@@ -1947,21 +1947,21 @@ function DriveFolderView({ dispatch }) {
   return (
     <div className="drive-wrap">
       <div className="drive-topbar">
-        <span className="drive-logo">\u25b6</span>
+        <span className="drive-logo">▶</span>
         <span className="drive-title">Drive</span>
       </div>
       <div className="drive-body">
         <div className="drive-sidebar">
-          <div className="folder-item active">\ud83d\udcc1 VIG Working Docs</div>
-          <div className="folder-item">\ud83d\udcc1 Course Materials</div>
-          <div className="folder-item">\ud83d\udcc1 Persistent Margin drafts</div>
-          <div className="folder-item">\ud83d\udcc1 Correspondence</div>
+          <div className="folder-item active">📁 VIG Working Docs</div>
+          <div className="folder-item">📁 Course Materials</div>
+          <div className="folder-item">📁 Persistent Margin drafts</div>
+          <div className="folder-item">📁 Correspondence</div>
           <div style={{ marginTop: 16, fontSize: 11, color: "#999", paddingLeft: 10 }}>
             aldous.vane@beaumont.edu
           </div>
         </div>
         <div className="drive-main">
-          <div className="drive-breadcrumb">My Drive \u203a VIG Working Docs</div>
+          <div className="drive-breadcrumb">My Drive › VIG Working Docs</div>
           <div className="drive-file-list">
             <div className="drive-file-row" style={{ fontWeight: 500, color: "#5f6368", fontSize: 12 }}>
               <div className="drive-file-icon" />
@@ -1995,7 +1995,7 @@ function ConnectionsView({ dispatch }) {
     <div className="research-wrap">
       <div className="research-page">
         <div className="doc-title">CONNECTIONS</div>
-        <div className="doc-meta">Last modified: November 2021 \u00b7 A. Vane \u00b7 NOT FOR CIRCULATION</div>
+        <div className="doc-meta">Last modified: November 2021 · A. Vane · NOT FOR CIRCULATION</div>
         <div className="doc-body">
           <div style={{ fontWeight: 600, fontSize: 16, margin: "20px 0 12px", fontFamily: "'Playfair Display', serif" }}>THE WEB</div>
           {"Start here. The connections are not incidental.\n\nThe Corpus Hermeticum (Copenhaver 1992) preserves a Greco-Egyptian synthesis of transformative practice. But the material is older. Lactantius cites Hermetic passages in the fourth century that do not appear in the extant Corpus. This means the Corpus we have is not the origin. It is a recovery of something prior.\n\nPseudo-Dionysius inherits the Neoplatonist framework but strips it to its apophatic core. The Mystical Theology is a five-chapter manual for the systematic removal of every predicate by which the mind organizes reality. It reads as negative theology. It is not. It is operational procedure."}
@@ -2010,9 +2010,9 @@ function ConnectionsView({ dispatch }) {
 
           <div style={{ textAlign: "center", padding: "20px 0", fontFamily: "'Special Elite', cursive", fontSize: 14, color: "#1a3a5c", lineHeight: 2.2 }}>
             {"HERMETIC\n"}
-            {"\u2193\n"}
-            {"SUFI  \u2192     \u25cb     \u2190  NEOPLATONIST\n"}
-            {"ALCHEMICAL \u2192       \u2190 CHRISTIAN MYSTICAL\n\n"}
+            {"↓\n"}
+            {"SUFI  →     ○     ←  NEOPLATONIST\n"}
+            {"ALCHEMICAL →       ← CHRISTIAN MYSTICAL\n\n"}
             <span style={{ fontSize: 12, color: "#999" }}>The center is blank.</span>
           </div>
 
@@ -2033,7 +2033,7 @@ function DraftIVView({ dispatch }) {
     <div className="research-wrap">
       <div className="research-page">
         <div className="doc-title">THE INTERIOR CAMPAIGN</div>
-        <div className="doc-meta">Aldous Vane \u00b7 Beaumont University \u00b7 DRAFT IV \u00b7 Pages 17-34</div>
+        <div className="doc-meta">Aldous Vane · Beaumont University · DRAFT IV · Pages 17-34</div>
         <div className="doc-body">
           <div className="page-marker">[Page 17]</div>
           {"Ethan Allen Hitchcock remains, to this day, among the most peculiar figures in the history of American engagement with esoteric thought. His thesis, pursued across four privately published books between 1857 and 1866, was simply stated: the alchemical tradition was not, and had never been, concerned with the transmutation of physical metals. It was concerned with the transmutation of the human being. The gold of the alchemists was the perfected self."}
@@ -2078,7 +2078,7 @@ function MeetingNotesView({ dispatch }) {
     <div className="research-wrap">
       <div className="research-page">
         <div className="doc-title">MEETING NOTES</div>
-        <div className="doc-meta">Private working notes \u00b7 A. Vane</div>
+        <div className="doc-meta">Private working notes · A. Vane</div>
         <div style={{ display: "flex", gap: 4, marginBottom: 20, flexWrap: "wrap" }}>
           {entries.map((e) => (
             <span
@@ -2265,7 +2265,7 @@ function LibraryLogView({ dispatch }) {
     <div className="log-wrap">
       <div className="log-page">
         <div className="log-title">BEAUMONT UNIVERSITY SPECIAL COLLECTIONS</div>
-        <div className="log-subtitle">Visitor Access Log \u00b7 2021 \u00b7 Researcher: Dr. A. Vane (Faculty)</div>
+        <div className="log-subtitle">Visitor Access Log · 2021 · Researcher: Dr. A. Vane (Faculty)</div>
         <table className="log-table">
           <thead>
             <tr>
@@ -2291,7 +2291,7 @@ function LibraryLogView({ dispatch }) {
           </tbody>
         </table>
         <div style={{ marginTop: 16, fontFamily: "'Courier Prime', monospace", fontSize: 10, color: "#888", textAlign: "center" }}>
-          23 visits recorded \u00b7 Total hours: approx. 102
+          23 visits recorded · Total hours: approx. 102
         </div>
       </div>
     </div>
@@ -2304,7 +2304,7 @@ function MarginaliaView({ dispatch }) {
     <div className="marg-wrap">
       <div className="marg-page">
         <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, color: "#999", marginBottom: 16 }}>
-          Corpus Hermeticum, Tractate XIII \u00b7 Copenhaver trans. 1992 \u00b7 pp. 49-51
+          Corpus Hermeticum, Tractate XIII · Copenhaver trans. 1992 · pp. 49-51
         </div>
         <div className="printed-text">
           {"When Tat says to Hermes: \"You have driven me, father, to no small frenzy and distraction of mind, for I do not now see myself,\" Hermes replies: \"Would that you too, my child, had passed out through yourself, as those who dream in sleep yet without sleeping.\"\n\n"}

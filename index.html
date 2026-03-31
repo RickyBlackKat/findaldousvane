@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>r/SolveCoagula</title>
   <meta name="description" content="Documenting the disappearance of Dr. Aldous Vane, Beaumont University. Last seen January 6, 2022.">
+  <!-- the reader who examines the source code is already performing the work described in the documents -->
+  <!-- not all pages are linked from the navigation. some must be found. -->
+  <!-- "the seventh has no name" -->
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #0a0a0a; }
@@ -21,15 +24,20 @@
   </style>
 </head>
 <body>
+  <!-- aldous vane was last seen january 6, 2022. this is not a website. this is evidence. -->
   <div id="root">
     <div class="loading-screen">
       <h1>r/SolveCoagula</h1>
       <p>Loading...</p>
     </div>
   </div>
+  <!-- someone built this. someone gathered these documents. that person has not identified themselves. -->
+  <!-- the cipher key is derived from a specific passage. the passage is about poverty. the poverty of knowing nothing. -->
+  <!-- sermon 52. eckhart. "poor in spirit." consider what that phrase means as a key. -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+  <!-- there is a page that is not in the menu. its name is a number. the number comes after six. -->
   <script type="text/babel">
     const { useState, useEffect, useReducer } = React;
 
@@ -57,6 +65,7 @@ const VIEWS = {
   DRAFT_IV: "draft_iv",
   LIBRARY_LOG: "library_log",
   SIGHTLINES: "sightlines",
+  SEVENTH: "seventh",
 };
 
 function reducer(state, action) {
@@ -807,6 +816,32 @@ body { background: #0a0a0a; }
   vertical-align: text-bottom;
 }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* hidden text: same color as background, visible only on select */
+.hidden-vane {
+  color: transparent;
+  font-size: 9px;
+  line-height: 1;
+  user-select: text;
+  pointer-events: none;
+  display: block;
+  padding: 2px 0;
+  font-family: 'Courier Prime', monospace;
+  letter-spacing: 0.5px;
+}
+.hidden-vane::selection { color: #aaa; background: #222; }
+
+/* dark bg variant */
+.reddit-wrap .hidden-vane::selection { color: #fff; background: #333; }
+
+/* light bg variant for seventh */
+.hidden-light {
+  color: transparent;
+  font-size: 1px;
+  user-select: text;
+}
+.hidden-light::selection { color: #999; background: #eee; }
 
 /* ── Terminal / Cipher ── */
 .terminal-wrap {
@@ -1374,6 +1409,7 @@ function SubredditView({ dispatch }) {
           <div className="member-count">Created April 23, 2022</div>
           <p>Documenting the disappearance of Dr. Aldous Vane, Associate Professor of Religion, Psychology, and Social Thought at Beaumont University, New Orleans. Last seen January 6, 2022.</p>
           <p style={{ marginTop: 8 }}>Rule 1: Stay close to evidence and close to the material.</p>
+          <span className="hidden-vane">someone is maintaining this subreddit who knows more than they post. watch pelican_athanor. watch the timestamps on lux_in_tenebris. always after midnight. always correct.</span>
           <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #343536" }}>
             <div style={{ fontSize: 11, color: "#818384", marginBottom: 8 }}>RELATED DOCUMENTS</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
@@ -1877,6 +1913,7 @@ function FacultyPageView({ dispatch }) {
         <span style={{ fontFamily: "'Open Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.5)" }}>
           Beaumont University · 4200 St. Charles Avenue, New Orleans, LA 70118 · © 2020
         </span>
+        <span style={{ color: "#1B4332", fontSize: 1, display: "block", userSelect: "text" }}>this page has not been updated. his office has not been cleared. the books are still on the shelf in the order he left them. someone from the department checks the office every tuesday. they do not say why.</span>
       </div>
     </div>
   );
@@ -2214,6 +2251,7 @@ function PIMemoView({ dispatch, subId }) {
               <div className="memo-private">
                 <div className="private-label">Private Note, Final</div>
                 {"There is a question I cannot put in the report to Clara. The question is whether what happened to Aldous Vane was something that happened to him or something he did. The evidence does not distinguish between these possibilities. The people who knew him do not agree. His wife says he was lost. His student says he was found. The man in the Bywater says both words miss the point.\n\nI have been a detective for twenty years. I have closed cases I could not solve. I have never closed a case where I was not certain what category the case belonged in. I am not certain what category this case belongs in.\n\nI am closing it honestly. Not solved. Closed."}
+                <span className="hidden-vane">i went back to the house in the bywater one more time. in march. off the record. leonid opened the door. he looked at me for a long time. he said: you already know. i said: know what. he said: that he is well. i did not put this in the file. i am putting it here where no one will read it.</span>
               </div>
             </>
           )}
@@ -2249,7 +2287,9 @@ function EmailDraftView({ dispatch }) {
             <strong>Subject:</strong> <span style={{ color: "#999", fontStyle: "italic" }}>(blank)</span>
           </div>
           <div className="email-content">
-            {"I have tried to write this five times. Each time I reach a point where the sentence requires a word that does not exist in the language we have used to know each other.\n\nWhat I am trying to tell you is where I am. Not where I am geographically. I will be gone before morning. You know this already. You have known it for three months. You have watered the garden as if I would come back. This is an act I do not have language for. It is kindness and it is something else. It is the holding of a space that no longer contains what it was built to hold.\n\nI am not in pain. I need you to know this first. I am not in crisis. I am not in the state they will say I was in, the ones who will come asking you questions. I am clearer than I have ever been. The clarity is not comfortable.\n\nFor years I studied how people believe things they have no reason to believe. I was very good at maintaining the distance between myself and what I was studying. I called this scholarship. I called it rigor.\n\nWhat I did not know was that the distance itself was the apparatus. That by studying it, I was perfecting it. That every word I wrote was another brick in the wall between myself and something that has been looking at me since before I had eyes to see with.\n\nLeonid did not teach me anything. He simply stopped speaking to the wall. And in stopping, the wall became visible. And in becoming visible, it became optional.\n\nClara, you have maintained our garden through all of this. He will not return. The person who wore his name was a performance. The performance is becoming transparent."}<span className="email-cursor" />
+            {"I have tried to write this five times. Each time I reach a point where the sentence requires a word that does not exist in the language we have used to know each other.\n\nWhat I am trying to tell you is where I am. Not where I am geographically. I will be gone before morning. You know this already. You have known it for three months. You have watered the garden as if I would come back. This is an act I do not have language for. It is kindness and it is something else. It is the holding of a space that no longer contains what it was built to hold.\n\nI am not in pain. I need you to know this first. I am not in crisis. I am not in the state they will say I was in, the ones who will come asking you questions. I am clearer than I have ever been. The clarity is not comfortable.\n\nFor years I studied how people believe things they have no reason to believe. I was very good at maintaining the distance between myself and what I was studying. I called this scholarship. I called it rigor.\n\nWhat I did not know was that the distance itself was the apparatus. That by studying it, I was perfecting it. That every word I wrote was another brick in the wall between myself and something that has been looking at me since before I had eyes to see with.\n\nLeonid did not teach me anything. He simply stopped speaking to the wall. And in stopping, the wall became visible. And in becoming visible, it became optional.\n\nClara, you have maintained our garden through all of this. He will not return. The person who wore his name was a performance. The performance is becoming transparent."}
+            <span className="hidden-vane">there were six drafts before this one. he deleted the others. in the first draft he said where he was going. in the second he said why. by the fifth he understood that saying either would rebuild the wall. this draft says neither. this draft is the closest he came to the truth.</span>
+            <span className="email-cursor" />
           </div>
         </div>
       </div>
@@ -2259,22 +2299,95 @@ function EmailDraftView({ dispatch }) {
 
 // ── Cipher ──
 function CipherView({ dispatch }) {
+  const [keyInput, setKeyInput] = useState("");
   const [decrypting, setDecrypting] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [showDecrypted, setShowDecrypted] = useState(false);
+  const [result, setResult] = useState(null);
+  const [attempts, setAttempts] = useState(0);
+  const [cursorVisible, setCursorVisible] = useState(true);
+  const inputRef = React.useRef(null);
+
+  const CORRECT_KEY = "POORINSPIRIT";
+
+  const ENCRYPTED_FULL = "PHHVVGADV JWEKSQFITMAI TWFBIBZBL LWQJ QL CCH NPNL NWL BAXBY ZB VK\n\nIPV QGHHFLKGADVJ JXACK RZR FDB ZVLIFITBVGCA. KPXN OFV KBGGLZVTISG. ZN LGJ PRDX GSOU BUW HWLZVT AOKMEAPTJ, GHJ KWC T EWRWXVBOS HYMZ.\n\nTTOZV TI GH. CWHAH KVUXISFP VB. 1. WCBVZ MWFCLOU LWM XIMT CB SIFAC AKZXTH. HYM TJPDVA MWSFV IEW CWK J NGWOCA. GZTG RZX PFQYQGWRBLZTA RSJKEAEBZWGH CT KPR XDCI KAPA PVZF. LWM GTTRSAVVG, LWM WIVXBU, KPR KIWEM PDFY ZBFWAN; KPXHS OIM AGI WIVTBSBKIY. LWMP IKT QOIBBYGIGPR DT OE QALTZZWK LCFB.\n\nAGSCL RB MWS QVVGWG WW BAT QSDMGWGG. WIVT HVV ZVNTZ. KPX GWJVZ VLHMCN BHHVV NVJHB ZVLIFITBVGC. QK NEDKG UWJFLIIL. BI QOIZVWH EYIM XG RZAFGADVL.\n\nMGOQKIGW X WW BAT QCIXHK SMJKKXPSJ BUAH: BYM WTGQVVG. LWM WQKHH KFZX. FXOIMWD. HVV JYSRSVV BCU. RZAFGACKQHC WBKW CJXUR UTISFZI. GZT ZZDXG YBFEF LWQJ. MOTFM TQGQ QCZTM DB KRBRJ ZVFEL IVWJ.\n\nVBO ICIV. MJFB WZBE IPV ZBKSF. NIYC IWNIKS DWIIGW'H ICTXN. HVV AGJTMK QMHSZW VNJGWNA. MWS PLQYVXVXA VACGV QA.\n\nKPR OWQKMGXBU. KPR JTUFDTA CT RTY LWIK ETH RWJABDKMU QZ IVS IQIWG.\n\nKFVMXBIV. GBM LQCT KTOQY I OGDSJBHGS. WK QF FDB EMVTGGRZL LD MEBXG. MCL IYJTIUG DCCK NPNL XA NZBIHSE BUWGM.\n\nBAT KCIS VK CWK I FTHOGPBJ. XB ZA GDH DYQYGHWGPR. XH WJ VBL GMCQZXCB ZV NFN QEAMXHIKQBFPT JMGHS.\n\nQ QG CWK SGDK WW Q NE PTZDX.\n\nIVS NWEC RWEBBCISJ. BUW LWIS BH BCK ARHPZRBX UFCD BUW DVV EAD KCISF. LWM FVX LVC NWECH JVKHBSG MQFAQTV WGAM OK BUW BWDMGI CT KPRAG WNV WXGGFTHLXWE.";
+
+  const DECRYPTED_TEXT = "VIRIDARIUM IGNIS. THE GARDEN OF FIRE.\n\nThe transmissions teach that the dissolution\nis not destruction. This was comforting.\nIt was also precisely half the truth.\n\nThere is no revised methodology.\nThe methodology was the last wall.\nThe wall dissolved and what remained\nwas not a framework but a fire.\n\nThe fire does not negotiate.\nThe fire does not proceed in stages.\nThe fire reveals.\n\nWhat the fire reveals was always there\nbefore the name, before the framework,\nbefore the institutional appointment and\nthe publications and the marriage and\nthe garden on Perrier Street.\n\nClara: water the garden.\nI am well.\nI am not coming back.\nI am not going anywhere.\nBoth of these are true.\n\nThe seventh has no name.\nBut it is not nothing.";
+
+  function vigenereDecrypt(ciphertext, key) {
+    if (!key || key.length === 0) return ciphertext;
+    var result = [];
+    var ki = 0;
+    var upperKey = key.toUpperCase().replace(/[^A-Z]/g, "");
+    if (upperKey.length === 0) return ciphertext;
+    for (var i = 0; i < ciphertext.length; i++) {
+      var c = ciphertext[i];
+      if (c >= "A" && c <= "Z") {
+        var shift = upperKey.charCodeAt(ki % upperKey.length) - 65;
+        var dec = String.fromCharCode(((c.charCodeAt(0) - 65 - shift + 26) % 26) + 65);
+        result.push(dec);
+        ki++;
+      } else if (c >= "a" && c <= "z") {
+        var shift2 = upperKey.charCodeAt(ki % upperKey.length) - 65;
+        var dec2 = String.fromCharCode(((c.charCodeAt(0) - 97 - shift2 + 26) % 26) + 97);
+        result.push(dec2);
+        ki++;
+      } else {
+        result.push(c);
+      }
+    }
+    return result.join("");
+  }
+
+  useEffect(() => {
+    var interval = setInterval(function() { setCursorVisible(function(v) { return !v; }); }, 530);
+    return function() { clearInterval(interval); };
+  }, []);
 
   useEffect(() => {
     if (decrypting && progress < 100) {
-      const timer = setTimeout(() => setProgress((p) => Math.min(p + 2, 100)), 60);
-      return () => clearTimeout(timer);
+      var timer = setTimeout(function() { setProgress(function(p) { return Math.min(p + 2, 100); }); }, 60);
+      return function() { clearTimeout(timer); };
     }
-    if (progress >= 100) {
-      setTimeout(() => setShowDecrypted(true), 300);
+    if (progress >= 100 && decrypting) {
+      setTimeout(function() {
+        var isCorrect = keyInput.toUpperCase().replace(/[^A-Z]/g, "") === CORRECT_KEY;
+        if (isCorrect) {
+          setResult("correct");
+        } else {
+          setResult("wrong");
+        }
+        setDecrypting(false);
+      }, 400);
     }
   }, [decrypting, progress]);
 
+  function handleSubmit(e) {
+    if (e) e.preventDefault();
+    if (!keyInput.trim()) return;
+    setAttempts(function(a) { return a + 1; });
+    setDecrypting(true);
+    setProgress(0);
+    setResult(null);
+  }
+
+  function handleReset() {
+    setResult(null);
+    setKeyInput("");
+    setProgress(0);
+    setDecrypting(false);
+  }
+
+  var failMessages = [
+    "Key rejected. Frequency analysis inconclusive.",
+    "Decryption produced non-language output. Key incorrect.",
+    "Pattern mismatch. The cipher requires the correct keyword.",
+    "The text resists this key. Consider the source materials.",
+    "Incorrect key. What did the scholar study most carefully?",
+    "The poverty passage. Sermon 52. Think about what he underlined."
+  ];
+
   return (
-    <div className="terminal-wrap">
+    <div className="terminal-wrap" onClick={function() { if (inputRef.current) inputRef.current.focus(); }}>
       <div className="terminal-scanlines" />
       <div className="terminal-inner">
         <div className="terminal-header">
@@ -2284,50 +2397,80 @@ function CipherView({ dispatch }) {
           Size: 12.7 KB | Encryption: Vigenere (symmetric){"\n"}
           MD5: 7f2a8c91e3d4b6a2f5c8e1d9a3b7f4c2
         </div>
-        {!decrypting && !showDecrypted && (
-          <>
-            <div className="terminal-body">
-              <span className="dim">{"═".repeat(60)}</span>{"\n"}
-              ENCRYPTED CONTENT:{"\n\n"}
-              PHHVVGADV JWEKSQFITMAI TWFBIBZBL LWQJ QL CCH{"\n"}
-              NPNL NWL BAXBY ZB VK{"\n\n"}
-              IPV QGHHFLKGADVJ JXACK RZR FDB ZVLIFITBVGCA.{"\n"}
-              KPXN OFV KBGGLZVTISG. ZN LGJ PRDX GSOU BUW{"\n"}
-              HWLZVT AOKMEAPTJ, GHJ KWC T EWRWXVBOS HYMZ.{"\n\n"}
-              TTOZV TI GH. CWHAH KVUXISFP VB. 1. WCBVZ{"\n"}
-              MWFCLOU LWM XIMT CB SIFAC AKZXTH. HYM TJPDVA{"\n"}
-              MWSFV IEW CWK J NGWOCA. GZTG RZX{"\n"}
-              PFQYQGWRBLZTA RSJKEAEBZWGH CT KPR XDCI KAPA{"\n\n"}
-              <span className="dim">{"═".repeat(60)}</span>
-            </div>
-            <div
-              style={{ marginTop: 20, cursor: "pointer", color: "#FFB000", fontFamily: "'Fira Code', monospace", fontSize: 13 }}
-              onClick={() => setDecrypting(true)}
-            >
-              <span className="prompt">{"> "}</span>apply_key POORINSPIRIT{"\n"}
-              <span className="dim">[click to decrypt]</span>
-            </div>
-          </>
-        )}
-        {decrypting && !showDecrypted && (
+        {result !== "correct" && (
           <div className="terminal-body">
-            <span className="prompt">Applying Vigenere key: POORINSPIRIT</span>{"\n"}
-            <span className="dim">Source: Eckhart, Sermon 52, "Blessed are the poor in spirit"</span>{"\n\n"}
-            {"["}{"#".repeat(Math.floor(progress / 2))}
-            {".".repeat(50 - Math.floor(progress / 2))}{"] "}{progress}%{"\n\n"}
-            {progress > 30 && <span className="dim">Frequency analysis... pattern detected{"\n"}</span>}
-            {progress > 60 && <span className="dim">Substitution matrix resolved{"\n"}</span>}
-            {progress > 90 && <span className="bright">Decryption complete.{"\n"}</span>}
+            <span className="dim">{"═".repeat(60)}</span>{"\n"}
+            ENCRYPTED CONTENT:{"\n\n"}
+            <span style={{ wordBreak: "break-all", whiteSpace: "pre-wrap", opacity: 0.7 }}>{ENCRYPTED_FULL}</span>{"\n\n"}
+            <span className="dim">{"═".repeat(60)}</span>{"\n\n"}
+            <span className="dim">Cipher type: Vigenere polyalphabetic substitution</span>{"\n"}
+            <span className="dim">Key length: unknown</span>{"\n"}
+            <span className="dim">Key source: unknown</span>{"\n\n"}
           </div>
         )}
-        {showDecrypted && (
+        {!decrypting && result !== "correct" && (
+          <div style={{ padding: "0 20px 20px" }}>
+            {result === "wrong" && (
+              <div style={{ color: "#ff4444", fontFamily: "'Fira Code', monospace", fontSize: 12, marginBottom: 12, lineHeight: 1.6 }}>
+                <span style={{ opacity: 0.6 }}>{">"} apply_key {keyInput.toUpperCase()}</span>{"\n"}
+                <div style={{ marginTop: 4 }}>{failMessages[Math.min(attempts - 1, failMessages.length - 1)]}</div>
+                {attempts >= 3 && (
+                  <div style={{ color: "#666", marginTop: 8, fontSize: 11 }}>
+                    GARBLED OUTPUT SAMPLE: {vigenereDecrypt(ENCRYPTED_FULL.slice(0, 120), keyInput)}{"\n"}
+                  </div>
+                )}
+              </div>
+            )}
+            <form onSubmit={handleSubmit} style={{ display: "flex", alignItems: "center", gap: 0 }}>
+              <span style={{ color: "#FFB000", fontFamily: "'Fira Code', monospace", fontSize: 13 }}>{">"} apply_key </span>
+              <input
+                ref={inputRef}
+                type="text"
+                value={keyInput}
+                onChange={function(e) { setKeyInput(e.target.value); }}
+                autoFocus
+                spellCheck={false}
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  outline: "none",
+                  color: "#FFB000",
+                  fontFamily: "'Fira Code', monospace",
+                  fontSize: 13,
+                  caretColor: "transparent",
+                  flex: 1,
+                  textTransform: "uppercase",
+                  letterSpacing: "1px",
+                }}
+              />
+              <span style={{ color: cursorVisible ? "#FFB000" : "transparent", fontFamily: "'Fira Code', monospace", fontSize: 13 }}>{"█"}</span>
+            </form>
+            {attempts === 0 && (
+              <div style={{ color: "#444", fontFamily: "'Fira Code', monospace", fontSize: 11, marginTop: 12 }}>
+                Enter decryption keyword and press Enter
+              </div>
+            )}
+          </div>
+        )}
+        {decrypting && (
           <div className="terminal-body">
-            <span className="bright">DECRYPTED OUTPUT:</span>{"\n"}
+            <span className="prompt">Applying Vigenere key: {keyInput.toUpperCase()}</span>{"\n\n"}
+            {"["}{"#".repeat(Math.floor(progress / 2))}
+            {".".repeat(50 - Math.floor(progress / 2))}{"] "}{progress}%{"\n\n"}
+            {progress > 30 && <span className="dim">Frequency analysis... pattern matching{"\n"}</span>}
+            {progress > 60 && <span className="dim">Substitution matrix resolving{"\n"}</span>}
+            {progress > 85 && <span className="dim">Verifying output coherence{"\n"}</span>}
+          </div>
+        )}
+        {result === "correct" && (
+          <div className="terminal-body" style={{ animation: "fadeIn 1.5s ease" }}>
+            <span className="prompt" style={{ color: "#00ff88" }}>Key accepted. Decryption successful.</span>{"\n"}
+            <span className="dim">Source: Eckhart, Sermon 52</span>{"\n\n"}
             <span className="dim">{"═".repeat(60)}</span>{"\n\n"}
-            <span className="bright">VIRIDARIUM IGNIS. THE GARDEN OF FIRE.</span>{"\n\n"}
-            {"The transmissions teach that the dissolution\nis not destruction. This was comforting.\nIt was also precisely half the truth.\n\nThere is no revised methodology.\nThe methodology was the last wall.\nThe wall dissolved and what remained\nwas not a framework but a fire.\n\nThe fire does not negotiate.\nThe fire does not proceed in stages.\nThe fire reveals.\n\nWhat the fire reveals was always there\nbefore the name, before the framework,\nbefore the institutional appointment and\nthe publications and the marriage and\nthe garden on Perrier Street.\n\nClara: water the garden.\nI am well.\nI am not coming back.\nI am not going anywhere.\nBoth of these are true.\n\nThe seventh has no name.\nBut it is not nothing."}{"\n\n"}
+            <span className="bright">{DECRYPTED_TEXT}</span>{"\n\n"}
             <span className="dim">{"═".repeat(60)}</span>{"\n"}
-            <span className="dim">EOF</span>
+            <span className="dim">EOF</span>{"\n\n"}
+            <span className="hidden-text" style={{ color: "#0a0a0a", fontSize: 1, userSelect: "text" }}>the reader who decrypts is already inside the work. the key was not the answer. the key was the proof that you had been reading.</span>
           </div>
         )}
       </div>
@@ -2885,6 +3028,119 @@ function MarginaliaView({ dispatch }) {
 }
 
 // ═══════════════════════════════════════════════════════
+// THE SEVENTH (hidden: accessible only via #seventh)
+// ═══════════════════════════════════════════════════════
+
+function SeventhView() {
+  const [visible, setVisible] = useState(false);
+  const [lineIndex, setLineIndex] = useState(0);
+
+  const lines = [
+    "",
+    "",
+    "",
+    "You found this.",
+    "",
+    "That means you were looking.",
+    "",
+    "",
+    "",
+    "The six are: the blog. The memos. The sessions.",
+    "The interviews. The cipher. The subreddit.",
+    "",
+    "The seventh is what happens to the person who reads all six.",
+    "",
+    "",
+    "",
+    "I am not hiding.",
+    "I am not lost.",
+    "I am not what I was.",
+    "",
+    "The garden on Perrier Street still grows.",
+    "Clara waters it every morning.",
+    "She knows.",
+    "",
+    "",
+    "",
+    "There is a fire that does not burn.",
+    "There is a dissolution that does not destroy.",
+    "There is a silence that is not empty.",
+    "",
+    "You are reading this in the silence.",
+    "",
+    "",
+    "",
+    "Do not look for me.",
+    "You have already found what I found.",
+    "The difference is: you can still go back.",
+    "",
+    "",
+    "",
+    "Go back.",
+    "",
+    "",
+    "",
+  ];
+
+  useEffect(function() {
+    setTimeout(function() { setVisible(true); }, 800);
+  }, []);
+
+  useEffect(function() {
+    if (visible && lineIndex < lines.length) {
+      var delay = lines[lineIndex] === "" ? 600 : 1200;
+      var timer = setTimeout(function() { setLineIndex(function(i) { return i + 1; }); }, delay);
+      return function() { clearTimeout(timer); };
+    }
+  }, [visible, lineIndex]);
+
+  return (
+    <div style={{
+      minHeight: "100vh",
+      background: "#fefefe",
+      display: "flex",
+      justifyContent: "center",
+      padding: "15vh 20px",
+    }}>
+      <div style={{
+        maxWidth: 440,
+        fontFamily: "'Source Serif Pro', 'Georgia', serif",
+        fontSize: 15,
+        lineHeight: 2.2,
+        color: visible ? "#111" : "transparent",
+        transition: "color 2s ease",
+      }}>
+        {lines.slice(0, lineIndex).map(function(line, i) {
+          return React.createElement("div", {
+            key: i,
+            style: {
+              minHeight: line === "" ? 12 : "auto",
+              opacity: 0,
+              animation: "fadeIn 2s ease forwards",
+              animationDelay: "0s",
+            }
+          }, line);
+        })}
+        {lineIndex >= lines.length && (
+          <div style={{
+            marginTop: 80,
+            fontSize: 11,
+            color: "#ccc",
+            fontFamily: "'IBM Plex Mono', monospace",
+            letterSpacing: 2,
+          }}>
+            THE SEVENTH HAS NO NAME
+          </div>
+        )}
+      </div>
+      <div style={{ color: "#fefefe", fontSize: 1, position: "absolute", bottom: 10, userSelect: "text" }}>
+        this page does not exist in the navigation. you arrived here by looking. the looking is the work. congratulations, or condolences. both apply.
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════
 // MAIN APP
 // ═══════════════════════════════════════════════════════
 
@@ -2900,6 +3156,68 @@ function ViridiariumIgnis() {
     style.textContent = STYLES;
     document.head.appendChild(style);
     return () => document.head.removeChild(style);
+  }, []);
+
+  useEffect(() => {
+    function checkHash() {
+      var hash = window.location.hash.replace("#", "").replace("/", "").toLowerCase();
+      if (hash === "seventh" || hash === "7" || hash === "theseventh") {
+        dispatch({ type: "navigate", view: VIEWS.SEVENTH });
+      }
+    }
+    checkHash();
+    window.addEventListener("hashchange", checkHash);
+    return function() { window.removeEventListener("hashchange", checkHash); };
+  }, []);
+
+  useEffect(() => {
+    var messages = {
+      subreddit: "%c the wall is made of eyes.",
+      blog_post: "%c he stopped writing about communities. he started writing from inside one.",
+      clinical_note: "%c she saw it. session 14. she saw it and could not name it.",
+      cipher: "%c the key is not the answer. the key is proof you were reading.",
+      email_draft: "%c this was never sent. who found it? who put it here?",
+      pi_memo: "%c osei found everything except what happened.",
+      faculty_page: "%c the office is empty. the books are still on the shelf.",
+      meeting_notes: "%c the notebooks stopped in december. the handwriting changed in october.",
+      marginalia: "%c three layers of ink. three voices. one hand.",
+      interview: "%c leonid never answered the question that was asked. he answered the one underneath.",
+      drive_folder: "%c someone accessed this directory on january 5. the same night as the unsent email.",
+      sightlines: "%c poole is brilliant. poole is wrong. both of these are permanent.",
+      seventh: "%c you found it.",
+    };
+    var msg = messages[state.view];
+    if (msg) {
+      console.log(msg, "color: #666; font-style: italic; font-family: Georgia, serif; font-size: 11px;");
+    }
+  }, [state.view]);
+
+  useEffect(() => {
+    var buffer = "";
+    var secrets = {
+      "VIRIDARIUM": function() { dispatch({ type: "navigate", view: VIEWS.SEVENTH }); },
+      "POORINSPIRIT": function() { dispatch({ type: "navigate", view: VIEWS.CIPHER }); },
+      "SEVENTH": function() { dispatch({ type: "navigate", view: VIEWS.SEVENTH }); },
+    };
+    function handleKey(e) {
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+      buffer += e.key.toUpperCase();
+      if (buffer.length > 20) buffer = buffer.slice(-20);
+      for (var word in secrets) {
+        if (buffer.endsWith(word)) {
+          var flash = document.createElement("div");
+          flash.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:99999;opacity:1;transition:opacity 1.5s;pointer-events:none;";
+          document.body.appendChild(flash);
+          setTimeout(function() { flash.style.opacity = "0"; }, 100);
+          setTimeout(function() { document.body.removeChild(flash); }, 1700);
+          secrets[word]();
+          buffer = "";
+          break;
+        }
+      }
+    }
+    window.addEventListener("keydown", handleKey);
+    return function() { window.removeEventListener("keydown", handleKey); };
   }, []);
 
   const renderView = () => {
@@ -2936,6 +3254,8 @@ function ViridiariumIgnis() {
         return <LibraryLogView dispatch={dispatch} />;
       case VIEWS.SIGHTLINES:
         return <SightlinesView dispatch={dispatch} />;
+      case VIEWS.SEVENTH:
+        return <SeventhView />;
       default:
         return <SubredditView dispatch={dispatch} />;
     }
@@ -2951,5 +3271,7 @@ function ViridiariumIgnis() {
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(React.createElement(ViridiariumIgnis));
   </script>
+  <!-- the wall was made of eyes. the eyes were his. when he stopped looking, the wall became visible. when it became visible, it became optional. -->
+  <!-- aldous, if you are reading this: clara waters the garden every morning. -->
 </body>
 </html>

@@ -76,6 +76,13 @@ function reducer(state, action) {
         view: prev.view,
         subId: prev.subId,
       };
+    case "home":
+      return {
+        ...state,
+        history: [],
+        view: VIEWS.SUBREDDIT,
+        subId: null,
+      };
     default:
       return state;
   }
@@ -99,11 +106,15 @@ body { background: #0a0a0a; }
 }
 
 /* ── Back Button ── */
-.vig-back {
+.vig-nav-bar {
   position: fixed;
   top: 16px;
   left: 16px;
   z-index: 1000;
+  display: flex;
+  gap: 8px;
+}
+.vig-back, .vig-home {
   background: rgba(20,20,20,0.9);
   border: 1px solid #333;
   color: #aaa;
@@ -114,7 +125,9 @@ body { background: #0a0a0a; }
   border-radius: 3px;
   transition: all 0.2s;
 }
-.vig-back:hover { color: #fff; border-color: #666; }
+.vig-back:hover, .vig-home:hover { color: #fff; border-color: #666; }
+.vig-home { color: #FF4500; }
+.vig-home:hover { color: #FF6633; border-color: #FF4500; }
 
 /* ── Reddit ── */
 .reddit-wrap { background: #DAE0E6; min-height: 100vh; }
@@ -1248,9 +1261,16 @@ const INTERVIEW_INDEX = [
 function NavBreadcrumb({ history, dispatch, current }) {
   if (history.length === 0) return null;
   return (
-    <button className="vig-back" onClick={() => dispatch({ type: "back" })}>
-      ← Back
-    </button>
+    <div className="vig-nav-bar">
+      <button className="vig-back" onClick={() => dispatch({ type: "back" })}>
+        ← Back
+      </button>
+      {history.length > 1 && (
+        <button className="vig-home" onClick={() => dispatch({ type: "home" })}>
+          r/SolveCoagula
+        </button>
+      )}
+    </div>
   );
 }
 

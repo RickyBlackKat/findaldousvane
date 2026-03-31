@@ -1,0 +1,2404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>r/SolveCoagula</title>
+  <meta name="description" content="Documenting the disappearance of Dr. Aldous Vane, Beaumont University. Last seen January 6, 2022.">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0a0a0a; }
+    #root { min-height: 100vh; }
+    .loading-screen {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 100vh; background: #1A1A1B;
+      font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+      color: #818384;
+    }
+    .loading-screen h1 { font-size: 18px; color: #D7DADC; margin-bottom: 8px; }
+    .loading-screen p { font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div class="loading-screen">
+      <h1>r/SolveCoagula</h1>
+      <p>Loading...</p>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+  <script type="text/babel">
+    const { useState, useEffect, useReducer } = React;
+
+
+// ═══════════════════════════════════════════════════════
+// VIRIDARIUM IGNIS : Interactive Prototype
+// Entry point: r/SolveCoagula
+// A reader discovers the mystery as it was meant to be found.
+// ═══════════════════════════════════════════════════════
+
+const VIEWS = {
+  SUBREDDIT: "subreddit",
+  BLOG_POST: "blog_post",
+  FACULTY_PAGE: "faculty_page",
+  CLINICAL_NOTE: "clinical_note",
+  PI_MEMO: "pi_memo",
+  EMAIL_DRAFT: "email_draft",
+  CIPHER: "cipher",
+  FOIA: "foia",
+  DRIVE_FOLDER: "drive_folder",
+  MEETING_NOTES: "meeting_notes",
+  MARGINALIA: "marginalia",
+  INTERVIEW: "interview",
+  CONNECTIONS: "connections",
+  DRAFT_IV: "draft_iv",
+  LIBRARY_LOG: "library_log",
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "navigate":
+      return {
+        ...state,
+        history: [...state.history, { view: state.view, subId: state.subId }],
+        view: action.view,
+        subId: action.subId || null,
+      };
+    case "back":
+      if (state.history.length === 0) return state;
+      const prev = state.history[state.history.length - 1];
+      return {
+        ...state,
+        history: state.history.slice(0, -1),
+        view: prev.view,
+        subId: prev.subId,
+      };
+    default:
+      return state;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// STYLES
+// ═══════════════════════════════════════════════════════
+const STYLES = `
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Playfair+Display:wght@400;600;700&family=Source+Serif+Pro:wght@400;600&family=Lora:wght@400;600&family=Inter:wght@400;500;600&family=Special+Elite&family=Courier+Prime:wght@400;700&family=Oswald:wght@400;500;600&family=Roboto:wght@400;500&family=Fira+Code:wght@400;500&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { background: #0a0a0a; }
+
+.vig-root {
+  font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+  background: #0a0a0a;
+  min-height: 100vh;
+  color: #d1d5db;
+}
+
+/* ── Back Button ── */
+.vig-back {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1000;
+  background: rgba(20,20,20,0.9);
+  border: 1px solid #333;
+  color: #aaa;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: 'IBM Plex Sans', sans-serif;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+.vig-back:hover { color: #fff; border-color: #666; }
+
+/* ── Reddit ── */
+.reddit-wrap { background: #DAE0E6; min-height: 100vh; }
+.reddit-header {
+  background: #1A1A1B;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 3px solid #FF4500;
+}
+.reddit-header h1 {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #D7DADC;
+}
+.reddit-header .sub-desc {
+  font-size: 12px;
+  color: #818384;
+  margin-left: auto;
+}
+.reddit-body {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 20px 16px;
+}
+.reddit-sidebar {
+  background: #1A1A1B;
+  border: 1px solid #343536;
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #818384;
+  line-height: 1.5;
+}
+.reddit-sidebar h3 {
+  color: #D7DADC;
+  font-size: 14px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.reddit-sidebar .member-count {
+  font-size: 11px;
+  color: #FF4500;
+  margin-bottom: 6px;
+}
+.post-card {
+  background: #1A1A1B;
+  border: 1px solid #343536;
+  border-radius: 4px;
+  padding: 0;
+  margin-bottom: 10px;
+  display: flex;
+  transition: border-color 0.15s;
+}
+.post-card:hover { border-color: #555; }
+.vote-col {
+  width: 40px;
+  background: #161617;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 4px;
+  gap: 4px;
+  border-radius: 4px 0 0 4px;
+  flex-shrink: 0;
+}
+.vote-arrow {
+  cursor: pointer;
+  color: #818384;
+  font-size: 16px;
+  line-height: 1;
+  user-select: none;
+}
+.vote-arrow:hover { color: #FF4500; }
+.vote-count { font-size: 12px; font-weight: 600; color: #D7DADC; }
+.post-content {
+  padding: 10px 12px;
+  flex: 1;
+  min-width: 0;
+}
+.post-meta {
+  font-size: 11px;
+  color: #818384;
+  margin-bottom: 6px;
+}
+.post-meta .username { color: #4FBCFF; cursor: pointer; }
+.post-meta .username:hover { text-decoration: underline; }
+.post-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #D7DADC;
+  margin-bottom: 6px;
+  cursor: pointer;
+  line-height: 1.3;
+}
+.post-title:hover { color: #4FBCFF; }
+.post-excerpt {
+  font-size: 13px;
+  color: #818384;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+.post-actions {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: #818384;
+  font-weight: 600;
+}
+.post-actions span { cursor: pointer; }
+.post-actions span:hover { color: #D7DADC; }
+
+/* ── Reddit Thread ── */
+.thread-wrap {
+  background: #1A1A1B;
+  border: 1px solid #343536;
+  border-radius: 4px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+}
+.thread-body {
+  font-size: 14px;
+  color: #D7DADC;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+.thread-body .doc-link {
+  color: #4FBCFF;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: rgba(79,188,255,0.3);
+}
+.thread-body .doc-link:hover {
+  text-decoration-color: rgba(79,188,255,0.8);
+}
+.comment-section { margin-top: 16px; }
+.comment {
+  border-left: 2px solid #343536;
+  padding: 8px 0 8px 14px;
+  margin: 8px 0;
+}
+.comment .c-meta {
+  font-size: 11px;
+  color: #818384;
+  margin-bottom: 4px;
+}
+.comment .c-meta .username { color: #4FBCFF; }
+.comment .c-body {
+  font-size: 13px;
+  color: #D7DADC;
+  line-height: 1.5;
+}
+.comment .nested { margin-left: 16px; }
+
+/* ── Blog (Substack) ── */
+.blog-wrap {
+  background: #FFFFFF;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.blog-inner {
+  max-width: 680px;
+  width: 100%;
+}
+.blog-header {
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 20px;
+  margin-bottom: 32px;
+}
+.blog-site-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+.blog-site-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #666;
+}
+.blog-post-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+.blog-post-meta {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 32px;
+}
+.blog-post-body {
+  font-family: 'Lora', serif;
+  font-size: 17px;
+  line-height: 1.75;
+  color: #333;
+}
+.blog-post-body p { margin-bottom: 20px; }
+.blog-post-body .footnote-ref {
+  font-size: 12px;
+  vertical-align: super;
+  color: #999;
+  cursor: pointer;
+}
+.blog-post-body .footnote-ref:hover { color: #333; }
+.blog-footnotes {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e5e5;
+  font-family: 'Lora', serif;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+}
+.blog-footnotes p { margin-bottom: 10px; }
+
+/* ── Faculty Page ── */
+.faculty-wrap {
+  background: #f4f4f4;
+  min-height: 100vh;
+}
+.faculty-nav {
+  background: #1B4332;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.faculty-nav .nav-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: #C9A94E;
+  font-weight: 700;
+}
+.faculty-nav .nav-links {
+  display: flex;
+  gap: 16px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+}
+.faculty-nav .nav-links span {
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+}
+.faculty-nav .nav-links span:hover { color: #fff; }
+.faculty-body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  display: flex;
+  gap: 30px;
+}
+.faculty-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+}
+.faculty-photo {
+  width: 200px;
+  height: 260px;
+  background: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+}
+.faculty-info {
+  font-family: 'Source Serif Pro', serif;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.6;
+}
+.faculty-main h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  color: #1B4332;
+  margin-bottom: 4px;
+}
+.faculty-main .fac-title {
+  font-family: 'Source Serif Pro', serif;
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 20px;
+}
+.faculty-main .fac-section {
+  margin-bottom: 24px;
+}
+.faculty-main .fac-section h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  color: #1B4332;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #C9A94E;
+  padding-bottom: 4px;
+}
+.faculty-main .fac-section p,
+.faculty-main .fac-section li {
+  font-family: 'Source Serif Pro', serif;
+  font-size: 14px;
+  color: #444;
+  line-height: 1.6;
+}
+.faculty-main .fac-section ul {
+  list-style: none;
+  padding: 0;
+}
+.faculty-main .fac-section li {
+  margin-bottom: 6px;
+  padding-left: 12px;
+  position: relative;
+}
+.faculty-main .fac-section li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 4px;
+  height: 4px;
+  background: #C9A94E;
+  border-radius: 50%;
+}
+
+/* ── Clinical Note (Scanned) ── */
+.clinical-wrap {
+  background: #2a2a2a;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.scan-page {
+  max-width: 700px;
+  width: 100%;
+  background: #F5F0E8;
+  padding: 50px 60px;
+  transform: rotate(0.4deg);
+  position: relative;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+  background-image: repeating-radial-gradient(
+    circle at 1px 1px, rgba(0,0,0,0.015) 1px, transparent 1px
+  );
+  background-size: 3px 3px;
+}
+.scan-edge-shadow {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.08);
+}
+.scan-letterhead {
+  font-family: 'Courier Prime', monospace;
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  margin-bottom: 6px;
+  opacity: 0.7;
+}
+.scan-letterhead .practice-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #444;
+  opacity: 1;
+}
+.scan-body {
+  font-family: 'Courier Prime', monospace;
+  font-size: 13px;
+  color: #1a1a1a;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+.scan-body .section-header {
+  font-weight: 700;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+.redaction {
+  background: #000;
+  color: #000;
+  padding: 0 4px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+  user-select: none;
+}
+.redaction:hover {
+  background: rgba(0,0,0,0.15);
+  color: #333;
+}
+.margin-note {
+  font-family: 'Special Elite', cursive;
+  color: #1a3a5c;
+  transform: rotate(-1.5deg);
+  font-size: 13px;
+  margin: 12px 0;
+  padding-left: 20px;
+  border-left: 2px solid rgba(26,58,92,0.2);
+}
+.margin-note.red-ink {
+  color: #5c1a1a;
+  border-left-color: rgba(92,26,26,0.2);
+}
+.sticky-note {
+  background: #FFF8B8;
+  padding: 12px 14px;
+  font-family: 'Special Elite', cursive;
+  font-size: 13px;
+  color: #333;
+  transform: rotate(1.2deg);
+  box-shadow: 2px 3px 8px rgba(0,0,0,0.15);
+  margin: 16px 0;
+  max-width: 280px;
+  line-height: 1.5;
+}
+.coffee-stain {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    rgba(139,90,43,0.08) 50%,
+    rgba(139,90,43,0.12) 60%,
+    transparent 70%
+  );
+  bottom: 60px;
+  left: 40px;
+  pointer-events: none;
+}
+
+/* ── PI Memo ── */
+.memo-wrap {
+  background: #f0f0f0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.memo-page {
+  max-width: 720px;
+  width: 100%;
+  background: #fff;
+  padding: 48px 56px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.memo-letterhead {
+  text-align: center;
+  margin-bottom: 6px;
+}
+.memo-letterhead .firm-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.memo-letterhead .firm-details {
+  font-family: 'Source Serif Pro', serif;
+  font-size: 11px;
+  color: #666;
+  margin-top: 4px;
+}
+.memo-divider {
+  border: none;
+  border-top: 2px solid #1a1a1a;
+  margin: 16px 0;
+}
+.memo-stamp {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #666;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.memo-fields {
+  font-family: 'Source Serif Pro', serif;
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 20px;
+  line-height: 1.8;
+}
+.memo-fields strong { font-weight: 600; }
+.memo-body {
+  font-family: 'Source Serif Pro', serif;
+  font-size: 14px;
+  color: #1a1a1a;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+.memo-body .sub-header {
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #444;
+}
+.memo-private {
+  margin-top: 24px;
+  padding: 16px;
+  background: #f8f8f6;
+  border-left: 3px solid #ccc;
+  font-family: 'Source Serif Pro', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: #555;
+  line-height: 1.7;
+}
+.memo-private .private-label {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #999;
+  margin-bottom: 8px;
+}
+
+/* ── Email Draft ── */
+.email-wrap {
+  background: #f6f6f6;
+  min-height: 100vh;
+  font-family: 'Roboto', sans-serif;
+}
+.email-topbar {
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.email-topbar .mail-icon { font-size: 20px; color: #c5221f; }
+.email-topbar .mail-title { font-size: 20px; color: #5f6368; font-weight: 400; }
+.email-body-wrap {
+  max-width: 720px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+.email-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  overflow: hidden;
+}
+.email-draft-banner {
+  background: #fce8e6;
+  color: #c5221f;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.email-header-fields {
+  padding: 20px 20px 12px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 13px;
+  color: #5f6368;
+  line-height: 2;
+}
+.email-header-fields strong { color: #202124; }
+.email-content {
+  padding: 20px;
+  font-size: 14px;
+  color: #202124;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+.email-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 16px;
+  background: #1a73e8;
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* ── Terminal / Cipher ── */
+.terminal-wrap {
+  background: #0D0D0D;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+.terminal-inner {
+  max-width: 800px;
+  width: 100%;
+  position: relative;
+}
+.terminal-scanlines {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,255,65,0.03) 0px,
+    rgba(0,255,65,0.03) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  z-index: 10;
+}
+.terminal-header {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: #00FF41;
+  opacity: 0.6;
+  margin-bottom: 16px;
+  text-shadow: 0 0 8px rgba(0,255,65,0.3);
+}
+.terminal-body {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  color: #00FF41;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+  text-shadow: 0 0 6px rgba(0,255,65,0.2);
+}
+.terminal-body .prompt {
+  color: #FFB000;
+}
+.terminal-body .dim { opacity: 0.5; }
+.terminal-body .bright { color: #7FFF7F; text-shadow: 0 0 10px rgba(0,255,65,0.5); }
+
+/* ── FOIA ── */
+.foia-wrap {
+  background: #2a2a2a;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.foia-page {
+  max-width: 700px;
+  width: 100%;
+  background: #F0EDE4;
+  padding: 48px 56px;
+  position: relative;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+  background-image: repeating-radial-gradient(
+    circle at 2px 2px, rgba(0,0,0,0.01) 1px, transparent 1px
+  );
+  background-size: 4px 4px;
+}
+.foia-stamp {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  font-family: 'Special Elite', cursive;
+  font-size: 14px;
+  color: #8B0000;
+  transform: rotate(-8deg);
+  border: 2px solid #8B0000;
+  padding: 4px 10px;
+  opacity: 0.7;
+}
+.foia-header {
+  font-family: 'Courier Prime', monospace;
+  font-size: 11px;
+  color: #444;
+  text-align: center;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+.foia-header .agency {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.foia-body {
+  font-family: 'Courier Prime', monospace;
+  font-size: 12px;
+  color: #1a1a1a;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+.foia-classification {
+  font-size: 10px;
+  font-weight: 700;
+  color: #666;
+  text-align: right;
+  margin-bottom: 12px;
+}
+.foia-page-num {
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px;
+  color: #888;
+  text-align: right;
+  margin-top: 20px;
+}
+
+/* ── Google Drive ── */
+.drive-wrap {
+  background: #fff;
+  min-height: 100vh;
+  font-family: 'Roboto', sans-serif;
+}
+.drive-topbar {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-bottom: 1px solid #e0e0e0;
+  gap: 12px;
+}
+.drive-topbar .drive-logo {
+  font-size: 20px;
+  color: #5f6368;
+}
+.drive-topbar .drive-title {
+  font-size: 20px;
+  color: #5f6368;
+  font-weight: 400;
+}
+.drive-body {
+  display: flex;
+  min-height: calc(100vh - 50px);
+}
+.drive-sidebar {
+  width: 220px;
+  padding: 16px;
+  border-right: 1px solid #e0e0e0;
+  font-size: 13px;
+  color: #5f6368;
+}
+.drive-sidebar .folder-item {
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 2px;
+}
+.drive-sidebar .folder-item:hover { background: #f1f3f4; }
+.drive-sidebar .folder-item.active { background: #e8f0fe; color: #1967d2; }
+.drive-main { flex: 1; padding: 16px 24px; }
+.drive-breadcrumb {
+  font-size: 13px;
+  color: #5f6368;
+  margin-bottom: 16px;
+}
+.drive-file-list { width: 100%; }
+.drive-file-row {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  gap: 12px;
+  font-size: 13px;
+  color: #202124;
+}
+.drive-file-row:hover { background: #f1f3f4; }
+.drive-file-icon { font-size: 20px; width: 24px; text-align: center; }
+.drive-file-name { flex: 1; }
+.drive-file-date { color: #5f6368; font-size: 12px; width: 120px; }
+.drive-file-size { color: #5f6368; font-size: 12px; width: 80px; }
+
+/* ── Connections / Draft IV (Research Doc) ── */
+.research-wrap {
+  background: #1a1a1a;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.research-page {
+  max-width: 700px;
+  width: 100%;
+  background: #fff;
+  padding: 48px 56px;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+}
+.research-page .doc-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+.research-page .doc-meta {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 24px;
+}
+.research-page .doc-body {
+  font-family: 'Source Serif Pro', serif;
+  font-size: 14.5px;
+  color: #222;
+  line-height: 1.75;
+  white-space: pre-wrap;
+}
+.research-page .doc-body .page-marker {
+  font-size: 11px;
+  color: #aaa;
+  font-family: 'Inter', sans-serif;
+  margin: 24px 0 12px;
+  padding-top: 12px;
+  border-top: 1px solid #eee;
+}
+.research-page .note-to-self {
+  font-family: 'Special Elite', cursive;
+  color: #1a3a5c;
+  font-size: 13px;
+  margin: 12px 0;
+  padding: 8px 12px;
+  background: rgba(26,58,92,0.04);
+  border-left: 2px solid rgba(26,58,92,0.2);
+}
+
+/* ── Interview ── */
+.interview-wrap {
+  background: #f0f0f0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.interview-page {
+  max-width: 720px;
+  width: 100%;
+  background: #fff;
+  padding: 48px 56px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.interview-page .int-header {
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #666;
+  margin-bottom: 16px;
+}
+.interview-page .int-fields {
+  font-family: 'Source Serif Pro', serif;
+  font-size: 13px;
+  color: #444;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eee;
+}
+.interview-page .int-body {
+  font-family: 'Source Serif Pro', serif;
+  font-size: 14px;
+  color: #1a1a1a;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+.interview-page .speaker-osei { font-weight: 600; color: #333; }
+.interview-page .speaker-subject { font-weight: 600; color: #1B4332; }
+.interview-page .stage-direction {
+  font-style: italic;
+  color: #888;
+  font-size: 13px;
+}
+
+/* ── Library Log ── */
+.log-wrap {
+  background: #2a2a2a;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.log-page {
+  max-width: 740px;
+  width: 100%;
+  background: #F5F0E8;
+  padding: 40px 50px;
+  transform: rotate(-0.2deg);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+  position: relative;
+}
+.log-page .log-title {
+  font-family: 'Courier Prime', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 4px;
+  color: #333;
+}
+.log-page .log-subtitle {
+  font-family: 'Courier Prime', monospace;
+  font-size: 11px;
+  color: #666;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Courier Prime', monospace;
+  font-size: 11px;
+}
+.log-table th {
+  background: rgba(0,0,0,0.05);
+  padding: 6px 8px;
+  text-align: left;
+  border-bottom: 1px solid #999;
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #444;
+}
+.log-table td {
+  padding: 5px 8px;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  color: #333;
+  vertical-align: top;
+}
+.log-table tr:last-child td { border-bottom: 1px solid #999; }
+.log-table .archivist-note {
+  font-family: 'Special Elite', cursive;
+  color: #1a3a5c;
+  font-size: 11px;
+}
+.log-highlight { background: rgba(201,169,78,0.12); }
+
+/* ── Marginalia ── */
+.marg-wrap {
+  background: #1a1a1a;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.marg-page {
+  max-width: 680px;
+  width: 100%;
+  background: #EDE8D8;
+  padding: 50px 70px 50px 100px;
+  transform: rotate(0.3deg);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+  position: relative;
+}
+.marg-page .printed-text {
+  font-family: 'EB Garamond', 'Source Serif Pro', serif;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.8;
+}
+.marg-annotation {
+  position: relative;
+  margin: 8px 0 8px -60px;
+  padding-left: 10px;
+}
+.marg-annotation .ink-layer {
+  font-family: 'Special Elite', cursive;
+  font-size: 12px;
+  line-height: 1.5;
+  display: block;
+  margin-bottom: 4px;
+}
+.marg-annotation .ink-blue { color: #1a3a5c; }
+.marg-annotation .ink-brown { color: #5c3a1a; }
+.marg-annotation .ink-red { color: #5c1a1a; }
+`;
+
+// ═══════════════════════════════════════════════════════
+// CONTENT DATA
+// ═══════════════════════════════════════════════════════
+
+const SUBREDDIT_POSTS = [
+  {
+    id: "founding",
+    user: "u/pelican_athanor",
+    time: "April 23, 2022",
+    title: "A missing professor and some research that doesn't fit",
+    excerpt: "A professor at Beaumont University disappeared on January 6, 2022. His name was Aldous Vane. His wife doesn't believe he's dead. The police have moved on. Someone needs to actually read what he wrote.",
+    votes: 28,
+    comments: 11,
+    flair: "Case Overview",
+  },
+  {
+    id: "source_texts",
+    user: "u/Thoth_R",
+    time: "May 14, 2022",
+    title: "I tracked down every source Vane cites in the blog. Here's the reading list.",
+    excerpt: "Posts 1 through 5 cite standard sociology of religion: Weber, Durkheim, Goffman, Berger. Post 6 onward introduces something else entirely. The Corpus Hermeticum. Pseudo-Dionysius. Meister Eckhart. These aren't sociology texts.",
+    votes: 41,
+    comments: 23,
+    flair: "Research",
+  },
+  {
+    id: "darkwater",
+    user: "u/darkwater_nola",
+    time: "August 3, 2022",
+    title: "Five people connected to the Bywater group are dead. This is not a coincidence.",
+    excerpt: "Kevin Marsh, Portland, 2019. Sylvie Fontaine, Montreal, 2020. Thomas Harker, Sedona, 2021. There's a pattern here and nobody is looking at it.",
+    votes: 847,
+    comments: 312,
+    flair: "Theory",
+    hot: true,
+  },
+  {
+    id: "priya",
+    user: "u/archive_deep",
+    time: "September 8, 2022",
+    title: "Vane gave his entire library to a grad student before he disappeared. Has anyone contacted her?",
+    excerpt: "Priya Mehta, PhD candidate at Beaumont. He gave her every book, every annotation. She has the reading list. She has the marginalia. Should we reach out?",
+    votes: 67,
+    comments: 44,
+    flair: "Evidence",
+  },
+  {
+    id: "calloway_leak",
+    user: "u/MarquezWD",
+    time: "October 14, 2022",
+    title: "Someone just uploaded clinical session notes. This is real.",
+    excerpt: "A PDF appeared on an anonymous file host. Seven pages. Session notes from a therapist. The patient is clearly Vane. He reads Meister Eckhart aloud in session.",
+    votes: 203,
+    comments: 89,
+    flair: "Leak",
+    hot: true,
+  },
+  {
+    id: "cipher",
+    user: "u/Thoth_R",
+    time: "October 29, 2022",
+    title: "There's an encrypted file on Vane's university server. I think I found the key.",
+    excerpt: "VIG_final.enc. Uploaded December 14, 2021. The encryption is Vigenere. The keyword is from Eckhart Sermon 52. I'm not posting the decryption yet. You need to read it yourself.",
+    votes: 156,
+    comments: 72,
+    flair: "Cipher",
+  },
+  {
+    id: "sightlines",
+    user: "u/pelican_athanor",
+    time: "November 12, 2022",
+    title: "Grant Poole just published a piece in SIGHTLINES connecting Vane to a CIA program called ACHERON",
+    excerpt: "Poole obtained FOIA documents. A CIA program from the 1980s studying 'anomalous cognition' in contemplative practitioners. One photo shows a man in a room that looks exactly like the Bywater parlor.",
+    votes: 380,
+    comments: 147,
+    flair: "ACHERON",
+    hot: true,
+  },
+  {
+    id: "coordinates",
+    user: "u/Thoth_R",
+    time: "November 28, 2022",
+    title: "The footnotes contain GPS coordinates. I mapped them.",
+    excerpt: "Draft IV, footnote 7. The numbers aren't citation page numbers. They're coordinates. 29.9511, -90.0715. That's the Mississippi River at the foot of Esplanade Avenue.",
+    votes: 94,
+    comments: 56,
+    flair: "Evidence",
+  },
+  {
+    id: "final_post",
+    user: "u/AVane",
+    time: "January 6, 2023, 12:01 AM",
+    title: "The seventh has no name. But it is not nothing. Tell Clara I am well.",
+    excerpt: "",
+    votes: 2847,
+    comments: 1203,
+    flair: null,
+    hot: true,
+    special: true,
+  },
+];
+
+const BLOG_POSTS_INDEX = [
+  { id: 1, title: "On the Margins of Belief", date: "January 2021", desc: "Framework and announcement. Dry, methodological, professional." },
+  { id: 2, title: "On Transmission Mechanisms", date: "February 2021", desc: "How belief communities persist in hostile environments." },
+  { id: 3, title: "The Archive and the Living Community", date: "March 2021", desc: "Archives vs. living practice. First mention of field observation." },
+  { id: 4, title: "Charismatic Authority and Its Discontents", date: "April 2021", desc: "Thomas a Kempis epigraph. The first crack." },
+  { id: 5, title: "The Intellectualist Tendency", date: "May 2021", desc: "He posts his own indictment without seeing it." },
+  { id: 6, title: "The Observer's Position, Revisited", date: "June 2021", desc: "A colleague emails to ask if he is alright." },
+  { id: 7, title: "On the Phenomenology of Encounter", date: "August 2021", desc: "'Encounter' replaces 'study.' The language shifts." },
+  { id: 8, title: "Thresholds", date: "September 2021", desc: "One word title. Compressed. Something has changed." },
+  { id: 9, title: "Notes Toward a Revised Methodology", date: "October 2021", desc: "Final post. Reads as academic. Is not." },
+];
+
+const DRIVE_FILES = [
+  { name: "CONNECTIONS.docx", modified: "Nov 12, 2021", size: "847 KB", icon: "\ud83d\udcc4", view: VIEWS.CONNECTIONS },
+  { name: "Draft IV.docx", modified: "Nov 28, 2021", size: "2.1 MB", icon: "\ud83d\udcc4", view: VIEWS.DRAFT_IV },
+  { name: "VIG_final.enc", modified: "Dec 14, 2021", size: "12.7 KB", icon: "\ud83d\udd12", view: VIEWS.CIPHER },
+  { name: "source_card_eckhart.md", modified: "Oct 3, 2021", size: "4 KB", icon: "\ud83d\udcdd", view: null },
+  { name: "atwood_notes.md", modified: "Sep 15, 2021", size: "6 KB", icon: "\ud83d\udcdd", view: VIEWS.MARGINALIA },
+  { name: "1887_letters_translation.pdf", modified: "Apr 2, 2021", size: "340 KB", icon: "\ud83d\udcc1", view: null },
+  { name: "Tractate_XIII_annotations.pdf", modified: "Aug 2021", size: "1.2 MB", icon: "\ud83d\udcc1", view: VIEWS.MARGINALIA },
+  { name: "meeting_notes_combined.docx", modified: "Dec 2021", size: "156 KB", icon: "\ud83d\udcc4", view: VIEWS.MEETING_NOTES },
+];
+
+const MEMO_INDEX = [
+  { id: 1, date: "March 2022", title: "Case Intake", tone: "Confident. Standard." },
+  { id: 2, date: "April 2022", title: "Preliminary Findings", tone: "Professional, thorough." },
+  { id: 3, date: "May 2022", title: "Case Not Resolving", tone: "Something has shifted." },
+  { id: 4, date: "June 2022", title: "New Leads", tone: "Underground gatherings noted." },
+  { id: 5, date: "July 2022", title: "Subject's Mind", tone: "'Something happened to this man's mind.'" },
+  { id: 6, date: "August 2022", title: "Expanding Scope", tone: "The case does not fit templates." },
+  { id: 7, date: "September 2022", title: "Post-Leonid Interview", tone: "The pivot. Longest memo." },
+  { id: 8, date: "October 2022", title: "Final Interviews", tone: "Approaching the edge." },
+  { id: 9, date: "November 2022", title: "Case Closed", tone: "Not solved. Closed." },
+];
+
+const INTERVIEW_INDEX = [
+  { id: "hartley", name: "Prof. Richard Hartley", relation: "Beaumont colleague", date: "April 22, 2022" },
+  { id: "mehta", name: "Priya Mehta", relation: "PhD student", date: "May 15, 2022" },
+  { id: "clara", name: "Clara Vane", relation: "Spouse", date: "June 8, 2022" },
+  { id: "weiss", name: "Daniel Weiss", relation: "Vienna rare books dealer", date: "July 20, 2022" },
+  { id: "leonid", name: "Leonid", relation: "Person of interest", date: "September 4, 2022" },
+  { id: "arceneaux", name: "Prof. Arceneaux", relation: "Archive contact", date: "September 18, 2022" },
+];
+
+// ═══════════════════════════════════════════════════════
+// COMPONENTS
+// ═══════════════════════════════════════════════════════
+
+function NavBreadcrumb({ history, dispatch, current }) {
+  if (history.length === 0) return null;
+  return (
+    <button className="vig-back" onClick={() => dispatch({ type: "back" })}>
+      \u2190 Back
+    </button>
+  );
+}
+
+// ── Subreddit Landing ──
+function SubredditView({ dispatch }) {
+  const [expanded, setExpanded] = useState(null);
+
+  return (
+    <div className="reddit-wrap">
+      <div className="reddit-header">
+        <h1>r/SolveCoagula</h1>
+        <span className="sub-desc">1,427 members \u00b7 23 online</span>
+      </div>
+      <div className="reddit-body">
+        <div className="reddit-sidebar">
+          <h3>About this community</h3>
+          <div className="member-count">Created April 23, 2022</div>
+          <p>Documenting the disappearance of Dr. Aldous Vane, Associate Professor of Religion, Psychology, and Social Thought at Beaumont University, New Orleans. Last seen January 6, 2022.</p>
+          <p style={{ marginTop: 8 }}>Rule 1: Stay close to evidence and close to the material.</p>
+          <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #343536" }}>
+            <div style={{ fontSize: 11, color: "#818384", marginBottom: 8 }}>RELATED DOCUMENTS</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+              <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.FACULTY_PAGE })}>Beaumont Faculty Page</span>
+              <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.BLOG_POST, subId: 1 })}>Studies in Transmission (Blog)</span>
+              <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.DRIVE_FOLDER })}>VIG Working Docs (Drive)</span>
+              <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.PI_MEMO, subId: 1 })}>Osei Investigation File</span>
+            </div>
+          </div>
+        </div>
+
+        {SUBREDDIT_POSTS.map((post) => (
+          <div className="post-card" key={post.id} style={post.special ? { borderColor: "#FF4500", borderWidth: 2 } : {}}>
+            <div className="vote-col">
+              <span className="vote-arrow">\u25b2</span>
+              <span className="vote-count">{post.votes >= 1000 ? (post.votes / 1000).toFixed(1) + "k" : post.votes}</span>
+              <span className="vote-arrow">\u25bc</span>
+            </div>
+            <div className="post-content">
+              <div className="post-meta">
+                <span className="username">{post.user}</span> \u00b7 {post.time}
+                {post.flair && <span style={{ marginLeft: 8, padding: "1px 6px", background: post.flair === "ACHERON" ? "rgba(139,0,0,0.2)" : "rgba(79,188,255,0.1)", color: post.flair === "ACHERON" ? "#ff6666" : "#4FBCFF", borderRadius: 2, fontSize: 10 }}>{post.flair}</span>}
+                {post.hot && <span style={{ marginLeft: 6, fontSize: 10, color: "#FF4500" }}>\ud83d\udd25</span>}
+              </div>
+              <div
+                className="post-title"
+                style={post.special ? { color: "#FF4500", fontStyle: "italic" } : {}}
+                onClick={() => setExpanded(expanded === post.id ? null : post.id)}
+              >
+                {post.title}
+              </div>
+              {post.excerpt && <div className="post-excerpt">{post.excerpt}</div>}
+              <div className="post-actions">
+                <span>{post.comments} comments</span>
+                <span>share</span>
+                <span>save</span>
+              </div>
+
+              {expanded === post.id && (
+                <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #343536" }}>
+                  {post.id === "founding" && (
+                    <FoundingPostExpanded dispatch={dispatch} />
+                  )}
+                  {post.id === "calloway_leak" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/MarquezWD</span> \u00b7 Oct 14, 2022</div>
+                        <div className="c-body">The notes are clinical shorthand. Whoever wrote these was trained. The <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.CLINICAL_NOTE })}>session from September 16</span> is the one everyone needs to read. He reads Eckhart aloud to his therapist.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> \u00b7 Oct 14, 2022, 2:33 AM</div>
+                        <div className="c-body">Whoever leaked this violated a person's privacy to satisfy curiosity. The notes are real. That is not permission.</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "cipher" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/Thoth_R</span> \u00b7 Oct 29, 2022</div>
+                        <div className="c-body">The file is still on the Beaumont server. <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.CIPHER })}>View the encrypted file</span>. The keyword is POORINSPIRIT. From Eckhart's Sermon 52 on the poverty of spirit. The decrypted text... I need someone else to read it.</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "sightlines" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/pelican_athanor</span> \u00b7 Nov 12, 2022</div>
+                        <div className="c-body"><span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.FOIA })}>FOIA excerpt here</span>. Pages 7, 34, and 43. Heavily redacted. But page 34 has a photograph. I don't know what to make of it.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> \u00b7 Nov 13, 2022, 1:12 AM</div>
+                        <div className="c-body">Poole is asking the right questions for the wrong reasons. ACHERON is real. Its connection to Aldous is not. The right question is what you would see if someone looked at you that way.</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "darkwater" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/darkwater_nola</span> \u00b7 Aug 3, 2022</div>
+                        <div className="c-body">Kevin Marsh is findable. He's in Portland. I spoke with his sister. Thomas Harker, Sedona, cause of death listed as cardiac arrest, he was 34. Look at the connections to this Bywater group and tell me it's coincidence.</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/pelican_athanor</span> \u00b7 Aug 3, 2022</div>
+                        <div className="c-body">This needs evidence, not a narrative. What is the documented connection between Marsh and the Bywater group? How do you know Harker attended?</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> \u00b7 Aug 4, 2022, 3:07 AM</div>
+                        <div className="c-body" style={{ color: "#818384" }}>The deaths are real. The connections are not.</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta" style={{ color: "#555" }}>\u25b2 4 \u00b7 180 replies</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "priya" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/archive_deep</span> \u00b7 Sep 8, 2022</div>
+                        <div className="c-body">She's still at Beaumont. Still has everything. Has anyone reached out?</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> \u00b7 Sep 9, 2022, 1:47 AM</div>
+                        <div className="c-body">Leave her alone.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/CasualReader92</span> \u00b7 Sep 9, 2022</div>
+                        <div className="c-body">The PI (<span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.INTERVIEW, subId: "mehta" })}>Osei's interview with Mehta</span>) already talked to her. Read the transcript before you go bothering a grad student.</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "source_texts" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/Thoth_R</span> \u00b7 May 14, 2022</div>
+                        <div className="c-body">Posts 1 through 5: Weber, Durkheim, James, Goffman, Berger. Posts 6 through 9: Corpus Hermeticum (Copenhaver 1992), Pseudo-Dionysius (Luibheid 1987), Eckhart (Colledge and McGinn 1981), Boehme (Law 1764), Atwood (1850). Also found his 2017 <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.BLOG_POST, subId: 1 })}>JAAR paper on James</span>. Read it.</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> \u00b7 May 15, 2022, 2:03 AM</div>
+                        <div className="c-body">Read the sources he cites. Not about them. Them.</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "coordinates" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/Thoth_R</span> \u00b7 Nov 28, 2022</div>
+                        <div className="c-body">29.9511, -90.0715 is the foot of Esplanade. Right at the river. He walked toward the river that night. This is either where he went or where the manuscript tells you to look.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta" style={{ color: "#FF4500" }}>\ud83d\udd12 Thread locked by u/pelican_athanor</div>
+                        <div className="c-body" style={{ color: "#818384", fontSize: 12 }}>Locking this. Coordinate threads risk attracting people who do things with information rather than thinking about it. If you want to understand what happened to Vane, read what he wrote.</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "final_post" && (
+                    <div className="comment-section">
+                      <div style={{ padding: "12px 0", fontSize: 13, color: "#818384", fontStyle: "italic" }}>
+                        Account created January 6, 2023. One post. No comments. No other activity. Location metadata: New Orleans, LA.
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/pelican_athanor</span> \u00b7 Jan 6, 2023</div>
+                        <div className="c-body">If this is real, I don't know what to do with it. If this is someone pretending, I don't know what to do with that either.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> \u00b7 Jan 6, 2023, 12:47 AM</div>
+                        <div className="c-body">Seven.</div>
+                      </div>
+                      <div style={{ padding: "8px 0", fontSize: 11, color: "#555" }}>1,203 comments \u00b7 showing top 2</div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function FoundingPostExpanded({ dispatch }) {
+  return (
+    <div className="comment-section">
+      <div className="comment">
+        <div className="c-meta"><span className="username">u/Thoth_R</span> \u00b7 April 23, 2022</div>
+        <div className="c-body">ok so i just read through all 9 <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.BLOG_POST, subId: 1 })}>blog posts</span> and i need to ask the obvious thing. what is he actually writing about? around post 6 it gets weird. where is he getting these old letters from? what is acc. 1887.0034?</div>
+      </div>
+      <div className="comment" style={{ marginLeft: 16 }}>
+        <div className="c-meta"><span className="username">u/pelican_athanor</span> \u00b7 April 23, 2022</div>
+        <div className="c-body">The archive citation is from <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.LIBRARY_LOG })}>Beaumont's special collections</span>. He visited multiple times that year. The archive is connected to Louisiana Masonic history.</div>
+      </div>
+      <div className="comment">
+        <div className="c-meta"><span className="username">u/archive_deep</span> \u00b7 April 23, 2022</div>
+        <div className="c-body">Did anyone notice the dates? He stops posting in October. Visits the archive for the last time in November. Gone in January. Three months of silence. That <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.EMAIL_DRAFT })}>gap</span> is significant.</div>
+      </div>
+      <div className="comment">
+        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> \u00b7 April 24, 2022, 1:47 AM</div>
+        <div className="c-body" style={{ color: "#818384" }}>The last post isn't academic. The methodology he's revising toward is the one the traditions describe. He stopped writing like an observer.</div>
+      </div>
+    </div>
+  );
+}
+
+// ── Blog Post ──
+function BlogPostView({ dispatch, subId }) {
+  const postIndex = subId || 1;
+  const post = BLOG_POSTS_INDEX.find((p) => p.id === postIndex) || BLOG_POSTS_INDEX[0];
+
+  return (
+    <div className="blog-wrap">
+      <div className="blog-inner">
+        <div className="blog-header">
+          <div className="blog-site-title">Studies in Transmission</div>
+          <div className="blog-site-sub">Aldous Vane \u00b7 Beaumont University \u00b7 Notes from the margins of belief</div>
+        </div>
+
+        <div style={{ marginBottom: 32 }}>
+          <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: "#999", marginBottom: 16 }}>All Posts</div>
+          {BLOG_POSTS_INDEX.map((p) => (
+            <div
+              key={p.id}
+              onClick={() => dispatch({ type: "navigate", view: VIEWS.BLOG_POST, subId: p.id })}
+              style={{
+                padding: "10px 0",
+                borderBottom: "1px solid #f0f0f0",
+                cursor: "pointer",
+                opacity: p.id === postIndex ? 1 : 0.7,
+                background: p.id === postIndex ? "rgba(0,0,0,0.02)" : "transparent",
+                paddingLeft: p.id === postIndex ? 8 : 0,
+                transition: "all 0.15s",
+              }}
+            >
+              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, color: "#1a1a1a", marginBottom: 2 }}>
+                {p.id}. {p.title}
+              </div>
+              <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: "#999" }}>
+                {p.date} {p.id >= 7 && "\u00b7"} {p.id >= 7 && <span style={{ color: "#c5221f", fontSize: 11 }}>something shifted</span>}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="blog-post-title">{post.title}</div>
+        <div className="blog-post-meta">Aldous Vane \u00b7 {post.date}</div>
+        <div className="blog-post-body">
+          {postIndex === 1 && (
+            <>
+              <p>This is an announcement and a framework. I have spent the past sixteen years studying how knowledge communities form, survive, and transmit themselves across generations in hostile cultural environments. Which is to say, I have spent sixteen years studying what happens when people believe things that the broader culture does not believe, and how those beliefs persist despite systematic cultural pressure against their persistence.</p>
+              <p>The interior tradition in American religious life presents a particularly rich case study in this regard.<span className="footnote-ref">1</span> From Spiritualism in the nineteenth century through the theosophical and Masonic movements of the early twentieth, through contemporary practice and into the present moment, we can trace a coherent set of transmission mechanisms operating across communities with no formal institutional affiliation.</p>
+              <p>I have been trained, as scholars of religion are trained, to maintain a careful distance from my subject matter. This distance is not a limitation; it is a method. It allows us to ask structural questions rather than truth questions. It prevents us from confusing the analysis of religious systems with their validation. It keeps us honest.</p>
+              <p>I intend to maintain this analytical framework throughout these essays.</p>
+              <div className="blog-footnotes">
+                <p><span className="footnote-ref">1</span> I use "interior tradition" throughout these essays as a shorthand for the diverse range of contemplative, esoteric, and mystical currents that have maintained a continuous, if marginal, presence in American religious life since the colonial period.</p>
+              </div>
+            </>
+          )}
+          {postIndex === 9 && (
+            <>
+              <p>These notes are provisional. I set down the word "methodology" in the title because methodology is what I know, and what I know is dissolving, and I would like to record the dissolution while the recording instrument still functions.</p>
+              <p>The framework I have employed for twenty years assumes a distinction between the observer and the observed. This distinction is not merely methodological. It is ontological. It structures the field. It determines what counts as data and what counts as noise. It draws the line between the scholar and the material, and that line is the condition of possibility for everything I have published.</p>
+              <p>I am no longer certain the line exists.</p>
+              <p>This is not a confession of bias. Bias implies a deviation from a neutral position. What I am describing is the discovery that the neutral position was never neutral. It was a construction. The construction served its purpose. It produced two books, a tenured appointment, a body of work I believe to be useful. I do not retract any of it.</p>
+              <p>But I note, with a precision I owe to anyone who reads these essays, that the framework has reached its limit. The limit is not a failure. It is a feature of the material. The material was always going to produce this limit, because the material is, in its deepest register, a set of instructions for dissolving the apparatus by which it is being studied.</p>
+              <p>What remains when the apparatus is visible is not nothing. Every text in the tradition is clear about this. What remains is what was there before the apparatus was built. The ground. The thing itself. The thing that does not need a methodology because it is prior to method.</p>
+              <p>I do not know how to write the next essay. The form requires an analytical distance that I can no longer maintain without dishonesty. And I have resolved, in these final notes, to be honest.</p>
+            </>
+          )}
+          {postIndex !== 1 && postIndex !== 9 && (
+            <p style={{ color: "#999", fontStyle: "italic" }}>
+              [Post {postIndex}: "{post.title}" {"\u2014"} {post.desc} Click a post number to navigate.]
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Faculty Page ──
+function FacultyPageView({ dispatch }) {
+  return (
+    <div className="faculty-wrap">
+      <div className="faculty-nav">
+        <span className="nav-brand">Beaumont University</span>
+        <div className="nav-links">
+          <span>Home</span>
+          <span>Academics</span>
+          <span>Faculty</span>
+          <span>Research</span>
+          <span>Admissions</span>
+        </div>
+      </div>
+      <div className="faculty-body">
+        <div className="faculty-sidebar">
+          <div className="faculty-photo">Faculty Photo</div>
+          <div className="faculty-info">
+            <div><strong>Office:</strong> Gibson Hall 312</div>
+            <div><strong>Phone:</strong> (504) 555-0142</div>
+            <div><strong>Email:</strong> avane@beaumont.edu</div>
+            <div style={{ marginTop: 8 }}><strong>Office Hours:</strong></div>
+            <div>Tuesday 2:00 - 4:00 PM</div>
+            <div>Thursday 10:00 AM - 12:00 PM</div>
+            <div style={{ marginTop: 8, fontSize: 11, color: "#999" }}>
+              Page last updated: August 2021
+            </div>
+          </div>
+        </div>
+        <div className="faculty-main">
+          <h1>Dr. Aldous Vane</h1>
+          <div className="fac-title">Associate Professor, Department of Religion, Psychology, and Social Thought</div>
+
+          <div className="fac-section">
+            <h3>Research Interests</h3>
+            <p>Sociology and psychology of religion; American esoteric knowledge communities; transmission of marginal knowledge systems; boundary maintenance in heterodox belief communities; charismatic authority and its persistence in post-institutional religious contexts.</p>
+          </div>
+
+          <div className="fac-section">
+            <h3>Education</h3>
+            <ul>
+              <li>Ph.D., Divinity School, University of Chicago, 2005</li>
+              <li>M.A., Religious Studies, University of Virginia, 2000</li>
+              <li>B.A., Philosophy, Reed College, 1997</li>
+            </ul>
+          </div>
+
+          <div className="fac-section">
+            <h3>Publications</h3>
+            <ul>
+              <li><em>The Persistent Margin: Esoteric Knowledge Communities in American Religious Life, 1850-1950.</em> University of Chicago Press, 2013.</li>
+              <li>"James at the Limit: The Varieties and the Question of the Observer's Position." <em>Journal of the American Academy of Religion</em> 85, no. 2 (2017).</li>
+              <li>"Hitchcock as Scholar-Practitioner: The Interior Interpretation in American Esoteric Thought." <em>Journal of the History of Ideas</em> 81, no. 3 (2020).</li>
+              <li><em>The Interior Campaign: Inward-Turn Movements in American Religious History.</em> In progress. NEH Fellowship FA-57834-19.</li>
+            </ul>
+          </div>
+
+          <div className="fac-section">
+            <h3>Current Courses</h3>
+            <ul>
+              <li>REL 301: Hidden America: Esoteric Traditions and the American Religious Underground</li>
+              <li>REL 540: Seminar in Sociology of Religion</li>
+              <li>REL 210: Introduction to Psychology of Religion</li>
+            </ul>
+          </div>
+
+          <div style={{ marginTop: 30, padding: "12px", background: "#fff", border: "1px solid #ddd", borderRadius: 4 }}>
+            <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: "#999" }}>
+              <span style={{ cursor: "pointer", color: "#4FBCFF" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.BLOG_POST, subId: 1 })}>View Dr. Vane's blog: Studies in Transmission \u2192</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style={{ background: "#1B4332", padding: "16px 20px", textAlign: "center" }}>
+        <span style={{ fontFamily: "'Open Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.5)" }}>
+          Beaumont University \u00b7 4200 St. Charles Avenue, New Orleans, LA 70118 \u00b7 \u00a9 2020
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// ── Clinical Note ──
+function ClinicalNoteView({ dispatch }) {
+  return (
+    <div className="clinical-wrap">
+      <div className="scan-page">
+        <div className="scan-edge-shadow" />
+        <div className="coffee-stain" />
+        <div className="scan-letterhead">
+          <div className="practice-name">CALLOWAY AND ASSOCIATES</div>
+          <div>Clinical Psychology Practice</div>
+          <div>2847 Magazine Street, New Orleans, LA 70115</div>
+        </div>
+        <hr style={{ border: "none", borderTop: "1px solid #bbb", margin: "12px 0 16px" }} />
+        <div className="scan-body">
+          <div style={{ fontSize: 11, color: "#666" }}>
+            Patient: <span className="redaction">Dr. Aldous Vane</span>{"\n"}
+            Date: September 16, 2021{"\n"}
+            Session: 7{"\n"}
+            Type: Individual psychotherapy, 50 min
+          </div>
+
+          <div className="section-header">{"\n"}I. PRESENTING STATE</div>
+          {"Pt arrived 6 minutes early. Affect calm, slightly withdrawn. No visible signs of distress. Presentation neat, though corduroy jacket noticeably worn. Wire-rimmed glasses. Seated himself without prompting. Oriented x3. Made brief eye contact at greeting, minimal after."}
+
+          <div className="section-header">{"\n"}II. SESSION CONTENT</div>
+          {"Session began w/ pt reporting on previous week. Academic schedule. Mentioned increased difficulty w/ faculty meetings. Says \"the scripts feel foreign now.\" Discussed sleep: reports 6 to 7 hours, denies insomnia. States he has been \"reading more than usual. Deep work.\""}
+
+          {"\n\n"}
+          <div className="margin-note">He said this without affect. Not flat. Resolved.</div>
+
+          {"Then, without preamble or transition, he reached into his messenger bag and withdrew a book. Did not announce the action. Simply opened the text and read aloud."}
+
+          {"\n\n"}{"The text was Meister Eckhart, Colledge and McGinn translation, Paulist Press, 1981, Sermon 9."}
+
+          {"\n\n"}{"He read: \"I say God is neither good, nor better, nor best. Whoever speaks of God as good does Him as much wrong as if he were to call the sun black.\""}
+
+          {"\n\n"}{"Read the passage twice. Then closed the book. Did not speak."}
+
+          {"\n\n"}
+          <div className="margin-note red-ink">This is not psychosis. This is something else. I have no category for this.</div>
+
+          {"\n"}{"When I asked \"What drew you to this particular text?\" pt responded: \"I'm not sure that's the question.\" When I asked what he meant: \"The question is whether I chose it or whether it found me. There's a difference I didn't used to think mattered.\""}
+
+          <div className="section-header">{"\n"}III. CLINICAL IMPRESSION</div>
+          {"Pt demonstrates "}
+          <span className="redaction">no evidence of psychotic process</span>
+          {". Orientation intact. Reality testing intact. Affect congruent. However, content of session represents significant departure from baseline presentation (Sessions 1 through 4). The shift is not deterioration. It is "}
+          <span className="redaction">reorganization</span>
+          {". Pt appears to be undergoing a fundamental change in his relationship to his own conceptual framework."}
+
+          {"\n\n"}
+          <div className="sticky-note">
+            I went home and read the Eckhart passage. I understand why he read it twice. This is not a note for the file. This is a note for me.
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── PI Memo ──
+function PIMemoView({ dispatch, subId }) {
+  const memoNum = subId || 1;
+  const memo = MEMO_INDEX.find((m) => m.id === memoNum) || MEMO_INDEX[0];
+
+  return (
+    <div className="memo-wrap">
+      <div className="memo-page">
+        <div className="memo-letterhead">
+          <div className="firm-name">Osei Investigations LLC</div>
+          <div className="firm-details">3412 Magazine Street, Suite 4 \u00b7 New Orleans, LA 70115 \u00b7 (504) 555-0187 \u00b7 License: C-2016-7743</div>
+        </div>
+        <hr className="memo-divider" />
+        <div className="memo-stamp">Internal Memo {String(memoNum).padStart(2, "0")}</div>
+        <div className="memo-fields">
+          <strong>Case:</strong> NOPD-2022-004471 / Osei Investigations{"\n"}
+          <strong>Client:</strong> Clara Vane{"\n"}
+          <strong>Subject:</strong> Dr. Aldous Vane, Missing Person{"\n"}
+          <strong>Date:</strong> {memo.date}
+        </div>
+
+        {/* Memo navigation */}
+        <div style={{ display: "flex", gap: 4, marginBottom: 20, flexWrap: "wrap" }}>
+          {MEMO_INDEX.map((m) => (
+            <span
+              key={m.id}
+              onClick={() => dispatch({ type: "navigate", view: VIEWS.PI_MEMO, subId: m.id })}
+              style={{
+                padding: "4px 10px",
+                fontSize: 11,
+                cursor: "pointer",
+                background: m.id === memoNum ? "#1a1a1a" : "#f0f0f0",
+                color: m.id === memoNum ? "#fff" : "#666",
+                borderRadius: 2,
+                fontFamily: "'Oswald', sans-serif",
+                letterSpacing: 0.5,
+              }}
+            >
+              {m.id}
+            </span>
+          ))}
+          <span style={{ marginLeft: 8, fontSize: 11, color: "#999", alignSelf: "center" }}>|</span>
+          <span
+            onClick={() => dispatch({ type: "navigate", view: VIEWS.INTERVIEW, subId: "leonid" })}
+            style={{ padding: "4px 10px", fontSize: 11, cursor: "pointer", background: "#f0f0f0", color: "#1B4332", borderRadius: 2, fontFamily: "'Oswald', sans-serif" }}
+          >
+            Interviews
+          </span>
+        </div>
+
+        <div className="memo-body">
+          {memoNum === 1 && (
+            <>
+              <div className="sub-header">Case Intake</div>
+              {"Client is Clara Vane, 44, spouse of subject Dr. Aldous Vane, 47, Associate Professor, Department of Religion, Psychology, and Social Thought, Beaumont University. Subject reported missing January 8, 2022. Case flagged inactive February 18, 2022. Standard protocol for adult missing persons with no evidence of foul play.\n\n"}
+              <div className="sub-header">Preliminary Facts from NOPD File</div>
+              {"Last confirmed sighting January 6, 2022, approximately 11:52 PM, Whitney Bank ATM, corner Magazine and Constantinople. Subject withdrew $400. Witness from bartender at Fr\u00e8re Jacques on Frenchmen Street: subject ordered single whiskey, stayed approximately fifteen minutes, stated words consistent with \"Well. That's that, then.\" Left alone in direction of river.\n\nNo further sightings. No credit card activity. Cellular phone signal lost approximately 12:15 AM, January 7.\n\nSubject's vehicle, 2015 Subaru Outback, recovered parked on Dauphine Street, Marigny. Keys in ignition. No evidence of foul play.\n\n"}
+              <div className="sub-header">Preliminary Assessment</div>
+              {"This case presents as standard adult missing person. Most missing adults of this profile are located within 90 days. I expect this case to resolve within three months through standard investigation protocols."}
+            </>
+          )}
+          {memoNum === 7 && (
+            <>
+              <div className="sub-header">Post-Interview Summary: Leonid</div>
+              {"Interview conducted September 4, 2022 at subject's residence, Bywater neighborhood. Duration approximately 90 minutes. No recording. Notes taken by hand and reconstructed same evening.\n\nThis was the longest interview in this investigation. It was also the most unusual.\n\nLeonid does not behave like a person of interest. He does not behave like a suspect. He does not behave like a witness. He behaves like a person who is sitting in something that the rest of us are looking for.\n\nWhen asked directly whether he was responsible for Vane's disappearance, he said: \"Responsible is an interesting word. A doctor who correctly diagnoses a terminal illness is not responsible for the illness.\" When I asked if he was calling himself a doctor: \"No. I am calling Aldous's condition pre-existing.\"\n\nHe answered every question. He did not evade. He did not deflect. He answered by answering a different question that turned out to be the real one.\n\nThe room. I need to note something about the room."}
+              {"\n\n"}
+              <div className="memo-private">
+                <div className="private-label">Private Note, Not for Client File</div>
+                {"I have thought about that conversation every day. Not obsessively. More like the way you think about something that quietly changed the shape of something else without your permission.\n\nI have been a detective for twenty years. I have interviewed people who were lying, people who were confused, people who were hiding things, people who were afraid. I have never interviewed a person who was none of those things. Leonid was none of those things.\n\nSomething happened in that room that I do not have professional language for. The room was quiet and it stayed quiet and the quiet had a quality I am not going to describe in a case file because I do not have the words and the words I might use would make me sound like Vane's research notes.\n\nI am noting this for my own record. I am not a mystic. I am not having a crisis. I am noting that the edge of my framework is closer than I thought it was."}
+              </div>
+            </>
+          )}
+          {memoNum === 9 && (
+            <>
+              <div className="sub-header">Case Closure</div>
+              {"This memo closes the active investigation of Dr. Aldous Vane, missing person, NOPD-2022-004471.\n\n"}
+              <div className="sub-header">Summary of Findings</div>
+              {"Over eight months of investigation, this office conducted six formal interviews, reviewed financial records, university correspondence, and personal documents of the subject, canvassed the French Quarter, Marigny, and Bywater neighborhoods, and consulted with NOPD Det. Tureaud.\n\nThe evidence does not support a finding of foul play. The evidence does not support a finding of self-harm with certainty. The evidence does not establish the subject's current location or status.\n\nWhat the evidence does establish: the subject underwent a significant change in his cognitive and behavioral patterns over the course of 2021. This change is documented in his professional writings, his clinical records, his personal correspondence, and the testimony of every person interviewed. The change was not consistent with any standard psychiatric diagnosis. It was not consistent with substance use. It was not consistent with the behavioral profile of a person planning to disappear.\n\nIt was consistent with the subject arriving somewhere. The where is not something this investigation can determine."}
+              {"\n\n"}
+              <div className="memo-private">
+                <div className="private-label">Private Note, Final</div>
+                {"There is a question I cannot put in the report to Clara. The question is whether what happened to Aldous Vane was something that happened to him or something he did. The evidence does not distinguish between these possibilities. The people who knew him do not agree. His wife says he was lost. His student says he was found. The man in the Bywater says both words miss the point.\n\nI have been a detective for twenty years. I have closed cases I could not solve. I have never closed a case where I was not certain what category the case belonged in. I am not certain what category this case belongs in.\n\nI am closing it honestly. Not solved. Closed."}
+              </div>
+            </>
+          )}
+          {memoNum !== 1 && memoNum !== 7 && memoNum !== 9 && (
+            <div style={{ color: "#999", fontStyle: "italic", fontFamily: "'Source Serif Pro', serif" }}>
+              Memo {memoNum}: {memo.title}. {memo.tone}
+              {"\n\n"}[Click memo numbers above to navigate the investigation arc.]
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Email Draft ──
+function EmailDraftView({ dispatch }) {
+  return (
+    <div className="email-wrap">
+      <div className="email-topbar">
+        <span className="mail-icon">\u2709</span>
+        <span className="mail-title">Mail</span>
+      </div>
+      <div className="email-body-wrap">
+        <div className="email-card">
+          <div className="email-draft-banner">
+            \u26a0 DRAFT: This message was never sent.
+          </div>
+          <div className="email-header-fields">
+            <strong>From:</strong> aldous.vane@beaumont.edu{"\n"}
+            <strong>To:</strong> clara.broussard.vane@gmail.com{"\n"}
+            <strong>Date:</strong> January 5, 2022, 11:58 PM{"\n"}
+            <strong>Subject:</strong> <span style={{ color: "#999", fontStyle: "italic" }}>(blank)</span>
+          </div>
+          <div className="email-content">
+            {"I have tried to write this five times. Each time I reach a point where the sentence requires a word that does not exist in the language we have used to know each other.\n\nWhat I am trying to tell you is where I am. Not where I am geographically. I will be gone before morning. You know this already. You have known it for three months. You have watered the garden as if I would come back. This is an act I do not have language for. It is kindness and it is something else. It is the holding of a space that no longer contains what it was built to hold.\n\nI am not in pain. I need you to know this first. I am not in crisis. I am not in the state they will say I was in, the ones who will come asking you questions. I am clearer than I have ever been. The clarity is not comfortable.\n\nFor years I studied how people believe things they have no reason to believe. I was very good at maintaining the distance between myself and what I was studying. I called this scholarship. I called it rigor.\n\nWhat I did not know was that the distance itself was the apparatus. That by studying it, I was perfecting it. That every word I wrote was another brick in the wall between myself and something that has been looking at me since before I had eyes to see with.\n\nLeonid did not teach me anything. He simply stopped speaking to the wall. And in stopping, the wall became visible. And in becoming visible, it became optional.\n\nClara, you have maintained our garden through all of this. He will not return. The person who wore his name was a performance. The performance is becoming transparent."}<span className="email-cursor" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Cipher ──
+function CipherView({ dispatch }) {
+  const [decrypting, setDecrypting] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [showDecrypted, setShowDecrypted] = useState(false);
+
+  useEffect(() => {
+    if (decrypting && progress < 100) {
+      const timer = setTimeout(() => setProgress((p) => Math.min(p + 2, 100)), 60);
+      return () => clearTimeout(timer);
+    }
+    if (progress >= 100) {
+      setTimeout(() => setShowDecrypted(true), 300);
+    }
+  }, [decrypting, progress]);
+
+  return (
+    <div className="terminal-wrap">
+      <div className="terminal-scanlines" />
+      <div className="terminal-inner">
+        <div className="terminal-header">
+          BEAUMONT UNIVERSITY FILE ARCHIVE{"\n"}
+          /home/avane/archive/VIG_final.enc{"\n"}
+          Uploaded: 2021-12-14 23:47:33 UTC{"\n"}
+          Size: 12.7 KB | Encryption: Vigenere (symmetric){"\n"}
+          MD5: 7f2a8c91e3d4b6a2f5c8e1d9a3b7f4c2
+        </div>
+        {!decrypting && !showDecrypted && (
+          <>
+            <div className="terminal-body">
+              <span className="dim">{"═".repeat(60)}</span>{"\n"}
+              ENCRYPTED CONTENT:{"\n\n"}
+              PHHVVGADV JWEKSQFITMAI TWFBIBZBL LWQJ QL CCH{"\n"}
+              NPNL NWL BAXBY ZB VK{"\n\n"}
+              IPV QGHHFLKGADVJ JXACK RZR FDB ZVLIFITBVGCA.{"\n"}
+              KPXN OFV KBGGLZVTISG. ZN LGJ PRDX GSOU BUW{"\n"}
+              HWLZVT AOKMEAPTJ, GHJ KWC T EWRWXVBOS HYMZ.{"\n\n"}
+              TTOZV TI GH. CWHAH KVUXISFP VB. 1. WCBVZ{"\n"}
+              MWFCLOU LWM XIMT CB SIFAC AKZXTH. HYM TJPDVA{"\n"}
+              MWSFV IEW CWK J NGWOCA. GZTG RZX{"\n"}
+              PFQYQGWRBLZTA RSJKEAEBZWGH CT KPR XDCI KAPA{"\n\n"}
+              <span className="dim">{"═".repeat(60)}</span>
+            </div>
+            <div
+              style={{ marginTop: 20, cursor: "pointer", color: "#FFB000", fontFamily: "'Fira Code', monospace", fontSize: 13 }}
+              onClick={() => setDecrypting(true)}
+            >
+              <span className="prompt">{"> "}</span>apply_key POORINSPIRIT{"\n"}
+              <span className="dim">[click to decrypt]</span>
+            </div>
+          </>
+        )}
+        {decrypting && !showDecrypted && (
+          <div className="terminal-body">
+            <span className="prompt">Applying Vigenere key: POORINSPIRIT</span>{"\n"}
+            <span className="dim">Source: Eckhart, Sermon 52, "Blessed are the poor in spirit"</span>{"\n\n"}
+            {"["}{"#".repeat(Math.floor(progress / 2))}
+            {".".repeat(50 - Math.floor(progress / 2))}{"] "}{progress}%{"\n\n"}
+            {progress > 30 && <span className="dim">Frequency analysis... pattern detected{"\n"}</span>}
+            {progress > 60 && <span className="dim">Substitution matrix resolved{"\n"}</span>}
+            {progress > 90 && <span className="bright">Decryption complete.{"\n"}</span>}
+          </div>
+        )}
+        {showDecrypted && (
+          <div className="terminal-body">
+            <span className="bright">DECRYPTED OUTPUT:</span>{"\n"}
+            <span className="dim">{"═".repeat(60)}</span>{"\n\n"}
+            <span className="bright">VIRIDARIUM IGNIS. THE GARDEN OF FIRE.</span>{"\n\n"}
+            {"The transmissions teach that the dissolution\nis not destruction. This was comforting.\nIt was also precisely half the truth.\n\nThere is no revised methodology.\nThe methodology was the last wall.\nThe wall dissolved and what remained\nwas not a framework but a fire.\n\nThe fire does not negotiate.\nThe fire does not proceed in stages.\nThe fire reveals.\n\nWhat the fire reveals was always there\nbefore the name, before the framework,\nbefore the institutional appointment and\nthe publications and the marriage and\nthe garden on Perrier Street.\n\nClara: water the garden.\nI am well.\nI am not coming back.\nI am not going anywhere.\nBoth of these are true.\n\nThe seventh has no name.\nBut it is not nothing."}{"\n\n"}
+            <span className="dim">{"═".repeat(60)}</span>{"\n"}
+            <span className="dim">EOF</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── FOIA ──
+function FOIAView({ dispatch }) {
+  const [page, setPage] = useState(7);
+  return (
+    <div className="foia-wrap">
+      <div className="foia-page">
+        <div className="foia-stamp">APPROVED FOR RELEASE</div>
+        <div className="foia-header">
+          <div className="agency">CENTRAL INTELLIGENCE AGENCY</div>
+          FREEDOM OF INFORMATION ACT RELEASE{"\n"}
+          Case Number: F-2022-01847 \u00b7 Release Date: 14 March 2022{"\n"}
+          Requester: G. Poole, SIGHTLINES Media
+        </div>
+        <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+          {[7, 34, 43].map((p) => (
+            <span
+              key={p}
+              onClick={() => setPage(p)}
+              style={{
+                padding: "3px 10px",
+                fontSize: 11,
+                cursor: "pointer",
+                background: p === page ? "#333" : "#e0ddd4",
+                color: p === page ? "#F0EDE4" : "#555",
+                fontFamily: "'Courier Prime', monospace",
+              }}
+            >
+              Page {p}
+            </span>
+          ))}
+        </div>
+        <div className="foia-classification">
+          <s>SECRET / NOFORN</s> DECLASSIFIED
+        </div>
+        <div className="foia-body">
+          {page === 7 && (
+            <>
+              {"MEMORANDUM FOR: Deputy Director for Science and Technology\nFROM: "}<span className="redaction">[Chief, Unknown Division]</span>{"\nDATE: 12 April 1984\nSUBJECT: ACHERON Phase II Operational Summary, Q1 1984\n\n1. PROGRAM STATUS\n\n   ACHERON Phase II commenced operations at "}<span className="redaction">[CLASSIFIED SITE]</span>{" on 3 January 1984.\n\n   Current personnel: "}<span className="redaction">[REDACTED]</span>{" field operatives, "}<span className="redaction">[REDACTED]</span>{" support staff.\n   Civilian consultant "}<span className="redaction">[NAME REDACTED]</span>{" retained under\n   contract "}<span className="redaction">[NUMBER REDACTED]</span>{".\n\n2. OPERATIONAL METHODOLOGY\n\n   Subjects selected per criteria established in\n   ACHERON/GATEWAY memorandum (ref: 82-ACHERON-019).\n   Selection focuses on individuals demonstrating\n   "}<span className="redaction">anomalous perceptual capabilities consistent with advanced contemplative practice</span>{".\n\n   "}<span className="redaction">[ENTIRE PARAGRAPH REDACTED]</span>{"\n\n   "}<span className="redaction">[ENTIRE PARAGRAPH REDACTED]</span>
+            </>
+          )}
+          {page === 34 && (
+            <>
+              {"PHOTOGRAPHIC EVIDENCE\n\nAttachment 34-A: Site photograph, "}<span className="redaction">[DATE REDACTED]</span>{"\n\n"}
+              <div style={{ width: "100%", height: 200, background: "linear-gradient(135deg, #888 0%, #666 30%, #555 60%, #777 100%)", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", marginBottom: 16, cursor: "pointer" }}>
+                <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", transition: "opacity 0.3s", fontFamily: "'Courier Prime', monospace", fontSize: 12, color: "#ccc" }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = "0.15"}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = "1"}
+                >
+                  PHOTO REDACTED
+                </div>
+                <div style={{ fontFamily: "'Special Elite', cursive", fontSize: 11, color: "#aaa", textAlign: "center", padding: 20 }}>
+                  [Grainy interior photograph. A room with high ceilings. A figure seated in a straight-backed chair. The room appears to be a parlor. Double doors visible in background. The quality does not permit positive identification.]
+                </div>
+              </div>
+              {"Caption: "}<span className="redaction">[REDACTED]</span>{", "}<span className="redaction">[LOCATION REDACTED]</span>{", during Phase II assessment.\n\nNote: Subject in photograph demonstrated "}<span className="redaction">results exceeding baseline parameters by factor of [REDACTED]</span>{".\nRecommended for Phase III. Status: "}<span className="redaction">[REDACTED]</span>
+            </>
+          )}
+          {page === 43 && (
+            <>
+              {"7. PROGRAM TERMINATION\n\n   ACHERON Phase II terminated per\n   directive "}<span className="redaction">[NUMBER REDACTED]</span>{",\n   effective "}<span className="redaction">[DATE REDACTED]</span>{".\n\n   Termination rationale: "}<span className="redaction">[ENTIRE PARAGRAPH REDACTED]</span>{"\n\n   Assets disposition: "}<span className="redaction">[REDACTED]</span>{"\n   Records disposition: "}<span className="redaction">[REDACTED]</span>{"\n   Civilian consultant status: "}<span className="redaction">released from contract, monitoring discontinued per [REDACTED]</span>{"\n\n   NOTE: "}<span className="redaction">[THREE PARAGRAPHS REDACTED]</span>{"\n\n   END OF DOCUMENT"}
+            </>
+          )}
+        </div>
+        <div className="foia-page-num">Page {page} of 47</div>
+      </div>
+    </div>
+  );
+}
+
+// ── Google Drive ──
+function DriveFolderView({ dispatch }) {
+  return (
+    <div className="drive-wrap">
+      <div className="drive-topbar">
+        <span className="drive-logo">\u25b6</span>
+        <span className="drive-title">Drive</span>
+      </div>
+      <div className="drive-body">
+        <div className="drive-sidebar">
+          <div className="folder-item active">\ud83d\udcc1 VIG Working Docs</div>
+          <div className="folder-item">\ud83d\udcc1 Course Materials</div>
+          <div className="folder-item">\ud83d\udcc1 Persistent Margin drafts</div>
+          <div className="folder-item">\ud83d\udcc1 Correspondence</div>
+          <div style={{ marginTop: 16, fontSize: 11, color: "#999", paddingLeft: 10 }}>
+            aldous.vane@beaumont.edu
+          </div>
+        </div>
+        <div className="drive-main">
+          <div className="drive-breadcrumb">My Drive \u203a VIG Working Docs</div>
+          <div className="drive-file-list">
+            <div className="drive-file-row" style={{ fontWeight: 500, color: "#5f6368", fontSize: 12 }}>
+              <div className="drive-file-icon" />
+              <div className="drive-file-name">Name</div>
+              <div className="drive-file-date">Last modified</div>
+              <div className="drive-file-size">Size</div>
+            </div>
+            {DRIVE_FILES.map((f, i) => (
+              <div
+                key={i}
+                className="drive-file-row"
+                onClick={() => f.view && dispatch({ type: "navigate", view: f.view })}
+                style={{ cursor: f.view ? "pointer" : "default", opacity: f.view ? 1 : 0.6 }}
+              >
+                <div className="drive-file-icon">{f.icon}</div>
+                <div className="drive-file-name">{f.name}</div>
+                <div className="drive-file-date">{f.modified}</div>
+                <div className="drive-file-size">{f.size}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Connections Doc ──
+function ConnectionsView({ dispatch }) {
+  return (
+    <div className="research-wrap">
+      <div className="research-page">
+        <div className="doc-title">CONNECTIONS</div>
+        <div className="doc-meta">Last modified: November 2021 \u00b7 A. Vane \u00b7 NOT FOR CIRCULATION</div>
+        <div className="doc-body">
+          <div style={{ fontWeight: 600, fontSize: 16, margin: "20px 0 12px", fontFamily: "'Playfair Display', serif" }}>THE WEB</div>
+          {"Start here. The connections are not incidental.\n\nThe Corpus Hermeticum (Copenhaver 1992) preserves a Greco-Egyptian synthesis of transformative practice. But the material is older. Lactantius cites Hermetic passages in the fourth century that do not appear in the extant Corpus. This means the Corpus we have is not the origin. It is a recovery of something prior.\n\nPseudo-Dionysius inherits the Neoplatonist framework but strips it to its apophatic core. The Mystical Theology is a five-chapter manual for the systematic removal of every predicate by which the mind organizes reality. It reads as negative theology. It is not. It is operational procedure."}
+
+          <div className="note-to-self">[NOTE: check whether Ficino's Latin translation of the Corpus influenced the Rhineland mystics directly or through intermediary. The timeline is tight but not impossible.]</div>
+
+          {"Eckhart arrives at the same destination through a different door. Boehme is the pivot. The Ungrund. Before God there is the Unground. Before the Unground there is nothing that can be said.\n\nThe web is not a set of influences. It is that all of them were looking through different windows into the same room. The room does not have a name."}
+
+          <div className="note-to-self">[This is where the scholarship usually stops. I am not going to stop here.]</div>
+
+          <div style={{ fontWeight: 600, fontSize: 16, margin: "28px 0 12px", fontFamily: "'Playfair Display', serif" }}>THE DIAGRAM</div>
+
+          <div style={{ textAlign: "center", padding: "20px 0", fontFamily: "'Special Elite', cursive", fontSize: 14, color: "#1a3a5c", lineHeight: 2.2 }}>
+            {"HERMETIC\n"}
+            {"\u2193\n"}
+            {"SUFI  \u2192     \u25cb     \u2190  NEOPLATONIST\n"}
+            {"ALCHEMICAL \u2192       \u2190 CHRISTIAN MYSTICAL\n\n"}
+            <span style={{ fontSize: 12, color: "#999" }}>The center is blank.</span>
+          </div>
+
+          {"The center has no name. All the traditions are pointing at it. None of them own it. It is before all of them.\n\nEvery fight between traditions is a fight about vocabulary.\nThe thing they are fighting over does not have vocabulary."}
+
+          <div className="note-to-self">[October 2021: The center of the diagram is not blank because I do not know what to put there. The center is blank because it is blank. The blankness is the most accurate thing in the document.]</div>
+
+          <div className="note-to-self">[November 2021: There is no revised methodology. There is no interior campaign. There is no persistent margin. There is only what is there when everything else has been removed. The fire does not consume. It reveals. What it reveals was always there.]</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Draft IV ──
+function DraftIVView({ dispatch }) {
+  return (
+    <div className="research-wrap">
+      <div className="research-page">
+        <div className="doc-title">THE INTERIOR CAMPAIGN</div>
+        <div className="doc-meta">Aldous Vane \u00b7 Beaumont University \u00b7 DRAFT IV \u00b7 Pages 17-34</div>
+        <div className="doc-body">
+          <div className="page-marker">[Page 17]</div>
+          {"Ethan Allen Hitchcock remains, to this day, among the most peculiar figures in the history of American engagement with esoteric thought. His thesis, pursued across four privately published books between 1857 and 1866, was simply stated: the alchemical tradition was not, and had never been, concerned with the transmutation of physical metals. It was concerned with the transmutation of the human being. The gold of the alchemists was the perfected self."}
+
+          <div className="page-marker">[Page 18]</div>
+          {"The difficulty, which is to say the difficulty I have been circling for seventeen pages without naming directly, is that Hitchcock's interpretive framework is not merely a historical curiosity. It is the framework that the texts themselves demand, if one reads them with sufficient attention.\n\nThis is not a claim I would have made when I began this project."}
+
+          <div className="page-marker">[Page 22]</div>
+          {"Let me say what I mean without the protective apparatus.\n\nThe texts that I have spent my career studying as sociological data are instructions. They describe a process. The process has stages. The vocabulary differs. The process does not.\n\nThe process, stated as simply as I am able to state it, is this: the ordinary self, the self that is organized by memory, social role, professional identity, this self is not fundamental. It is a construction. The construction is elaborate and persistent. By the time consciousness arrives, the construction is complete."}
+
+          <div className="note-to-self">[NOTE: remove this footnote before submission. Too personal. But accurate.]</div>
+
+          <div className="page-marker">[Page 23]</div>
+          {"This is what Leonid does. I can say this now because I am no longer pretending to maintain the observer's position. He addresses whatever is behind the construction. Not the constructed self. Not the social persona. What is behind it.\n\nThis is what happened to me."}
+
+          <div className="page-marker">[Page 34]</div>
+          <div style={{ fontStyle: "italic", color: "#555" }}>
+            {"what was always there before the name, before the framework, before the institutional appointment and the NEH fellowship and the publications and the marriage and the garden on Perrier Street and the wire-rimmed glasses and the corduroy jacket and the twenty years of careful precise scholarly distance from the one thing that was"}
+          </div>
+          <div style={{ marginTop: 16, fontFamily: "'Special Elite', cursive", fontSize: 12, color: "#999" }}>
+            [manuscript ends mid-sentence]
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Meeting Notes ──
+function MeetingNotesView({ dispatch }) {
+  const [entry, setEntry] = useState(5);
+  const entries = [
+    { id: 1, label: "Entry 1 (Late 2020)", tone: "Field observation" },
+    { id: 2, label: "Entry 2 (Jan 2021)", tone: "A question relocated something" },
+    { id: 3, label: "Entry 3 (Spring 2021)", tone: "Leonid uses Goffman" },
+    { id: 4, label: "Entry 4 (Summer 2021)", tone: "Leonid's full statement" },
+    { id: 5, label: "Entry 5 (Nov 2021)", tone: "The room shifts" },
+    { id: 6, label: "Entry 6 (Dec 2021)", tone: "One word" },
+  ];
+
+  return (
+    <div className="research-wrap">
+      <div className="research-page">
+        <div className="doc-title">MEETING NOTES</div>
+        <div className="doc-meta">Private working notes \u00b7 A. Vane</div>
+        <div style={{ display: "flex", gap: 4, marginBottom: 20, flexWrap: "wrap" }}>
+          {entries.map((e) => (
+            <span
+              key={e.id}
+              onClick={() => setEntry(e.id)}
+              style={{
+                padding: "4px 10px",
+                fontSize: 11,
+                cursor: "pointer",
+                background: e.id === entry ? "#1a1a1a" : "#f0f0f0",
+                color: e.id === entry ? "#fff" : "#666",
+                borderRadius: 2,
+                fontFamily: "'Inter', sans-serif",
+              }}
+            >
+              {e.id}
+            </span>
+          ))}
+        </div>
+        <div className="doc-body">
+          {entry === 5 && (
+            <>
+              {"Tuesday. Late November. 2021.\n\nI arrived at 7. The usual configuration. Celestine, two others I have noted previously, a woman I had not seen before. Leonid was not in the room when I entered.\n\nLeonid entered from the back of the house at approximately 7:15. He sat in his usual chair. He did not speak for what I estimate was four minutes. I have been trained to observe silence as a social technique, a tool of charismatic authority. I have written about this in two published papers. I know what silence does in a group setting.\n\nThis was not that.\n\nThe silence had a quality I will attempt to describe and fail. It was not empty. It was not tense. It was not performative. It was the silence of a room in which something is present that is not any of the people in the room.\n\nAt some point during the silence, the room shifted. Not the furniture. Not the light. Something underneath those things. The substrate. The thing that holds the room together as a room. It became visible. Not to my eyes. To something else.\n\nThe wall behind Leonid's chair became what it had always been, which is to say, a surface arranged over nothing. Not over brick and plaster and paint. Over nothing. And the nothing was not absence. It was something so complete that wall and room and chair and self were minor variations on it, brief perturbations in something that had no obligation to continue permitting them.\n\nEvery person in the room saw this.\n\nLeonid spoke one sentence afterward. He said: \"Good.\"\n\nI waited until the session ended. I walked to my car. I sat in the car for approximately forty minutes before I was able to drive.\n\nEverything was wrong with me.\n\nEverything had been wrong with me for forty-seven years and I had not noticed because the wrongness was so total that it constituted the ordinary condition.\n\nI am writing this at 3:47 AM. The room I am sitting in is still doing what it did in the parlor. It has not stopped. I can see the substrate through the surfaces. I can see it through my hands.\n\nI do not think this is going to go away.\n\nI do not think it should go away.\n\nBoth of those sentences are true and the second one is the more frightening."}
+            </>
+          )}
+          {entry === 6 && (
+            <div style={{ textAlign: "center", padding: "60px 0", fontSize: 24, fontFamily: "'Playfair Display', serif", color: "#333" }}>
+              Substrate.
+            </div>
+          )}
+          {entry === 4 && (
+            <>
+              {"Summer 2021.\n\nLeonid said something tonight that I cannot file under any category I know.\n\nHe said: \"Your scholarship is part of the apparatus for looking away.\"\n\nI asked him what he meant. He said: \"You study the tradition the way a man studies fire by measuring the temperature of the room next door. The room next door is warm. You have documented this. You have published papers about the warmth. You are considered an expert on the warmth. You have never opened the door.\"\n\nI said that opening the door was not the scholar's role. He said: \"That is what the door would say if doors could speak.\"\n\nHe is right. God help me he is right."}
+            </>
+          )}
+          {entry !== 4 && entry !== 5 && entry !== 6 && (
+            <div style={{ color: "#999", fontStyle: "italic" }}>
+              {entries.find((e) => e.id === entry)?.tone || ""}
+              {"\n\n"}[Click entry numbers above to navigate.]
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Interview ──
+function InterviewView({ dispatch, subId }) {
+  const id = subId || "leonid";
+  const interview = INTERVIEW_INDEX.find((i) => i.id === id) || INTERVIEW_INDEX[4];
+
+  return (
+    <div className="interview-wrap">
+      <div className="interview-page">
+        <div className="int-header">Interview Transcript</div>
+        <div className="int-fields">
+          <strong>Case:</strong> NOPD-2022-004471 / Osei Investigations{"\n"}
+          <strong>Subject:</strong> {interview.name} ({interview.relation}){"\n"}
+          <strong>Date:</strong> {interview.date}{"\n"}
+          <strong>Interviewer:</strong> Marcus Osei
+        </div>
+
+        <div style={{ display: "flex", gap: 4, marginBottom: 20, flexWrap: "wrap" }}>
+          {INTERVIEW_INDEX.map((i) => (
+            <span
+              key={i.id}
+              onClick={() => dispatch({ type: "navigate", view: VIEWS.INTERVIEW, subId: i.id })}
+              style={{
+                padding: "4px 10px",
+                fontSize: 11,
+                cursor: "pointer",
+                background: i.id === id ? "#1B4332" : "#f0f0f0",
+                color: i.id === id ? "#fff" : "#666",
+                borderRadius: 2,
+                fontFamily: "'Oswald', sans-serif",
+              }}
+            >
+              {i.name.split(" ").pop()}
+            </span>
+          ))}
+        </div>
+
+        <div className="int-body">
+          {id === "leonid" && (
+            <>
+              <span className="speaker-osei">OSEI:</span>{" When did you first meet Dr. Vane?\n\n"}
+              <span className="speaker-subject">LEONID:</span>{" He came to a Tuesday meeting. Autumn of 2020. He sat in the back. He had a notebook. He wrote things down.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" What did you think of him?\n\n"}
+              <span className="speaker-subject">LEONID:</span>{" I thought he was a scholar doing field research. I was correct. I also thought he was a man who had spent his entire life building a wall between himself and the thing he was studying. I was correct about that too.\n\n"}
+              <span className="stage-direction">(Pause. Leonid looked at the window.)</span>{"\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" Do you feel responsible for what happened to him?\n\n"}
+              <span className="speaker-subject">LEONID:</span>{" Responsible is an interesting word. A doctor who correctly diagnoses a terminal illness is not responsible for the illness.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" Are you calling yourself a doctor?\n\n"}
+              <span className="speaker-subject">LEONID:</span>{" No. I am calling Aldous's condition pre-existing.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" What condition?\n\n"}
+              <span className="speaker-subject">LEONID:</span>{" Being human. The condition of being a human being who has spent his life looking away from something that was looking at him.\n\n"}
+              <span className="stage-direction">(Long pause. Leonid poured tea. Offered some to me. I accepted.)</span>{"\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" Where is he?\n\n"}
+              <span className="speaker-subject">LEONID:</span>{" I do not know where his body is. That is what you are asking. I cannot help you with that. If you are asking where he is in the other sense, he is where he has always been. He simply stopped pretending otherwise.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" That is not an answer.\n\n"}
+              <span className="speaker-subject">LEONID:</span>{" It is the only answer I have. It is also the truth. You will decide what to do with it."}
+            </>
+          )}
+          {id === "clara" && (
+            <>
+              <span className="speaker-osei">OSEI:</span>{" When did you first notice something had changed?\n\n"}
+              <span className="speaker-subject">CLARA:</span>{" October 2020. He came home from somewhere and he was different. Not upset. Not excited. Different. Like someone had adjusted something behind his eyes.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" Different how?\n\n"}
+              <span className="speaker-subject">CLARA:</span>{" He was present. That's the wrong word, everyone uses it. He was always present. But after October he was present differently. Like the thing that had been between him and everything else had gotten thinner.\n\n"}
+              <span className="stage-direction">(Clara continued weeding. Did not look up.)</span>{"\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" Were you concerned?\n\n"}
+              <span className="speaker-subject">CLARA:</span>{" He was happier than I had ever seen him and I could not reach him at all. Those two things were both true.\n\n"}
+              <span className="stage-direction">(Long pause.)</span>{"\n\n"}
+              <span className="speaker-subject">CLARA:</span>{" He would have been fine in a different kind of world. I don't know what kind. But not this one."}
+            </>
+          )}
+          {id === "mehta" && (
+            <>
+              <span className="speaker-osei">OSEI:</span>{" He gave you his entire library?\n\n"}
+              <span className="speaker-subject">MEHTA:</span>{" November 2021. Every book. Every annotation. He said he wouldn't need them.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" Were you alarmed?\n\n"}
+              <span className="speaker-subject">MEHTA:</span>{" No.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" A man gives away all his books and you weren't alarmed?\n\n"}
+              <span className="speaker-subject">MEHTA:</span>{" I had been reading them. The same texts he was reading. I understood what was happening.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" What was happening?\n\n"}
+              <span className="stage-direction">(Subject smiled for the first time in the interview.)</span>{"\n\n"}
+              <span className="speaker-subject">MEHTA:</span>{" He was finishing the book. Not the manuscript. The other book. The one the texts describe."}
+            </>
+          )}
+          {id === "arceneaux" && (
+            <>
+              <span className="speaker-osei">OSEI:</span>{" He visited the archive 23 times in 2021. What was he looking at?\n\n"}
+              <span className="speaker-subject">ARCENEAUX:</span>{" The 1887 collection. French correspondence. Louisiana Martinists.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" What's in the letters?\n\n"}
+              <span className="speaker-subject">ARCENEAUX:</span>{" I can't discuss the contents of the collection with a non-affiliated researcher.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" I'm not a researcher. I'm investigating a missing person.\n\n"}
+              <span className="stage-direction">(Long pause. Arceneaux removed his glasses. Put them back on.)</span>{"\n\n"}
+              <span className="speaker-subject">ARCENEAUX:</span>{" I read them after he left. I wish I hadn't.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" Why?\n\n"}
+              <span className="stage-direction">(Subject did not answer. Interview concluded.)</span>
+            </>
+          )}
+          {id !== "leonid" && id !== "clara" && id !== "mehta" && id !== "arceneaux" && (
+            <div style={{ color: "#999", fontStyle: "italic" }}>
+              [Interview with {interview.name}. Click names above to navigate between transcripts.]
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Library Visitor Log ──
+function LibraryLogView({ dispatch }) {
+  const visits = [
+    { date: "Jan 12", request: "Gen. Coll. 1875-1900", duration: "2h 15m", note: "" },
+    { date: "Jan 28", request: "Gen. Coll. 1875-1900", duration: "3h", note: "" },
+    { date: "Feb 15", request: "Acc. 1887.0034 (partial)", duration: "4h", note: "" },
+    { date: "Mar 3", request: "Acc. 1887.0034", duration: "5h", note: "" },
+    { date: "Mar 22", request: "Acc. 1887.0034", duration: "4h 30m", note: "" },
+    { date: "Apr 5", request: "Acc. 1887.0034, Masonic corr.", duration: "6h", note: "" },
+    { date: "Apr 19", request: "Acc. 1887.0034", duration: "5h", note: "" },
+    { date: "May 2", request: "Acc. 1887.0034, French trans.", duration: "7h", note: "" },
+    { date: "May 15", request: "Acc. 1887.0034", duration: "4h", note: "" },
+    { date: "Jun 1", request: "Acc. 1887.0034", duration: "5h", note: "" },
+    { date: "Jun 14", request: "Acc. 1887.0034", duration: "6h", note: "" },
+    { date: "Jun 28", request: "Acc. 1887.0034", duration: "4h", note: "" },
+    { date: "Jul 12", request: "Acc. 1887.0034, related docs", duration: "7h", note: "" },
+    { date: "Jul 19", request: "Acc. 1887.0034", duration: "5h", note: "" },
+    { date: "Jul 26", request: "Acc. 1887.0034", duration: "3h", note: "" },
+    { date: "Aug 2", request: "Acc. 1887.0034", duration: "6h", note: "" },
+    { date: "Aug 9", request: "Acc. 1887.0034", duration: "8h", note: "" },
+    { date: "Aug 16", request: "Acc. 1887.0034", duration: "6h", note: "" },
+    { date: "Aug 23", request: "Acc. 1887.0034", duration: "4h", note: "", highlight: true, archivistNote: "Researcher became very still. Did not speak for approximately four minutes. Left without his coat." },
+    { date: "Sep 6", request: "Acc. 1887.0034", duration: "2h", note: "" },
+    { date: "Oct 4", request: "Acc. 1887.0034", duration: "1h 30m", note: "" },
+    { date: "Oct 18", request: "None filed", duration: "45m", note: "" },
+    { date: "Nov 14", request: "Acc. 1887.0034 (final)", duration: "20m", note: "", highlight: true, archivistNote: "Researcher returned coat from August visit. Sat with materials for twenty minutes. Did not open them. Left." },
+  ];
+
+  return (
+    <div className="log-wrap">
+      <div className="log-page">
+        <div className="log-title">BEAUMONT UNIVERSITY SPECIAL COLLECTIONS</div>
+        <div className="log-subtitle">Visitor Access Log \u00b7 2021 \u00b7 Researcher: Dr. A. Vane (Faculty)</div>
+        <table className="log-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Materials Requested</th>
+              <th>Duration</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {visits.map((v, i) => (
+              <tr key={i} className={v.highlight ? "log-highlight" : ""}>
+                <td>{v.date}</td>
+                <td>{v.request}</td>
+                <td>{v.duration}</td>
+                <td>
+                  {v.archivistNote && (
+                    <span className="archivist-note">{v.archivistNote}</span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div style={{ marginTop: 16, fontFamily: "'Courier Prime', monospace", fontSize: 10, color: "#888", textAlign: "center" }}>
+          23 visits recorded \u00b7 Total hours: approx. 102
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Marginalia ──
+function MarginaliaView({ dispatch }) {
+  return (
+    <div className="marg-wrap">
+      <div className="marg-page">
+        <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, color: "#999", marginBottom: 16 }}>
+          Corpus Hermeticum, Tractate XIII \u00b7 Copenhaver trans. 1992 \u00b7 pp. 49-51
+        </div>
+        <div className="printed-text">
+          {"When Tat says to Hermes: \"You have driven me, father, to no small frenzy and distraction of mind, for I do not now see myself,\" Hermes replies: \"Would that you too, my child, had passed out through yourself, as those who dream in sleep yet without sleeping.\"\n\n"}
+
+          <div className="marg-annotation">
+            <span className="ink-layer ink-blue">This is not metaphor. This is procedure.</span>
+            <span className="ink-layer ink-brown">2nd read: he means this literally. The self that sees is not the self that was seeing before.</span>
+            <span className="ink-layer ink-red">confirmed.</span>
+          </div>
+
+          {"\"I am no longer what I was before. I have been born in mind.\"\n\n"}
+
+          <div className="marg-annotation">
+            <span className="ink-layer ink-blue">cf. Eckhart Sermon 52. Same structure. Same claim. Different century, different tradition.</span>
+            <span className="ink-layer ink-brown">Not the same claim. The same event.</span>
+          </div>
+
+          {"The twelve torments are expelled: ignorance, grief, incontinence, lust, injustice, greed, deceit, envy, fraud, anger, rashness, malice. These are not sins. They are structural features of ordinary consciousness.\n\n"}
+
+          <div className="marg-annotation">
+            <span className="ink-layer ink-blue">Goffman would call these the dramaturgical requirements of the social self.</span>
+            <span className="ink-layer ink-brown">Goffman does not go far enough. These are not roles. They are the self that plays roles.</span>
+            <span className="ink-layer ink-red">The self that wrote these annotations is one of the torments.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════
+// MAIN APP
+// ═══════════════════════════════════════════════════════
+
+function ViridiariumIgnis() {
+  const [state, dispatch] = useReducer(reducer, {
+    view: VIEWS.SUBREDDIT,
+    subId: null,
+    history: [],
+  });
+
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.textContent = STYLES;
+    document.head.appendChild(style);
+    return () => document.head.removeChild(style);
+  }, []);
+
+  const renderView = () => {
+    switch (state.view) {
+      case VIEWS.SUBREDDIT:
+        return <SubredditView dispatch={dispatch} />;
+      case VIEWS.BLOG_POST:
+        return <BlogPostView dispatch={dispatch} subId={state.subId} />;
+      case VIEWS.FACULTY_PAGE:
+        return <FacultyPageView dispatch={dispatch} />;
+      case VIEWS.CLINICAL_NOTE:
+        return <ClinicalNoteView dispatch={dispatch} />;
+      case VIEWS.PI_MEMO:
+        return <PIMemoView dispatch={dispatch} subId={state.subId} />;
+      case VIEWS.EMAIL_DRAFT:
+        return <EmailDraftView dispatch={dispatch} />;
+      case VIEWS.CIPHER:
+        return <CipherView dispatch={dispatch} />;
+      case VIEWS.FOIA:
+        return <FOIAView dispatch={dispatch} />;
+      case VIEWS.DRIVE_FOLDER:
+        return <DriveFolderView dispatch={dispatch} />;
+      case VIEWS.CONNECTIONS:
+        return <ConnectionsView dispatch={dispatch} />;
+      case VIEWS.DRAFT_IV:
+        return <DraftIVView dispatch={dispatch} />;
+      case VIEWS.MEETING_NOTES:
+        return <MeetingNotesView dispatch={dispatch} />;
+      case VIEWS.MARGINALIA:
+        return <MarginaliaView dispatch={dispatch} />;
+      case VIEWS.INTERVIEW:
+        return <InterviewView dispatch={dispatch} subId={state.subId} />;
+      case VIEWS.LIBRARY_LOG:
+        return <LibraryLogView dispatch={dispatch} />;
+      default:
+        return <SubredditView dispatch={dispatch} />;
+    }
+  };
+
+  return (
+    <div className="vig-root">
+      <NavBreadcrumb history={state.history} dispatch={dispatch} current={state.view} />
+      {renderView()}
+    </div>
+  );
+}
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(React.createElement(ViridiariumIgnis));
+  </script>
+</body>
+</html>

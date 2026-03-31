@@ -41,7 +41,6 @@
   <script type="text/babel">
     const { useState, useEffect, useReducer } = React;
 
-
 // ═══════════════════════════════════════════════════════
 // VIRIDARIUM IGNIS : Interactive Prototype
 // Entry point: r/SolveCoagula
@@ -1503,6 +1502,16 @@ const SUBREDDIT_POSTS = [
     flair: "Case Overview",
   },
   {
+    id: "cipher_discovery",
+    user: "u/archive_deep",
+    time: "May 6, 2022",
+    title: "There's an encrypted file on the Beaumont server. Someone want to help me look at it.",
+    excerpt: "It's named vig_final_enc.txt. Uploaded December 17, 2021. Four days before winter break. Two and a half weeks before he disappeared. The character distribution is wrong for academic text.",
+    votes: 31,
+    comments: 24,
+    flair: "Cipher",
+  },
+  {
     id: "source_texts",
     user: "u/Thoth_R",
     time: "May 14, 2022",
@@ -1532,6 +1541,27 @@ const SUBREDDIT_POSTS = [
     votes: 67,
     comments: 44,
     flair: "Evidence",
+  },
+  {
+    id: "leonid",
+    user: "u/pelican_athanor",
+    time: "September 20, 2022",
+    title: "Who is Leonid? Everything we know, and why it matters more than anything else in this case.",
+    excerpt: "No last name. No academic affiliation. No published work. Vane describes him from sociological distance in 2020, and ends up unable to describe him at all by December 2021. That movement is the question.",
+    votes: 112,
+    comments: 847,
+    flair: "Research",
+    hot: true,
+  },
+  {
+    id: "calloway_ethics",
+    user: "u/pelican_athanor",
+    time: "October 3, 2022",
+    title: "The Calloway Notes: What We Have, What We Should Do With It, and Why I'm Not Sure",
+    excerpt: "A set of clinical session notes from Vane's psychiatrist has come into circulation. They are almost certainly genuine. I want to talk about what we should do with them before we go further.",
+    votes: 89,
+    comments: 156,
+    flair: "Ethics",
   },
   {
     id: "calloway_leak",
@@ -1564,6 +1594,16 @@ const SUBREDDIT_POSTS = [
     comments: 147,
     flair: "ACHERON",
     hot: true,
+  },
+  {
+    id: "sightlines_discussion",
+    user: "u/grant_poole",
+    time: "November 15, 2022",
+    title: "I wrote something about this case. I want to share it here first.",
+    excerpt: "The piece is called 'The Man Called Leonid: Intelligence Assets, Consciousness Research, and a Missing Professor in New Orleans.' 6,000 words. I'm posting it here before it goes wider.",
+    votes: 67,
+    comments: 312,
+    flair: "ACHERON",
   },
   {
     id: "coordinates",
@@ -1888,6 +1928,106 @@ function SubredditView({ dispatch }) {
                       <div className="comment">
                         <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · Oct 18, 2022, 3:41 AM</div>
                         <div className="c-body">The coordinates are in the texts, not the footnotes. You are reading the map when you should be reading the territory.</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "cipher_discovery" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/archive_deep</span> · May 6, 2022</div>
+                        <div className="c-body">It was in his research folder under a directory called VIG. I can't find anything that tells me what VIG stands for. His faculty page doesn't use that acronym. The other files in the folder are password protected. This one isn't.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/Thoth_R</span> · May 6, 2022</div>
+                        <div className="c-body">ok so vig is a vigenere cipher. or viridarium ignis which is a latin phrase meaning fire garden or burning garden. that comes up in certain alchemical texts. wait</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/cipher_enthusiast</span> · May 7, 2022</div>
+                        <div className="c-body">The character set is printable ASCII. No spaces. The distribution of uppercase vs lowercase is unusual. Not random. My working hypothesis: running key or Vigenere. The kind of cipher that uses a known text as the key. He was a scholar. He had a reading list. The key is somewhere in what he was reading.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/Thoth_R</span> · May 9, 2022</div>
+                        <div className="c-body">update: the only key text that produces readable output is William James, Varieties of Religious Experience, Chapter 16, "Mysticism." The phrase it decodes to: WHAT HATH BEEN DONE TO THE WATER CANNOT BE DONE TO THE FIRE. I have no idea where that quote is from.</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/marginal_theorist</span> · May 9, 2022</div>
+                        <div className="c-body">The phrase is from an unattributed 16th century manuscript tradition related to what scholars sometimes call "the Alexandrian synthesis." If Vane had manuscript materials, if he was corresponding with rare books dealers, this is exactly what that kind of material would look like.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · May 10, 2022, 2:44 AM</div>
+                        <div className="c-body">The message tells you what happened. Not what will happen. He wasn't sending instructions. He was recording a state.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · May 10, 2022</div>
+                        <div className="c-body">We have a partial decode. A phrase of unknown provenance that fits his late-period interests. Evidence that the cipher was uploaded deliberately in December 2021. I believe leaving it on a public server was intentional. <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.CIPHER })}>View the encrypted file here.</span></div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "calloway_ethics" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · October 3, 2022</div>
+                        <div className="c-body">These are private medical documents. Vane never consented to having these shared publicly. The clinician never consented. But we are a community trying to understand what happened to a man who may be in danger. I am asking the community to weigh in before we proceed.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/bayou_rationalist</span> · October 3, 2022</div>
+                        <div className="c-body">The notes describe a patient whose precision doesn't change. What changes is what the precision is being applied to. By session 14 the clinician has stopped trying to categorize his presentation. The notes end with something the clinician wrote as: "This is the problem."</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/archive_deep</span> · October 3, 2022</div>
+                        <div className="c-body">The line that got me was in session 7. He says "the material has begun to require a different kind of attention than attention at a distance permits." That's from someone reading texts about interior transformation and finding that the texts won't let you stay outside them. He's describing it accurately. He's not afraid of it. <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.CLINICAL_NOTE })}>Session notes here.</span></div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · October 5, 2022, 2:11 AM</div>
+                        <div className="c-body">The clinician's uncertainty is not a failure of the clinical record. It's the record. He understood the framework for what he was experiencing. He had built the framework. And then he experienced the thing the framework was built to describe. The notes don't describe a man falling apart. They describe a man holding together under conditions that weren't designed to hold anything at all.</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "leonid" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/archive_rabbit</span> · September 21, 2022</div>
+                        <div className="c-body">Here's the progression in Vane's own words. Autumn 2020: "The host, who goes by Leonid, appears to have no academic training in the material but functions with a precision the trained practitioners in the room cannot match." Spring 2021: "Asked Leonid about lineage. He named no teacher, no school, no text. When I pressed he said: the tree doesn't study trees." Final reference, winter 2021: "He did not say it like a teacher. He said it like someone reading directions off a sign." What changes is not what Leonid does. What changes is Vane's ability to describe it.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · September 23, 2022, 1:08 AM</div>
+                        <div className="c-body">The question is not who he is or where he came from or whether the government knew about him. Those are all questions about apparatus. The question is what he does and whether you are willing to understand what "does" means when the instrument is attention itself. He found the thing the apparatus was built around.</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/leonid_watches</span> · September 22, 2022</div>
+                        <div className="c-body">He knows you are looking. He has always known. He is not hiding. He is simply not in the place the maps say he is.</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/leonid_watches</span> · September 22, 2022</div>
+                        <div className="c-body">The difference between those things is smaller than you think.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · September 25, 2022</div>
+                        <div className="c-body">The question "who is Leonid" is not one this community is equipped to answer. Not because the information isn't there. Because the answer requires a different kind of attention than the kind we've been using. I don't know what that means, exactly. But something about this case keeps insisting on it.</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "sightlines_discussion" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/grant_poole</span> · November 15, 2022</div>
+                        <div className="c-body">It is a documented history of government interest in consciousness research and an examination of how that history creates conditions in which someone like Vane could intersect with someone like Leonid in ways that have nothing innocent about them. I am not claiming Vane was murdered, recruited, or controlled. I am making a narrower argument: the institutional architecture has a history, and the history is documented. <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.SIGHTLINES })}>Read the full piece here.</span></div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/archive_rabbit</span> · November 15, 2022</div>
+                        <div className="c-body">The piece is coherent. But there's another possibility it doesn't consider. What if what happened to Vane has nothing to do with the intelligence community at all? The documented history is of people trying to institutionalize something that existed before the institution. The institution is a response, not a cause.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/archive_deep</span> · November 16, 2022</div>
+                        <div className="c-body">The ACHERON documents include a photograph on page 34 that Poole doesn't describe in detail. He says it "substantially changed the direction of this investigation" and that he is choosing not to publish it at this time. What is on page 34?</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/grant_poole</span> · November 16, 2022</div>
+                        <div className="c-body">I'm not going to discuss the photograph at this time. I want to verify additional information before I put it into public circulation. What I can say is that it was not withheld because it supports a simple explanation.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · November 17, 2022, 1:22 AM</div>
+                        <div className="c-body">The framework is wrong. Not wrong in the way that facts are wrong. Wrong in the way that a map is wrong when it shows you exactly where you are and not at all what it means to be there. What happened to Vane did not happen because of the apparatus. It happened in spite of it, or before it, or underneath it.</div>
                       </div>
                     </div>
                   )}
@@ -3824,7 +3964,7 @@ function SeventhView() {
 // MAIN APP
 // ═══════════════════════════════════════════════════════
 
-function ViridiariumIgnis() {
+export default function ViridiariumIgnis() {
   const [state, dispatch] = useReducer(reducer, {
     view: VIEWS.SUBREDDIT,
     subId: null,

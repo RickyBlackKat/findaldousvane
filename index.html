@@ -72,6 +72,7 @@ const VIEWS = {
   ACCESS_LOG: "access_log",
   ENCLOSED_FIELD: "enclosed_field",
   JAMES_PAPER: "james_paper",
+  LEONID_MANUSCRIPT: "leonid_manuscript",
 };
 
 function reducer(state, action) {
@@ -1607,6 +1608,17 @@ const SUBREDDIT_POSTS = [
     hot: true,
   },
   {
+    id: "leonid_pages",
+    user: "u/archive_rabbit",
+    time: "October 8, 2022",
+    title: "I found typed pages in the meeting house. Twelve numbered sections. No author. No date. This is what he was teaching them.",
+    excerpt: "I went to the Bywater address. The door was unlocked. The house is empty now. But in the back room, under a radiator, there were pages. Typewritten. Courier font. Old European paper stock. Numbered 1 through 12. No name on them anywhere. I photographed every page. I think this is what Leonid was giving to the group. I think Vane was sitting in that room reading these words.",
+    votes: 234,
+    comments: 178,
+    flair: "Evidence",
+    hot: true,
+  },
+  {
     id: "calloway_ethics",
     user: "u/pelican_athanor",
     time: "October 3, 2022",
@@ -2055,6 +2067,34 @@ function SubredditView({ dispatch }) {
                       </div>
                     </div>
                   )}
+                  {post.id === "leonid_pages" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/archive_rabbit</span> · October 8, 2022</div>
+                        <div className="c-body">The house on Burgundy Street. I went on a Thursday afternoon. The door was not locked. The front room was empty, chairs in a circle, nothing on the walls. The back room had a desk and a radiator. Under the radiator, wedged between the coil and the baseboard, twelve typed pages. European paper. Heavier than American letter stock. No watermark I could identify. Courier typeface, slightly uneven. A manual typewriter, not electric. No title. No author. No date anywhere. Numbered 1 through 12. I photographed every page. <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.LEONID_MANUSCRIPT })}>View the scanned pages</span>.</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/Thoth_R</span> · October 8, 2022</div>
+                        <div className="c-body">Section 12. Read section 12. "The scholar among you. You know who you are. You have read more about this than anyone in this room, including me." That is addressed to Vane. Leonid is talking directly to Vane. "Your understanding is the most sophisticated obstacle I have ever encountered." This is the voice of the man who changed Vane's life and he is telling Vane that everything Vane knows is the problem.</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · October 9, 2022</div>
+                        <div className="c-body">Section 9 is the one that disturbs me. The reading of the Gospel where the betrayer is the most advanced student. "The rope and the tree afterward are not remorse but the final gesture of a man who has completed something and has no further use for the vehicle that completed it." This is not a standard theological position. This is something else entirely. I understand now why Vane could not write about this man from analytical distance.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/bayou_rationalist</span> · October 9, 2022</div>
+                        <div className="c-body">I want to be careful here. These pages could have been placed there by anyone. There is no chain of custody. There is no proof Leonid typed them. There is no proof they were used in any meeting Vane attended. We are looking at unsigned, undated pages found under a radiator in an unlocked house.</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/archive_rabbit</span> · October 9, 2022</div>
+                        <div className="c-body">The paper is European. The typewriter is manual. The voice matches the Leonid interview in the Osei file exactly. "The tree doesn't study trees." This is the same person.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · October 10, 2022, 3:14 AM</div>
+                        <div className="c-body">He left them there on purpose. He leaves everything on purpose. The question is not whether they are authentic. The question is whether you can read them without the machine recapturing your attention. Section 4 tells you how. You will not do it.</div>
+                      </div>
+                    </div>
+                  )}
                   {post.id === "calloway_ethics" && (
                     <div className="comment-section">
                       <div className="comment">
@@ -2497,6 +2537,283 @@ function JamesPaperView({ dispatch }) {
         style={{ width: "100%", maxWidth: 900, height: "calc(100vh - 100px)", border: "none", borderRadius: 4 }}
         title="Vane - James at the Limit (2017)"
       />
+    </div>
+  );
+}
+
+// ── Leonid Manuscript (Scanned Pages) ──
+function LeonidManuscriptView({ dispatch }) {
+  const pages = [
+    // Page 1: Sections 1-2
+    [
+      { n: "1.", body: [
+        "You are asleep. This is not a metaphor. You are asleep in the way a man is asleep who dreams he is reading a sentence about sleep and believes, because the sentence is interesting, that he is awake.",
+        "There are four conditions of seeing. You know only three. In the first you are deep in the dark with no image at all. In the second the images come and you move among them believing they are real. In the third, the one you call your waking life, the images are more stable and the belief is more sophisticated but the mechanism is the same. You respond to what appears. You do not see the appearing. The fourth is what happens when the dreamer turns and sees the dream as a dream. That turning has nothing to do with the content of the dream. It is a different act entirely.",
+        "You will object. You will say: I am reading this. I am aware. But a man who is dreaming may also read within the dream and call it awareness. The dreamer responds to the dream. The dreamer makes choices within the dream. The dreamer feels emotion, thinks thoughts, forms opinions. None of this constitutes waking. Waking is the seeing of the dream as dream. That moment does not belong to the dream.",
+      ]},
+      { n: "2.", body: [
+        "Man is a machine. This statement is not hostile. It is a description. A machine is a system that responds to inputs according to fixed patterns. Press here, receive there. The response is not chosen. It is produced. The sensation of choosing accompanies the response but does not cause it, the way a shadow accompanies a body but does not move it.",
+      ]},
+    ],
+    // Page 2: Section 2 cont + 3
+    [
+      { n: null, body: [
+        "Observe yourself for one day. Not casually. With the attention you would give to something you were being paid to watch. Note how you respond to an insult. Note how you respond to praise. Note the face that arises when someone you desire enters the room. In each case the response is already complete before you decide to have it. The decision arrives after, like a caption written beneath a photograph already taken.",
+        "What has been called, in various places and centuries, the automatic self, the commanding self, the shell around the spark: these are descriptions of the same mechanism. A system of reactions operating continuously, producing the sensation of a coherent person, and which is not the person. The machine is not broken. It functions as designed. The difficulty is not malfunction. The difficulty is that you believe you are the machine.",
+      ]},
+      { n: "3.", body: [
+        "There are two errors. The first is to believe you are the machine. The second is to believe you can stop the machine by wanting to stop it. Both errors arise from the same source: the machine itself, which produces both the identification and the desire to escape the identification.",
+        "The wanting is produced by the machine. The plan to escape is produced by the machine. The sense of progress is produced by the machine. The spiritual ambition is produced by the machine. Even the recognition that you are a machine can be swallowed by the machine and made into another reaction, another shell, another comfortable position from which to sleep.",
+      ]},
+    ],
+    // Page 3: Section 3 cont + 4
+    [
+      { n: null, body: [
+        "A man once said: the soul must become poor even of the desire to be poor. The wanting must go. The knowing must go. The self that undertakes the journey must go. What remains when even the desire for freedom is surrendered is not nothing. But it cannot be described by the one who has not arrived, because the one who would do the describing is precisely the thing that must be surrendered.",
+        "This is the trap. It is not a trap that cleverness can solve.",
+      ]},
+      { n: "4.", body: [
+        "What then.",
+        "Practice. But not the practice you imagine.",
+        "Not concentration. Not visualization. Not repetition of words. Not the arrangement of the body. These are tools. Some are useful. None are the practice.",
+        "The practice is self-observation without commentary. That is all. Watch. Do not interpret. Do not judge. Do not improve. Watch the machine operate. Watch the reactions arise. Watch the stories generate themselves. Watch the identification reform itself after each moment of seeing. Watch yourself forget that you were watching. Then, when you remember, watch again.",
+        "This has been called just sitting. It has been called watchfulness. It has been called vigilance. In every case the instruction is the same: attend to what is happening without participating in it. The moment you participate, you have become the machine again. The moment you observe without participating, something else is present. That something else is what you are.",
+      ]},
+    ],
+    // Page 4: Sections 5-6
+    [
+      { n: "5.", body: [
+        "You will fail at this continuously. This is normal. The failure is the practice. Each time you forget and then remember, a small interval opens. In that interval, before the machine recaptures your attention, something is visible. The interval is very brief. It may last half a second. It is enough.",
+        "The sparks are scattered throughout ordinary experience, trapped in the shells of the automatic life. The work is to find them. But the finding is not done by the ordinary mind. The ordinary mind is another shell. The finding happens in the interval between the forgetting and the remembering. The spark is visible only when the shell is seen as a shell.",
+        "The interval grows. Not through effort. Through repetition. The repeated act of seeing, then forgetting, then seeing again gradually changes the relationship between the seeing and the machine. The machine does not stop. It never stops. But the identification weakens. You begin to stand beside it rather than inside it. You begin to hear your own reactions as sounds made by something other than yourself.",
+        "This is uncomfortable. It should be.",
+      ]},
+      { n: "6.", body: [
+        "There are four stages. They have been described by color. Black. White. Yellow. Red.",
+      ]},
+    ],
+    // Page 5: Section 6 cont
+    [
+      { n: null, body: [
+        "Black is the stage of seeing what you are. It is dark because what you see is the machine in its entirety: the pettiness, the vanity, the fear, the mechanical repetition of patterns you believed were choices. Everyone who begins serious observation passes through this. Many stop here. The sight of the machine is intolerable to the machine.",
+        "White is the stage of separation. The observer becomes distinct from the observed. This is not dissociation. Dissociation is a defense mechanism. Separation is a recognition. You are not the thing you are watching. The thing you are watching is the performance. You are what watches. This stage is quiet. It feels like relief. Many mistake it for the end.",
+        "Yellow is the stage that language has the most difficulty describing. Something new enters. Not from outside. From a direction that has no name in ordinary language. It has been placed at the center of the diagram, at the point where the upper and lower worlds converge. It has been called the recognition of what was always there. It has been called the encounter with what is full. Each description is pointing at the same event: a quality of light that was always present but could not be perceived while the performance was being mistaken for the performer.",
+        "Red I will not describe. Those who arrive there do not need the description. Those who have not arrived cannot use it. What I will say is this: what was separated is reunited. What was divided is made whole. The observer and the observed are revealed as one thing. But the one thing is not what either of them was. It is something that includes both and exceeds both. It has been called annihilation. It has been called cleaving. It has been called the cessation of the one who seeks cessation. The name does not matter. The arriving does.",
+      ]},
+    ],
+    // Page 6: Section 7 + 8
+    [
+      { n: "7.", body: [
+        "You will want to know if this is real.",
+        "The wanting is the machine.",
+        "You will want to know if I have experienced it.",
+        "The wanting is the machine.",
+        "You will want to know if all the accounts, in every language and century, can be reconciled into a single coherent map.",
+        "The wanting is the machine.",
+        "The map is not the territory. But the map is not useless. The map tells you something about the mapmaker's eyes. What all the maps share, regardless of the vocabulary and the century and the climate in which they were drawn, is this: they were made by people who went somewhere that language cannot follow. They came back. They attempted to speak about what they had seen. The vocabulary differed. What it pointed at did not. The finger is not the moon. But every finger points at the same moon.",
+      ]},
+      { n: "8.", body: [
+        "A note on teachers.",
+        "A teacher is not someone who gives you the answer. A teacher is someone who removes the obstacles to your own seeing. The obstacles are subtle. They include your ideas about what seeing is. They include your ideas about what a teacher is. They include your ambition to see. They include your humility about not seeing. Every idea you have about the process is an obstacle, including this one.",
+      ]},
+    ],
+    // Page 7: Section 8 cont
+    [
+      { n: null, body: [
+        "There was a teacher who cut a living thing in half to end an argument about who owned it. He was not teaching violence. He was demonstrating what happens when the grasping mind is severed from its object. The students argued about possession. The teacher removed the thing they were trying to possess through argument. One student, who arrived late, put his shoes on his head. The teacher said: if you had been here, the thing would have been saved. The student's response was not an answer. It was a demonstration that he had already stopped arguing.",
+        "There was a teacher whose presence was the teaching. People came to him and were changed, not by what he said but by the quality of attention he brought to them. He looked at them and they became visible to themselves. This is what a teacher does. Not instruction. Recognition.",
+        "There was a man who said I am the Truth. They killed him for it. Not because he was wrong. Because what he said, if heard, dissolves every institution that stands between the person and the thing itself. No institution survives a direct encounter. No institution is designed to. Institutions exist to manage the encounter, to make it gradual, to make it survivable. This man bypassed the management. The result was inevitable.",
+      ]},
+    ],
+    // Page 8: Section 9 (the Gospel / Judas section)
+    [
+      { n: "9.", body: [
+        "A note on the story that everyone knows and no one reads.",
+        "The teacher chose twelve. This is the number of completion in the old counting, the number of months, of tribes, of gates. Twelve is the whole world in miniature. He chose the whole world. And of the whole world he chose, one was set apart.",
+        "The others were given to understand in parables. The one who was set apart was given to understand directly. This is in the text. It is not hidden. The teacher took him aside. The teacher told him what the others were not ready to hear. The teacher entrusted him with the act that none of the others could perform.",
+        "Consider this carefully. The act that completed the work was not performed by the faithful. It was performed by the one who appeared to betray. The faithful stood at a distance and wept. The betrayer closed the distance. The betrayer handed over what had to be handed over. Without the handing over, the work does not complete. Without the completion, there is no story. Without the story, there is nothing to build the institution upon.",
+      ]},
+    ],
+    // Page 9: Section 9 cont
+    [
+      { n: null, body: [
+        "The betrayer is the one the teacher trusted most. Not least. Most. The others were trusted with the message. The betrayer was trusted with the act. The message can be distorted, edited, mistranslated, adapted, made safe. The act cannot. The act is irreversible. It requires someone willing to be destroyed by it. The faithful preserve their names. The betrayer's name becomes the word for treachery in every language his story touches. He accepted this. He was asked to accept this. The teacher asked him.",
+        "I am not saying this is what happened. I am saying that a reading of the text exists in which the despised one is the most advanced student, and the handing over is not a failure of loyalty but the completion of an assignment that only the most loyal could be trusted to carry out. That the rope and the tree afterward are not remorse but the final gesture of a man who has completed something and has no further use for the vehicle that completed it.",
+        "This reading has been suppressed in every century it has surfaced. It surfaces anyway. It cannot be killed because it is in the text. The text says what it says. The institution says what the institution needs the text to say. These are not the same.",
+        "You will find this dangerous. It should be dangerous. Anything that touches the actual mechanism of the story is dangerous to those who have built their lives on the story's surface.",
+      ]},
+    ],
+    // Page 10: Section 10
+    [
+      { n: "10.", body: [
+        "A note on danger.",
+        "This work is dangerous. Not in the way that labor is dangerous. In the way that seeing clearly is dangerous to a life built on not seeing.",
+        "Four entered the orchard. One looked and died. One looked and went mad. One looked and destroyed his own community, his name, his faith: he cut what held him to the world. Only one entered in peace and departed in peace.",
+        "Four entered. One survived intact. This is not a parable. It is a ratio. The ratio has held in every century and every place where this work has been attempted seriously. One looked and the body could not sustain what was seen. One looked and the mind could not sustain what was seen. One looked and the social self could not sustain what was seen. These are real outcomes. They have happened to real people in every generation since the orchard was first described.",
+        "You are not being invited to something safe. You are being invited to something real. The difference between safe and real is the difference between reading about fire and placing your hand in it. Both involve fire. Only one involves you.",
+      ]},
+    ],
+    // Page 11: Section 11
+    [
+      { n: "11.", body: [
+        "A question for Tuesday.",
+        "When you sat in silence at the end of last week, something happened. You felt it. You looked at me afterward as if expecting me to name it. I did not name it because naming it would have returned it to the machine. The machine is very good at naming. Naming is how it recaptures what has escaped.",
+        "The question is not what happened. The question is: who was present when it happened? Not who in the room. Who inside you. Because the one who felt it is not the one who is now trying to remember it. The one who felt it does not try. The one who felt it does not remember. The one who felt it is still there, underneath, quiet, waiting for the noise to stop.",
+        "It has been said: the self is not attained by instruction, nor by intellect, nor by much hearing. It is attained by the one whom it chooses. To such a one it reveals its own nature.",
+        "You cannot choose this. But you can stop refusing it.",
+        "That is enough for now.",
+      ]},
+    ],
+    // Page 12: Section 12
+    [
+      { n: "12.", body: [
+        "One more thing.",
+        "The scholar among you. You know who you are. You have read more about this than anyone in this room, including me. You have read the old sources. You have read the commentaries. You have read the commentaries on the commentaries. You have read everything. You have understood everything. You have written about everything. Your understanding is the most sophisticated obstacle I have ever encountered.",
+        "I say this with respect. Your scholarship is extraordinary. It is also the last wall. Every other wall has come down. The personal history, the professional identity, the social self, all of these you have seen through. But the understanding remains. The understanding says: I comprehend this. I can place it within a framework. I can compare it across systems. I can analyze its functions.",
+        "Yes. You can. And this is the obstacle. Because the thing itself is not a framework. It is not a system. It is not a function. It is the thing the frameworks were built to point at, and the frameworks cannot cross the distance between pointing and arriving. No amount of pointing arrives. The finger is not the moon. Your finger is more articulate than most. It is still a finger.",
+        "You will need to put the books down. Not forever. For long enough to discover what is there when the books are not. What is there is not nothing. But it has no footnotes.",
+      ]},
+    ],
+  ];
+
+  const [currentPage, setCurrentPage] = React.useState(0);
+
+  // Deterministic pseudo-random for each page's crumple artifacts
+  const pageArtifacts = React.useMemo(() => {
+    return pages.map((_, i) => {
+      const seed = i * 7 + 3;
+      const rot = ((seed * 13) % 7 - 3) * 0.15;
+      const stainX = 20 + (seed * 41) % 60;
+      const stainY = 15 + (seed * 29) % 65;
+      const stainSize = 40 + (seed * 17) % 60;
+      const stainOpacity = 0.03 + ((seed * 11) % 5) * 0.008;
+      const foldX = 10 + (seed * 37) % 80;
+      const foldAngle = -5 + (seed * 19) % 10;
+      const edgeDark = 0.02 + ((seed * 23) % 4) * 0.005;
+      const hasCornerFold = i === 2 || i === 7 || i === 10;
+      const hasCoffeeRing = i === 0 || i === 5 || i === 8;
+      return { rot, stainX, stainY, stainSize, stainOpacity, foldX, foldAngle, edgeDark, hasCornerFold, hasCoffeeRing };
+    });
+  }, []);
+
+  const scanPageStyle = {
+    position: "relative",
+    background: "#e8e0d0",
+    maxWidth: 680,
+    width: "100%",
+    margin: "0 auto 24px",
+    padding: "60px 64px 64px",
+    fontFamily: "'Courier New', Courier, monospace",
+    fontSize: 13,
+    lineHeight: "20px",
+    color: "#2a2520",
+    boxShadow: "0 2px 20px rgba(0,0,0,0.5), inset 0 0 80px rgba(0,0,0,0.06)",
+    borderRadius: 1,
+    overflow: "hidden",
+  };
+
+  return (
+    <div style={{ background: "#1a1a1a", minHeight: "100vh", padding: "20px 16px" }}>
+      <style>{`
+        .scan-crumple-overlay {
+          position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 2;
+          background:
+            repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.008) 2px, rgba(0,0,0,0.008) 3px),
+            repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.005) 3px, rgba(0,0,0,0.005) 4px);
+        }
+        .scan-vignette {
+          position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 3;
+          box-shadow: inset 0 0 60px rgba(0,0,0,0.12), inset 0 0 120px rgba(0,0,0,0.06);
+        }
+        .scan-fold-line {
+          position: absolute; left: 0; right: 0; height: 1px; pointer-events: none; z-index: 2;
+          background: linear-gradient(90deg, transparent 5%, rgba(0,0,0,0.06) 20%, rgba(0,0,0,0.08) 50%, rgba(0,0,0,0.06) 80%, transparent 95%);
+          box-shadow: 0 1px 0 rgba(255,255,255,0.04);
+        }
+        .scan-coffee-ring {
+          position: absolute; pointer-events: none; z-index: 1; border-radius: 50%;
+          border: 2px solid rgba(139,109,71,0.08);
+          box-shadow: inset 0 0 8px rgba(139,109,71,0.04), 0 0 4px rgba(139,109,71,0.03);
+        }
+        .scan-corner-fold {
+          position: absolute; bottom: 0; right: 0; width: 32px; height: 32px; z-index: 4; pointer-events: none;
+          background: linear-gradient(315deg, #d4cbb8 0%, #d4cbb8 45%, transparent 50%);
+          box-shadow: -1px -1px 2px rgba(0,0,0,0.08);
+        }
+        .scan-edge-noise {
+          position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 1;
+          box-shadow: inset 3px 0 8px rgba(0,0,0,0.04), inset -3px 0 8px rgba(0,0,0,0.04), inset 0 3px 8px rgba(0,0,0,0.03), inset 0 -3px 8px rgba(0,0,0,0.03);
+        }
+        .typed-section-num {
+          font-weight: bold; margin-bottom: 10px; letter-spacing: 1px;
+        }
+        .typed-para {
+          margin-bottom: 14px; text-indent: 0; text-align: left; word-spacing: 1px;
+          letter-spacing: 0.3px;
+        }
+        .typed-para::selection { background: rgba(139,109,71,0.3); }
+        .leonid-page-nav {
+          display: flex; justify-content: center; align-items: center; gap: 12px;
+          margin: 16px auto; max-width: 680px;
+        }
+        .leonid-page-btn {
+          background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+          color: #999; padding: 6px 16px; cursor: pointer; font-family: 'Courier New', monospace;
+          font-size: 11px; border-radius: 2px; transition: all 0.2s;
+        }
+        .leonid-page-btn:hover { background: rgba(255,255,255,0.1); color: #ccc; }
+        .leonid-page-btn:disabled { opacity: 0.3; cursor: default; }
+        .leonid-page-indicator { color: #666; font-family: 'Courier New', monospace; font-size: 11px; }
+        .leonid-scan-label {
+          position: absolute; bottom: 12px; right: 20px; font-size: 9px;
+          color: rgba(0,0,0,0.15); font-family: 'Courier New', monospace; letter-spacing: 1px; z-index: 5;
+        }
+      `}</style>
+
+      <div style={{ maxWidth: 680, width: "100%", margin: "0 auto 12px", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 4px" }}>
+        <div>
+          <div style={{ color: "#999", fontSize: 12, fontFamily: "'Courier New', monospace" }}>SCANNED DOCUMENT: typed pages, unnumbered, undated</div>
+          <div style={{ color: "#666", fontSize: 11, fontFamily: "'Courier New', monospace", marginTop: 2 }}>Found in Bywater meeting house, October 2022. European paper stock. Manual typewriter.</div>
+        </div>
+        <span style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12, fontFamily: "'Courier New', monospace", whiteSpace: "nowrap" }} onClick={() => dispatch({ type: "back" })}>Back</span>
+      </div>
+
+      <div style={{ ...scanPageStyle, transform: "rotate(" + pageArtifacts[currentPage].rot + "deg)" }}>
+        <div className="scan-crumple-overlay" />
+        <div className="scan-vignette" />
+        <div className="scan-edge-noise" />
+        <div className="scan-fold-line" style={{ top: (35 + pageArtifacts[currentPage].foldX * 0.3) + "%", transform: "rotate(" + pageArtifacts[currentPage].foldAngle * 0.1 + "deg)" }} />
+        {pageArtifacts[currentPage].hasCornerFold && <div className="scan-corner-fold" />}
+        {pageArtifacts[currentPage].hasCoffeeRing && (
+          <div className="scan-coffee-ring" style={{
+            width: pageArtifacts[currentPage].stainSize,
+            height: pageArtifacts[currentPage].stainSize,
+            left: pageArtifacts[currentPage].stainX + "%",
+            top: pageArtifacts[currentPage].stainY + "%",
+          }} />
+        )}
+        <div className="leonid-scan-label">scan {currentPage + 1} of {pages.length}</div>
+
+        <div style={{ position: "relative", zIndex: 5 }}>
+          {pages[currentPage].map((section, si) => (
+            <div key={si} style={{ marginBottom: si < pages[currentPage].length - 1 ? 24 : 0 }}>
+              {section.n && <div className="typed-section-num">{section.n}</div>}
+              {section.body.map((para, pi) => (
+                <div key={pi} className="typed-para">{para}</div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="leonid-page-nav">
+        <button className="leonid-page-btn" disabled={currentPage === 0} onClick={() => setCurrentPage(currentPage - 1)}>prev</button>
+        <span className="leonid-page-indicator">{currentPage + 1} / {pages.length}</span>
+        <button className="leonid-page-btn" disabled={currentPage === pages.length - 1} onClick={() => setCurrentPage(currentPage + 1)}>next</button>
+      </div>
+      <div style={{ textAlign: "center", marginTop: 8 }}>
+        <span style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 11, fontFamily: "'Courier New', monospace" }} onClick={() => dispatch({ type: "back" })}>return to thread</span>
+      </div>
     </div>
   );
 }
@@ -4311,6 +4628,9 @@ function ViridiariumIgnis() {
       case VIEWS.JAMES_PAPER:
         console.log("%cjames_paper: %cthis is the paper where he describes exactly what will happen to him. he calls it james's problem. it was never james's problem. it was his.", "color: #999; font-size: 10px;", "color: #4FBCFF; font-size: 10px;");
         return <JamesPaperView dispatch={dispatch} />;
+      case VIEWS.LEONID_MANUSCRIPT:
+        console.log("%cleonid_manuscript: %cman is a machine. the machine is not broken. the difficulty is that you believe you are the machine.", "color: #999; font-size: 10px;", "color: #c9a96e; font-size: 10px;");
+        return <LeonidManuscriptView dispatch={dispatch} />;
       case VIEWS.SEVENTH:
         return <SeventhView />;
       case VIEWS.MAP:

@@ -1497,6 +1497,53 @@ body { background: #0a0a0a; }
 
 const SUBREDDIT_POSTS = [
   {
+    id: "enclosed_field",
+    user: "u/pelican_athanor",
+    time: "June 15, 2022",
+    title: "Close Reading: Vane's 2021 MTSR paper 'The Enclosed Field.' He described exactly what happened to him.",
+    excerpt: "Vane published this in Method & Theory in the Study of Religion four months before he vanished. He describes 'a precipice' where the scholar must choose between analytical distance and crossing a boundary. He uses the phrase 'the gate admits no one who has not already been changed by the approach.' Two other scholars have since published responses.",
+    votes: 2847,
+    comments: 389,
+    flair: "Evidence",
+    hot: true,
+    pinned: true,
+  },
+  {
+    id: "sightlines",
+    user: "u/pelican_athanor",
+    time: "November 12, 2022",
+    title: "Grant Poole just published a piece in SIGHTLINES connecting Vane to a CIA program called ACHERON",
+    excerpt: "Poole obtained FOIA documents. A CIA program from the 1980s studying 'anomalous cognition' in contemplative practitioners. One photo shows a man in a room that looks exactly like the Bywater parlor.",
+    votes: 380,
+    comments: 147,
+    flair: "ACHERON",
+    hot: true,
+    pinned: true,
+  },
+  {
+    id: "sightlines_discussion",
+    user: "u/grant_poole",
+    time: "November 15, 2022",
+    title: "I wrote something about this case. I want to share it here first.",
+    excerpt: "The piece is called 'The Man Called Leonid: Intelligence Assets, Consciousness Research, and a Missing Professor in New Orleans.' 6,000 words. I'm posting it here before it goes wider.",
+    votes: 67,
+    comments: 312,
+    flair: "ACHERON",
+    pinned: true,
+  },
+  {
+    id: "final_post",
+    user: "u/AVane",
+    time: "January 6, 2023, 12:01 AM",
+    title: "The seventh has no name. But it is not nothing. Tell Clara I am well.",
+    excerpt: "",
+    votes: 2847,
+    comments: 1203,
+    flair: null,
+    hot: true,
+    special: true,
+  },
+  {
     id: "founding",
     user: "u/pelican_athanor",
     time: "April 23, 2022",
@@ -1590,38 +1637,6 @@ const SUBREDDIT_POSTS = [
     flair: "Cipher",
   },
   {
-    id: "enclosed_field",
-    user: "u/pelican_athanor",
-    time: "June 15, 2022",
-    title: "Close Reading: Vane's 2021 MTSR paper 'The Enclosed Field.' He described exactly what happened to him.",
-    excerpt: "Vane published this in Method & Theory in the Study of Religion four months before he vanished. He describes 'a precipice' where the scholar must choose between analytical distance and crossing a boundary. He uses the phrase 'the gate admits no one who has not already been changed by the approach.' Two other scholars have since published responses.",
-    votes: 2847,
-    comments: 389,
-    flair: "Evidence",
-    hot: true,
-  },
-  {
-    id: "sightlines",
-    user: "u/pelican_athanor",
-    time: "November 12, 2022",
-    title: "Grant Poole just published a piece in SIGHTLINES connecting Vane to a CIA program called ACHERON",
-    excerpt: "Poole obtained FOIA documents. A CIA program from the 1980s studying 'anomalous cognition' in contemplative practitioners. One photo shows a man in a room that looks exactly like the Bywater parlor.",
-    votes: 380,
-    comments: 147,
-    flair: "ACHERON",
-    hot: true,
-  },
-  {
-    id: "sightlines_discussion",
-    user: "u/grant_poole",
-    time: "November 15, 2022",
-    title: "I wrote something about this case. I want to share it here first.",
-    excerpt: "The piece is called 'The Man Called Leonid: Intelligence Assets, Consciousness Research, and a Missing Professor in New Orleans.' 6,000 words. I'm posting it here before it goes wider.",
-    votes: 67,
-    comments: 312,
-    flair: "ACHERON",
-  },
-  {
     id: "coordinates",
     user: "u/Thoth_R",
     time: "November 28, 2022",
@@ -1630,18 +1645,6 @@ const SUBREDDIT_POSTS = [
     votes: 94,
     comments: 56,
     flair: "Evidence",
-  },
-  {
-    id: "final_post",
-    user: "u/AVane",
-    time: "January 6, 2023, 12:01 AM",
-    title: "The seventh has no name. But it is not nothing. Tell Clara I am well.",
-    excerpt: "",
-    votes: 2847,
-    comments: 1203,
-    flair: null,
-    hot: true,
-    special: true,
   },
 ];
 
@@ -1724,19 +1727,54 @@ function SubredditView({ dispatch }) {
       <div className="reddit-body">
         <div className="reddit-sidebar">
           <h3>About this community</h3>
-          <div className="member-count">Created April 23, 2022</div>
-          <p>Documenting the disappearance of Dr. Aldous Vane, Associate Professor of Religion, Psychology, and Social Thought at Beaumont University, New Orleans. Last seen January 6, 2022.</p>
-          <p style={{ marginTop: 8 }}>Rule 1: Stay close to evidence and close to the material.</p>
-          <span className="hidden-vane">someone is maintaining this subreddit who knows more than they post. watch pelican_athanor. watch the timestamps on lux_in_tenebris. always after midnight. always correct.</span>
+          <div className="member-count">Created April 23, 2022 · 1,427 members</div>
+          <p>Documenting the disappearance of Dr. Aldous Vane, Associate Professor of Religion, Psychology, and Social Thought at Beaumont University, New Orleans. Last confirmed sighting: January 6, 2022. NOPD case #22-00341 declared inactive February 2022. No body recovered. No note found. His wife, Clara Vane, does not believe he is dead.</p>
+          <p style={{ marginTop: 8, color: "#d7dadc", fontSize: 12, lineHeight: 1.5 }}>This subreddit exists because the people closest to Vane believe his published work, his research notes, and the encrypted files on his university server contain an answer. We are reading what he wrote. We are following where it leads.</p>
+
           <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #343536" }}>
-            <div style={{ fontSize: 11, color: "#818384", marginBottom: 8 }}>RELATED DOCUMENTS</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-              <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.FACULTY_PAGE })}>Beaumont Faculty Page</span>
-              <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.BLOG_POST, subId: 1 })}>Studies in Transmission (Blog)</span>
-              <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.DRIVE_FOLDER })}>VIG Working Docs (Drive)</span>
-              <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.PI_MEMO, subId: 1 })}>Osei Investigation File</span>
+            <div style={{ fontSize: 11, color: "#818384", marginBottom: 8, fontWeight: 600, letterSpacing: 0.5 }}>COMMUNITY RULES</div>
+            <div style={{ fontSize: 12, color: "#d7dadc", lineHeight: 1.6 }}>
+              <p style={{ marginBottom: 6 }}>1. Evidence first. Speculation is permitted but must be flagged.</p>
+              <p style={{ marginBottom: 6 }}>2. No doxxing. No contacting Vane's family, students, or colleagues unless they post here first.</p>
+              <p style={{ marginBottom: 6 }}>3. Cite your sources. OSINT methodology standards apply.</p>
+              <p style={{ marginBottom: 6 }}>4. The clinical notes exist. Discussing their content is permitted. Distributing copies is not.</p>
+              <p style={{ marginBottom: 6 }}>5. u/lux_in_tenebris is not Vane. Do not harass this account.</p>
             </div>
           </div>
+
+          <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #343536" }}>
+            <div style={{ fontSize: 11, color: "#818384", marginBottom: 8, fontWeight: 600, letterSpacing: 0.5 }}>KEY THREADS</div>
+            <div style={{ fontSize: 12, color: "#818384", lineHeight: 1.8 }}>
+              <div>The Paper: <span style={{ color: "#4FBCFF" }}>"The Enclosed Field" (MTSR 2021)</span></div>
+              <div>The Cipher: <span style={{ color: "#4FBCFF" }}>VIG_final.enc / POORINSPIRIT</span></div>
+              <div>The Teacher: <span style={{ color: "#4FBCFF" }}>Leonid (no surname, no affiliation)</span></div>
+              <div>The Notes: <span style={{ color: "#4FBCFF" }}>Calloway clinical sessions</span></div>
+              <div>The Theory: <span style={{ color: "#ff6666" }}>ACHERON / SIGHTLINES article</span></div>
+            </div>
+          </div>
+
+          <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #343536" }}>
+            <div style={{ fontSize: 11, color: "#818384", marginBottom: 8, fontWeight: 600, letterSpacing: 0.5 }}>RELATED DOCUMENTS</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.FACULTY_PAGE })}>Beaumont Faculty Page (archived)</span>
+              <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.BLOG_POST, subId: 1 })}>Studies in Transmission (Blog, 9 posts)</span>
+              <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.DRIVE_FOLDER })}>VIG Working Docs (Drive)</span>
+              <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.ENCLOSED_FIELD })}>The Enclosed Field (PDF)</span>
+              <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.PI_MEMO, subId: 1 })}>Osei Investigation File</span>
+              <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.SIGHTLINES })}>SIGHTLINES: "The Man Called Leonid"</span>
+            </div>
+          </div>
+
+          <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #343536" }}>
+            <div style={{ fontSize: 11, color: "#818384", marginBottom: 8, fontWeight: 600, letterSpacing: 0.5 }}>MODERATORS</div>
+            <div style={{ fontSize: 12, color: "#d7dadc", lineHeight: 1.8 }}>
+              <div>u/pelican_athanor <span style={{ color: "#818384" }}>(creator)</span></div>
+              <div>u/archive_deep</div>
+              <div>u/bayou_rationalist</div>
+            </div>
+          </div>
+
+          <span className="hidden-vane">someone is maintaining this subreddit who knows more than they post. watch pelican_athanor. watch the timestamps on lux_in_tenebris. always after midnight. always correct.</span>
         </div>
 
         {SUBREDDIT_POSTS.map((post) => (
@@ -1749,6 +1787,7 @@ function SubredditView({ dispatch }) {
             <div className="post-content">
               <div className="post-meta">
                 <span className="username">{post.user}</span> · {post.time}
+                {post.pinned && <span style={{ marginLeft: 8, padding: "1px 6px", background: "rgba(0,166,81,0.15)", color: "#00a651", borderRadius: 2, fontSize: 10, fontWeight: 600 }}>PINNED</span>}
                 {post.flair && <span style={{ marginLeft: 8, padding: "1px 6px", background: post.flair === "ACHERON" ? "rgba(139,0,0,0.2)" : "rgba(79,188,255,0.1)", color: post.flair === "ACHERON" ? "#ff6666" : "#4FBCFF", borderRadius: 2, fontSize: 10 }}>{post.flair}</span>}
                 {post.hot && <span style={{ marginLeft: 6, fontSize: 10, color: "#FF4500" }}>🔥</span>}
               </div>

@@ -2343,18 +2343,29 @@ function FacultyPageView({ dispatch }) {
           <span>Admissions</span>
         </div>
       </div>
+      <div style={{ background: "#f5f0e8", padding: "6px 20px", fontSize: 11, fontFamily: "'Open Sans', sans-serif", color: "#666", borderBottom: "1px solid #ddd" }}>
+        <span style={{ color: "#1B4332", cursor: "pointer" }}>Home</span> &gt; <span style={{ color: "#1B4332", cursor: "pointer" }}>College of Arts and Sciences</span> &gt; <span style={{ color: "#1B4332", cursor: "pointer" }}>Religion, Psychology, and Social Thought</span> &gt; Faculty
+      </div>
       <div className="faculty-body">
         <div className="faculty-sidebar">
-          <div className="faculty-photo">Faculty Photo</div>
+          <div className="faculty-photo" style={{ position: "relative" }}>
+            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "rgba(0,0,0,0.5)", padding: "4px 8px", fontSize: 10, color: "#ccc", textAlign: "center" }}>Photo unavailable</div>
+          </div>
           <div className="faculty-info">
             <div><strong>Office:</strong> Gibson Hall 312</div>
             <div><strong>Phone:</strong> (504) 555-0142</div>
-            <div><strong>Email:</strong> avane@beaumont.edu</div>
-            <div style={{ marginTop: 8 }}><strong>Office Hours:</strong></div>
+            <div><strong>Email:</strong> aldous.vane@beaumont.edu</div>
+            <div style={{ marginTop: 8 }}><strong>Office Hours (Fall 2021):</strong></div>
             <div>Tuesday 2:00 - 4:00 PM</div>
             <div>Thursday 10:00 AM - 12:00 PM</div>
-            <div style={{ marginTop: 8, fontSize: 11, color: "#999" }}>
-              Page last updated: August 2021
+            <div style={{ marginTop: 8 }}><strong>Mailing Address:</strong></div>
+            <div style={{ fontSize: 12 }}>Department of Religion, Psychology,</div>
+            <div style={{ fontSize: 12 }}>and Social Thought</div>
+            <div style={{ fontSize: 12 }}>Beaumont University</div>
+            <div style={{ fontSize: 12 }}>4200 St. Charles Avenue</div>
+            <div style={{ fontSize: 12 }}>New Orleans, LA 70118</div>
+            <div style={{ marginTop: 12, paddingTop: 8, borderTop: "1px solid #ddd", fontSize: 11, color: "#999" }}>
+              Page last updated: August 14, 2021
             </div>
           </div>
         </div>
@@ -2363,48 +2374,101 @@ function FacultyPageView({ dispatch }) {
           <div className="fac-title">Associate Professor, Department of Religion, Psychology, and Social Thought</div>
 
           <div className="fac-section">
+            <p style={{ lineHeight: 1.7 }}>Aldous Vane is an Associate Professor in the Department of Religion, Psychology, and Social Thought at Beaumont University, where he has taught since 2010. His research examines how marginal knowledge communities form, persist, and transmit their core practices across generations in culturally hostile environments. His first book, <em>The Persistent Margin</em> (Chicago, 2013), traced the institutional and counter-institutional mechanisms through which American esoteric communities maintained coherence from the mid-nineteenth century through the early Cold War period. He is currently completing a second book, <em>The Interior Campaign</em>, supported by a fellowship from the National Endowment for the Humanities, which extends this analysis into the contemporary period and asks what distinguishes knowledge communities organized around claims of interior transformation from those organized around doctrinal or creedal content.</p>
+          </div>
+
+          <div className="fac-section">
             <h3>Research Interests</h3>
-            <p>Sociology and psychology of religion; American esoteric knowledge communities; transmission of marginal knowledge systems; boundary maintenance in heterodox belief communities; charismatic authority and its persistence in post-institutional religious contexts.</p>
+            <p>Sociology and psychology of religion; American esoteric knowledge communities; transmission of marginal knowledge systems; boundary maintenance in heterodox belief communities; charismatic authority and its persistence in post-institutional religious contexts; the observer's position in the study of religious experience; apophatic currents in American religious life.</p>
           </div>
 
           <div className="fac-section">
             <h3>Education</h3>
             <ul>
-              <li>Ph.D., Divinity School, University of Chicago, 2005</li>
+              <li>Ph.D., Divinity School, University of Chicago, 2005. Dissertation: "Believing Without Belonging: Knowledge Transmission in American Esoteric Communities, 1875 to 1920."</li>
               <li>M.A., Religious Studies, University of Virginia, 2000</li>
               <li>B.A., Philosophy, Reed College, 1997</li>
             </ul>
           </div>
 
           <div className="fac-section">
-            <h3>Publications</h3>
+            <h3>Academic Appointments</h3>
             <ul>
-              <li><em>The Persistent Margin: Esoteric Knowledge Communities in American Religious Life, 1850-1950.</em> University of Chicago Press, 2013.</li>
-              <li>"James at the Limit: The Varieties and the Question of the Observer's Position." <em>Journal of the American Academy of Religion</em> 85, no. 2 (2017).</li>
-              <li>"Hitchcock as Scholar-Practitioner: The Interior Interpretation in American Esoteric Thought." <em>Journal of the History of Ideas</em> 81, no. 3 (2020).</li>
-              <li><em>The Interior Campaign: Inward-Turn Movements in American Religious History.</em> In progress. NEH Fellowship FA-57834-19.</li>
+              <li>Associate Professor, Beaumont University, 2014 to present</li>
+              <li>Assistant Professor, Beaumont University, 2010 to 2014</li>
+              <li>Visiting Scholar, Rice University, 2008 to 2010</li>
+              <li>Postdoctoral Fellow, Columbia University, 2006 to 2008</li>
             </ul>
           </div>
 
           <div className="fac-section">
-            <h3>Current Courses</h3>
+            <h3>Selected Publications</h3>
+            <ul>
+              <li><em>The Persistent Margin: Esoteric Knowledge Communities in American Religious Life, 1850-1950.</em> University of Chicago Press, 2013.</li>
+              <li>"The Enclosed Field: Toward an Epistemology of Initiatory Knowledge Systems." <em>Method and Theory in the Study of Religion</em> 33 (2021): 247-271.</li>
+              <li>"Hitchcock as Scholar-Practitioner: The Interior Interpretation in American Esoteric Thought." <em>Journal of the History of Ideas</em> 81, no. 3 (2020): 412-445.</li>
+              <li>"James at the Limit: <em>The Varieties</em> and the Question of the Observer's Position." <em>Journal of the American Academy of Religion</em> 85, no. 2 (2017): 383-412.</li>
+              <li>"The Persistent Margin Revisited: Transmission Without Institution." <em>Nova Religio: The Journal of Alternative and Emergent Religions</em> 19, no. 4 (2016): 56-85.</li>
+              <li><em>The Interior Campaign: Inward-Turn Movements in American Religious History.</em> In progress. Supported by NEH Fellowship FA-57834-19.</li>
+            </ul>
+          </div>
+
+          <div className="fac-section">
+            <h3>Selected Presentations</h3>
+            <ul>
+              <li>"Process-Oriented Religious Systems and the Problem of Institutional Capture." American Academy of Religion Annual Meeting, San Antonio, November 2020.</li>
+              <li>"The Archive as Transmission Medium: Living Documents in American Esoteric Communities." Society for the Scientific Study of Religion, St. Louis, October 2019.</li>
+              <li>"Charismatic Authority Without Charisma: The Case of the Louisiana Martinists." International Association for the History of Religions, Erfurt, August 2015.</li>
+            </ul>
+          </div>
+
+          <div className="fac-section">
+            <h3>Fellowships and Awards</h3>
+            <ul>
+              <li>NEH Fellowship FA-57834-19, 2018 to 2020</li>
+              <li>Warburg Institute Visiting Fellowship, January to June 2019</li>
+              <li>Beaumont University Distinguished Teaching Award, College of Arts and Sciences, 2016</li>
+              <li>American Council of Learned Societies Fellowship, 2012</li>
+            </ul>
+          </div>
+
+          <div className="fac-section">
+            <h3>Courses</h3>
             <ul>
               <li>REL 301: Hidden America: Esoteric Traditions and the American Religious Underground</li>
               <li>REL 540: Seminar in Sociology of Religion</li>
               <li>REL 210: Introduction to Psychology of Religion</li>
+              <li>REL 420: Sociology of American Religious Innovation</li>
+              <li>REL 610: Graduate Seminar: Reading as Practice in Western Esoteric Traditions</li>
+            </ul>
+          </div>
+
+          <div className="fac-section">
+            <h3>Graduate Advisees</h3>
+            <ul>
+              <li>Priya Mehta, PhD candidate. "Transmission Mechanisms in Contemporary American Esoteric Communities." (In progress.)</li>
+            </ul>
+          </div>
+
+          <div className="fac-section">
+            <h3>Service</h3>
+            <ul>
+              <li>Faculty Advisory Committee, Fontenot Memorial Library Special Collections, 2015 to present</li>
+              <li>Graduate Admissions Committee, Department of Religion, Psychology, and Social Thought, 2012 to 2020</li>
+              <li>Book Review Editor, <em>Nova Religio</em>, 2014 to 2018</li>
             </ul>
           </div>
 
           <div style={{ marginTop: 30, padding: "12px", background: "#fff", border: "1px solid #ddd", borderRadius: 4 }}>
             <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: "#999" }}>
-              <span style={{ cursor: "pointer", color: "#4FBCFF" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.BLOG_POST, subId: 1 })}>View Dr. Vane's blog: Studies in Transmission →</span>
+              <span style={{ cursor: "pointer", color: "#1B4332" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.BLOG_POST, subId: 1 })}>View Dr. Vane's research blog: Studies in Transmission →</span>
             </div>
           </div>
         </div>
       </div>
       <div style={{ background: "#1B4332", padding: "16px 20px", textAlign: "center" }}>
         <span style={{ fontFamily: "'Open Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.5)" }}>
-          Beaumont University · 4200 St. Charles Avenue, New Orleans, LA 70118 · © 2020
+          Beaumont University · 4200 St. Charles Avenue, New Orleans, LA 70118 · © 2021 Beaumont University. All rights reserved.
         </span>
         <span style={{ color: "#1B4332", fontSize: 1, display: "block", userSelect: "text" }}>this page has not been updated. his office has not been cleared. the books are still on the shelf in the order he left them. someone from the department checks the office every tuesday. they do not say why.</span>
       </div>

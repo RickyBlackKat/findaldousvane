@@ -5025,7 +5025,7 @@ function SeventhView() {
 // MAIN APP
 // ═══════════════════════════════════════════════════════
 
-export default function ViridiariumIgnis() {
+function ViridiariumIgnis() {
   const [state, dispatch] = useReducer(reducer, {
     view: VIEWS.SUBREDDIT,
     subId: null,
@@ -5182,6 +5182,10 @@ export default function ViridiariumIgnis() {
     </div>
   );
 }
+
+// Mount the application
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<ViridiariumIgnis />);
   </script>
 </body>
 </html>

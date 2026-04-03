@@ -1747,6 +1747,36 @@ const SUBREDDIT_POSTS = [
     flair: "Evidence",
   },
   {
+    id: "early_readers",
+    user: "u/pelican_athanor",
+    time: "June 8, 2022",
+    title: "How did you first find Vane's blog? Early readers especially.",
+    excerpt: "If you discovered 'Studies in Transmission' before his disappearance, before the subreddit existed, please share how you found it. When did you start reading. What did you think was happening as the posts accumulated. I think the early readers saw something.",
+    votes: 47,
+    comments: 18,
+    flair: "Research",
+  },
+  {
+    id: "political_posts",
+    user: "u/Thoth_R",
+    time: "July 14, 2022",
+    title: "Can we talk about the political posts? Posts 7 and 9 through 12 are not like the rest.",
+    excerpt: "The political and cultural posts from late 2020 to mid 2021 are being overlooked. They brought Vane a much larger audience. They alarmed his colleagues at Beaumont. They attracted the conspiracy communities. And they contain his most provocative arguments about civilization, democracy, and the nature of awakening.",
+    votes: 156,
+    comments: 42,
+    flair: "Research",
+  },
+  {
+    id: "pre_disappearance",
+    user: "u/archive_deep",
+    time: "August 5, 2022",
+    title: "People were discussing Vane's blog before he disappeared. Here's what I found.",
+    excerpt: "I've been digging through archived discussions from 2020 and 2021. The reason this matters: it proves that Vane had a genuine academic following watching his tone shift in real time. Some of them understood what was happening before the rest of us did.",
+    votes: 42,
+    comments: 18,
+    flair: "Evidence",
+  },
+  {
     id: "clara_substack",
     user: "u/lux_in_tenebris",
     time: "January 18, 2025",
@@ -2387,6 +2417,98 @@ function SubredditView({ dispatch }) {
                       <div className="comment">
                         <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · May 16, 2022, 2:14 AM</div>
                         <div className="c-body">He did not lose his voice. He found the thing the voice was trying to describe. The voice was the last thing to go because it was the last thing he needed.</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "early_readers" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/early_transmission_reader</span> · June 8, 2022</div>
+                        <div className="c-body">Found the blog in late 2019 through academic Twitter. I was in a religious studies PhD program. Those early posts were straightforward. Good scholarship. I printed a few. Shared them with my advisor. She read them. Asked me a few questions. And then she never recommended the blog to students again. Six months later I asked her why. She said she'd noticed the direction the material was moving in and she felt uncomfortable promoting it to people still developing their scholarly frameworks. I didn't notice what she noticed until 2021. But once I saw it, I understood.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/Thoth_R</span> · June 9, 2022</div>
+                        <div className="c-body">Found it through the political posts in 2021. I was in a Reddit thread about Guenon and someone linked to "The Freedom Problem." I went back and read the whole archive from the beginning. Reading the 2019 posts after reading the 2021 posts is wild. You can trace the whole thing. The shift from commentary to something else. The removal of contingency. Early posts hedge. "We might understand this as." The later posts don't hedge. He's writing like he knows.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/hermetic_reader_2020</span> · June 10, 2022</div>
+                        <div className="c-body">Found the blog in 2020 through an esoteric book discussion forum. I'm in those spaces. I know what the language means when it appears in academic writing. The coding was obvious to anyone familiar with the tradition. We recognized what he was doing before he did. The movement from scholarly distance to something else. Several of us emailed him in 2020 and early 2021. He never responded. But he knew he was being watched.</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/CasualReader92</span> · June 10, 2022</div>
+                        <div className="c-body">You're implying you knew something was going to happen. If you "recognized what he was doing" and had concerns, why didn't anyone actually intervene?</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 32 }}>
+                        <div className="c-meta"><span className="username">u/early_transmission_reader</span> · June 10, 2022</div>
+                        <div className="c-body">What would we have said? "Professor, your footnotes are getting too personal"? You can't intervene in someone's intellectual development. Once you've seen what he was seeing, you can't unsee it. And he made a choice to keep looking.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · June 11, 2022, 1:08 AM</div>
+                        <div className="c-body">The people who found him early are not wrong that they saw it. They saw the scholar crossing a boundary. What they could not see was that the boundary was the point.</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "political_posts" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/praxis_nine</span> · July 14, 2022</div>
+                        <div className="c-body">I'm going to defend these posts. The texts Vane is working with are real. Fisher's Capitalist Realism. Voegelin's New Science of Politics. Guenon's Crisis of the Modern World. These aren't conspiracy sources. They're taught in universities. What makes the posts controversial isn't the sources. It's that he's applying them through a contemplative lens the academy doesn't have a category for. He's reading them as descriptions of something actually happening in consciousness.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/nola_seeker</span> · July 14, 2022</div>
+                        <div className="c-body">I heard from a grad student at Beaumont that the political posts caused a faculty meeting. The HR complaint wasn't about the mystical content. It was specifically about the political content. One colleague apparently called it "anti-democratic apologetics." Nothing came of the meeting officially. But it happened.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/hermetic_reader_2020</span> · July 14, 2022</div>
+                        <div className="c-body">You're all treating the political posts as a departure. They're not. They're an application. Every contemplative tradition eventually turns its lens outward. The practitioner who has seen clearly enough to diagnose the inner condition will eventually diagnose the outer condition with the same clarity. That's not a digression. That's the whole thing.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/archive_deep</span> · July 14, 2022</div>
+                        <div className="c-body">The subscriber data tells the story. The blog grew slowly from June 2019 to early 2021. About 50 to 100 new subscribers per month. Then "The Freedom Problem" published in March 2021 and the growth rate tripled. By June he had 3,000 readers. The political posts changed his audience. And the question is whether they also changed him.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · July 15, 2022, 12:47 AM</div>
+                        <div className="c-body">The posts that alarm his colleagues are the ones where the scholar begins to believe his own material. The alarm is appropriate. The material is dangerous. Not because it's wrong.</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/Thoth_R</span> · July 15, 2022</div>
+                        <div className="c-body">dangerous how?</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · July 15, 2022, 12:58 AM</div>
+                        <div className="c-body">Because once you believe that the structure of consciousness determines the structure of civilization, and that you have access to the true structure of consciousness, the next step is inevitable.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/archive_rabbit</span> · July 16, 2022</div>
+                        <div className="c-body">One more thing. The dates. Post 7 is October 2020. Post 12 is June 2021. Eight months. And then in July he goes to that gathering in Bywater for the first time. According to his notes. The political posts aren't separate from what happens next. They're the preparation for it.</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "pre_disappearance" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/archive_deep</span> · August 5, 2022</div>
+                        <div className="c-body">I found archived discussions from before the subreddit existed. In r/religionstudies, November 2020: someone asks "Has anyone read Aldous Vane's blog?" Most responses are positive. A grad student says it's assigned reading. But people notice the change. One commenter: "Early posts are classic Durkheim-adjacent sociology. By post 8 he's citing people I've never heard of." In r/philosophy, April 2021: "The Freedom Problem" gets shared. Comments split immediately. One camp calls it brilliant political philosophy. The other: "This reads like esoteric mysticism dressed in academic language." Thread locked after 48 hours.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/archive_deep</span> · August 5, 2022</div>
+                        <div className="c-body">But the most significant find: a Discord server from September 2020. Maybe thirty members. One posts: "Read Vane's latest. He's starting to do the work correctly. He's reading these texts as functional systems instead of as historical curiosities." Another responds: "What work? He's a sociologist." First member: "Not anymore. Watch what happens over the next six months. This guy is going to figure out what he's actually looking at and when he does it's going to break him." Another member, much later: "Or make him." The certainty in that exchange. They framed it not as possibility but as inevitability.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/nola_seeker</span> · August 5, 2022</div>
+                        <div className="c-body">The student forum post is the one that gets to me. A Beaumont student writes: "Dr. Vane's office hours are different now. He asked me, 'What are you actually capable of understanding right now?' I left his office last week and sat in my car for twenty minutes." That's not academic advice. That's something else entirely. The post was taken down within hours.</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/CasualReader92</span> · August 5, 2022</div>
+                        <div className="c-body">A professor whose teaching style changes dramatically over a semester is usually a sign of a mental health issue, not enlightenment. That student was confused and emotionally destabilized. That's not intellectual engagement. That's potential harm.</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 32 }}>
+                        <div className="c-meta"><span className="username">u/nola_seeker</span> · August 5, 2022</div>
+                        <div className="c-body">It could be both. A genuine transformation and a mental health crisis could look identical from the outside. We don't have a good language for one category of experience in academic settings, so we default to the other.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · August 6, 2022, 3:12 AM</div>
+                        <div className="c-body">The student sat in the car for twenty minutes. This is the correct response. The question Vane asked did its work. The question the traditions ask always does its work. The student was not confused. The student was beginning to see.</div>
                       </div>
                     </div>
                   )}
@@ -3179,7 +3301,7 @@ function ClinicalNoteView({ dispatch }) {
         <hr style={{ border: "none", borderTop: "1px solid #bbb", margin: "12px 0 16px" }} />
 
         <div style={{ display: "flex", gap: 4, marginBottom: 16, flexWrap: "wrap" }}>
-          {["3", "7", "14", "final"].map((s) => (
+          {["3", "7", "11", "14", "final"].map((s) => (
             <span
               key={s}
               onClick={() => setSession(s)}
@@ -3202,7 +3324,7 @@ function ClinicalNoteView({ dispatch }) {
         <div className="scan-body">
           <div style={{ fontSize: 11, color: "#666" }}>
             Patient: <span className="redaction">Dr. Aldous Vane</span>{"\n"}
-            Date: {session === "3" ? "August 5, 2021" : session === "7" ? "September 16, 2021" : session === "14" ? "December 9, 2021" : "June 2022"}{"\n"}
+            Date: {session === "3" ? "August 5, 2021" : session === "7" ? "September 16, 2021" : session === "11" ? "November 11, 2021" : session === "14" ? "December 9, 2021" : "June 2022"}{"\n"}
             Session: {session === "final" ? "Final Document" : session}{"\n"}
             Type: {session === "final" ? "Private reflection" : "Individual psychotherapy, 50 min"}
           </div>
@@ -3274,11 +3396,59 @@ function ClinicalNoteView({ dispatch }) {
 
               {"\n\n"}
               <div className="sticky-note">
-                I went home and read the Eckhart passage. I understand why he read it twice. This is not a note for the file. This is a note for me.
+                He did not frame the reading. That is not a clinical detail. It is the clinical detail. He opened the book the way one opens a door. Not to show me something on the other side. But to walk through it while I watched. And I watched. I sat across from my patient in an office I have maintained professionally for six years and I watched him read words about light uncreated and uncreateable and something in the way he read them, not with fervor, not with anything performative, just with a kind of terrible precision, like he was reading a weather report from a place he was already standing in. He said: the categories are accurate and they're wrong. He is right. I can put his symptoms in a column and they fit. The differential is coherent. The recommendation is justified. All of this is true. And none of it touches what I actually witnessed, which was a man reading a description of his own unmapping while sitting six feet from me in the middle of an ordinary afternoon in New Orleans.
               </div>
 
               <div style={{ color: "#888", fontSize: 10, marginTop: 12, paddingTop: 8, borderTop: "1px solid #ddd" }}>
-                Session 7 excerpt · September 16, 2021
+                Session 7 · September 16, 2021
+              </div>
+            </>
+          )}
+
+          {session === "11" && (
+            <>
+              <div className="section-header">{"\n"}I. PRESENTING STATE</div>
+              {"Pt arrived on time. Appearance changed from previous sessions. Same corduroy, same glasses, but posture different. Straighter. Not rigid; not the posture of someone performing composure. Something closer to the posture of someone who has stopped performing altogether. Weight distributed evenly. Hands at rest in his lap. No fidgeting. No self-soothing gestures. Oriented x3. Eye contact brief, direct when made. Affect calm, mood difficult to categorize."}
+
+              <div className="section-header">{"\n"}II. SESSION CONTENT</div>
+              {"Pt responded to questions about sleep, appetite, daily routine w/ statements that were cooperative but compressed. \"Sleep is fine.\" \"I eat.\" \"I walk.\" Each answer complete. No elaboration offered. When I noted the brevity, pt said: \"I'm not withholding. There's less to report.\""}
+
+              {"\n\n"}
+              {"I asked about his academic situation. Pt said: \"That's finished.\" I asked for clarification. He said: \"The leave.\" A pause. \"And the rest of it, probably.\" Did not elaborate on \"the rest of it.\" When pressed gently he said: \"The teaching. The writing. The apparatus.\" Used the word apparatus without qualification or irony."}
+
+              {"\n\n"}
+              <div className="margin-note">He was not performing composure. He had stopped performing.</div>
+
+              {"Discussion turned to his current state. I asked what he was experiencing. He was quiet for approximately ten seconds. Then: \"It's difficult to say in your language.\" I asked what he meant by \"your language.\" He said: \"Clinical language. Diagnostic language. The language of the self that needs repair.\" He paused. \"I'm not criticizing it. It does what it does. But I'm not in the place it reaches.\""}
+
+              {"\n\n"}
+              {"I asked where he was. He said: \"Here.\""}
+
+              {"\n\n"}
+              {"I waited. He said: \"That's the answer. I am here. I was not here before. I was in the descriptions of here. Now I am here.\""}
+
+              {"\n\n"}
+              {"I asked if he could describe the difference. He said three sentences that I am recording verbatim because they mark a change I need to document."}
+
+              {"\n\n"}
+              <div className="margin-note red-ink">"The difference is grammar. Before, I said: I am experiencing a shift in my relationship to my research materials. Now: there is a shift. The I is not the primary thing. The shift is the primary thing. The I watches it. Or the I is it. Both. Neither. You see, this is where your language stops."</div>
+
+              <div className="section-header">{"\n"}III. CLINICAL OBSERVATIONS</div>
+              {"MSE: Orientation intact x3. Affect calm, present, difficult to categorize. Not blunted. Not constricted. Speech rate markedly reduced from baseline. Sentences shorter than at any previous session. No pressured speech. No poverty of content. Content is present but delivered in fewer words. He speaks in completed units. Each sentence is the whole thought."}
+
+              {"\n\n"}
+              {"Thought process: Organized. No loosening of associations. However, the organization has a quality I have not encountered before. He does not build arguments. He states positions. Each statement arrives complete. No scaffolding visible."}
+
+              {"\n\n"}
+              {"Clinical impression: Pt's grammar has changed. This is the most precise way I can state the clinical observation. Grammar shift is not in the DSM. But it is the most clinically significant change I have observed across 11 sessions."}
+
+              {"\n\n"}
+              <div className="sticky-note">
+                He noticed that I noticed. Before I said anything. Before I wrote it down. He walked to the door and said: "You noticed the grammar." And I had. I had been sitting there for fifty minutes watching his sentences get shorter and I could feel something changing in the room and I did not have a name for it. His sentences used to be complex. Subordinate clauses. Qualifications. All the scaffolding of a mind trained to hold multiple propositions simultaneously. The man who sat across from me today does not build arguments. He says things. Each thing is complete. There is no scaffolding because there is nothing to scaffold. The statement arrives whole. And here is the part that unsettles me: the statements are clearer than the arguments ever were. The arguments were brilliant. Dense, precise, layered. But they were also, I can see now, defenses. They were ways of holding something at a distance by understanding it too well. That structure is gone. And what replaced it is not confusion. It is a man who has stopped needing the vocabulary because the distance the vocabulary maintained is no longer there. I wrote in the formal notes: "Grammar shift is not in the DSM." I know why it is not there. The DSM assumes that the self who speaks is the self who needs treatment. He is speaking in a different grammar. One where the subject is not the center. And this is not depersonalization. He is not on the ceiling. He is, as near as I can tell, on the ground for the first time.
+              </div>
+
+              <div style={{ color: "#888", fontSize: 10, marginTop: 12, paddingTop: 8, borderTop: "1px solid #ddd" }}>
+                Session 11 · November 11, 2021
               </div>
             </>
           )}

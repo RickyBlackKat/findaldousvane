@@ -76,6 +76,8 @@ const VIEWS = {
   HALE_PAPER: "hale_paper",
   CLARA_SUBSTACK: "clara_substack",
   ENTROPIC_ATTRACTORS: "entropic_attractors",
+  FIELD_NOTES: "field_notes",
+  EVIDENCE_INVENTORY: "evidence_inventory",
 };
 
 function reducer(state, action) {
@@ -1838,6 +1840,8 @@ const INTERVIEW_INDEX = [
   { id: "weiss", name: "Daniel Weiss", relation: "Vienna rare books dealer", date: "July 20, 2022" },
   { id: "leonid", name: "Leonid", relation: "Person of interest", date: "September 4, 2022" },
   { id: "arceneaux", name: "Prof. Arceneaux", relation: "Archive contact", date: "September 18, 2022" },
+  { id: "tureaud", name: "Det. Michael Tureaud", relation: "NOPD Eighth District", date: "March 11, 2022" },
+  { id: "delacroix", name: "Raymond Delacroix", relation: "Bartender, last witness", date: "March 14, 2022" },
 ];
 
 // ═══════════════════════════════════════════════════════
@@ -3578,6 +3582,18 @@ function PIMemoView({ dispatch, subId }) {
           >
             Access Log
           </span>
+          <span
+            onClick={() => dispatch({ type: "navigate", view: VIEWS.FIELD_NOTES })}
+            style={{ padding: "4px 10px", fontSize: 11, cursor: "pointer", background: "#f0f0f0", color: "#666", borderRadius: 2, fontFamily: "'Oswald', sans-serif" }}
+          >
+            Field Notes
+          </span>
+          <span
+            onClick={() => dispatch({ type: "navigate", view: VIEWS.EVIDENCE_INVENTORY })}
+            style={{ padding: "4px 10px", fontSize: 11, cursor: "pointer", background: "#f0f0f0", color: "#666", borderRadius: 2, fontFamily: "'Oswald', sans-serif" }}
+          >
+            Evidence
+          </span>
         </div>
 
         <div className="memo-body">
@@ -4284,11 +4300,324 @@ function InterviewView({ dispatch, subId }) {
               </div>
             </>
           )}
-          {id !== "leonid" && id !== "clara" && id !== "mehta" && id !== "arceneaux" && id !== "hartley" && id !== "weiss" && (
+          {id === "tureaud" && (
+            <>
+              <span className="speaker-osei">OSEI:</span>{" I appreciate the time. I know how this goes. PI takes over a case the department closed. I'm not here to second-guess the work.\n\n"}
+              <span className="speaker-subject">TUREAUD:</span>{" Flagged inactive. Not closed. There's a difference.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" Walk me through what you had.\n\n"}
+              <span className="speaker-subject">TUREAUD:</span>{" Missing persons report filed January 8, 2022. Clara Vane reported her husband, Aldous Vane, had not returned home the night of January 6. She stated he left the house that evening around 10:30 PM. She did not know his destination. She was accustomed to him going out in the evenings, sometimes late.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" And the investigation?\n\n"}
+              <span className="speaker-subject">TUREAUD:</span>{" Standard protocol. We pulled the ATM footage first because that was the last financial transaction. Whitney Bank, Magazine and Constantinople, 11:52 PM. Got a still from the camera. Subject alone, no duress. Then the bartender statement came in the next day from the Frenchmen Street canvass. Raymond Delacroix, bartender at Frere Jacques. Placed subject in the bar around 11:30 PM. Fifteen-minute stay. One drink. Left alone. Walking toward the river.\n\n"}
+              <span className="stage-direction">(Tureaud paused. He opened a folder, though he did not seem to need it.)</span>{"\n\n"}
+              <span className="speaker-subject">TUREAUD:</span>{" We checked the river. Coast Guard notified. River patrol ran the standard search pattern from the Marigny down to Algiers. Nothing. We checked hospitals, morgue, shelters. Nothing. We canvassed Frenchmen, the Marigny, Bywater. Twelve businesses. Nothing solid. One maybe-sighting on Esplanade, unconfirmed.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" You don't think he went to the river.\n\n"}
+              <span className="stage-direction">(Tureaud looked at me for the first time during the interview. He had been looking at the folder, at the desk, at the wall behind me.)</span>{"\n\n"}
+              <span className="speaker-subject">TUREAUD:</span>{" No.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" Why not?\n\n"}
+              <span className="speaker-subject">TUREAUD:</span>{" Twenty-three years on the force. I have pulled nine people out of the Mississippi and stood on the bank for four more who were never recovered. Every single one of them left something behind. A note. A phone call. A half-finished bottle. Shoes on the levee. Something that says I'm done, look here, find this, know what happened. It's the last act of communication. Even people who don't want to be found want to be understood.\n\n"}
+              <span className="stage-direction">(Pause.)</span>{"\n\n"}
+              <span className="speaker-subject">TUREAUD:</span>{" Vane didn't leave anything like that. He left an unsent email he never sent. He left a car with his keys in it. He left four hundred dollars lighter. That's not a man who wanted to be found dead. That's a man who walked somewhere else.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" Where?\n\n"}
+              <span className="speaker-subject">TUREAUD:</span>{" That's your job now.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" You talked to Clara about this?\n\n"}
+              <span className="speaker-subject">TUREAUD:</span>{" I told her what I tell families. We have exhausted our leads. New information will reactivate the case. I gave her the standard speech. She listened. She thanked me. She asked me one question I didn't expect.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" What was the question?\n\n"}
+              <span className="speaker-subject">TUREAUD:</span>{" She asked me if, in my experience, people who disappeared voluntarily were usually running from something or toward something.\n\n"}
+              <span className="stage-direction">(Pause.)</span>{"\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" What did you tell her?\n\n"}
+              <span className="speaker-subject">TUREAUD:</span>{" I told her the truth. In my experience, people who run from something leave a mess. People who run toward something leave a clean house.\n\n"}
+              <span className="stage-direction">(He closed the folder.)</span>{"\n\n"}
+              <span className="speaker-subject">TUREAUD:</span>{" The house was clean. The garden was tended. His affairs were in order. He gave away his books. He was ready to go somewhere. I don't know where. I don't have the tools for where.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" What do you mean by that?\n\n"}
+              <span className="speaker-subject">TUREAUD:</span>{" I mean I interviewed his wife, I interviewed his department chair, I ran the standard protocols, and nothing pointed to any threat or any crisis. What pointed was a direction, and the direction was not one I could follow with a badge and a case number. I'm a detective. I solve crimes. There was no crime here. There was something else, and I am not equipped for something else."}
+              {"\n\n"}
+              <div className="memo-private">
+                <div className="private-label">Post-Interview Note</div>
+                {"Tureaud is experienced and straightforward. His instinct that Vane did not go to the river is consistent with the physical evidence and is, in my assessment, correct. His observation about the distinction between people running from something and people running toward something is useful.\n\nTureaud's final statement is worth recording: \"I don't have the tools for where.\" This is a police detective with more than two decades of experience acknowledging that the case exceeds the investigative framework. He did not say he failed. He said he reached the boundary of his method. That is a precise and honest statement.\n\nThe case file is in order. Tureaud did competent work. The evidence was gathered thoroughly. The problem is not the quality of the investigation. The problem is that the evidence points at something the investigation was not designed to find."}
+              </div>
+            </>
+          )}
+          {id === "delacroix" && (
+            <>
+              <span className="speaker-osei">OSEI:</span>{" You remember him.\n\n"}
+              <span className="speaker-subject">DELACROIX:</span>{" I remember him. Not because of anything that happened. Because of how he was. You tend bar long enough, you can feel the difference between someone who's at the end of something and someone who's at the beginning of something. He was at the beginning.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" Tell me what you saw.\n\n"}
+              <span className="speaker-subject">DELACROIX:</span>{" He came in alone. January 6. A Thursday. We were slow. Weeknights on Frenchmen are quiet in January. Tourists are gone. Locals are recovering from the holidays. He sat at the far end of the bar. Ordered a Woodford, neat. Didn't look at his phone once.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" Did he seem distressed?\n\n"}
+              <span className="speaker-subject">DELACROIX:</span>{" No. He seemed, I don't know. Settled. Like someone who had finally made a decision they'd been turning over for a long time. You see that sometimes. People come in after they've decided to quit a job or leave a marriage, and there's this calm. The anxiety is over because the question is answered.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" Did he speak to anyone?\n\n"}
+              <span className="speaker-subject">DELACROIX:</span>{" No. He sat alone. I tried once, the way you do. Asked him how his night was going. He said: \"Very well.\" That was it. Not rude. He just didn't need conversation.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" The police report says he made a statement before leaving. Something like \"Well. That's that, then.\"\n\n"}
+              <span className="speaker-subject">DELACROIX:</span>{" Yeah. He said it as he was getting up. Not to me. Not to anyone. Just out loud, the way someone talks to themselves when they've reached the bottom of a thought. \"Well. That's that, then.\" He put his hands on the bar and pushed himself up, like someone getting up from a long meal. Then he walked out.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" Which direction?\n\n"}
+              <span className="speaker-subject">DELACROIX:</span>{" Left. Toward Esplanade. Which means toward the river if you keep walking.\n\n"}
+              <span className="stage-direction">(Delacroix wiped the bar with a cloth. Unnecessary. The bar was already clean.)</span>{"\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" Anything else you remember?\n\n"}
+              <span className="speaker-subject">DELACROIX:</span>{" One thing. His coat. It was cold that night. Low forties, maybe. He was wearing a dark jacket, like a canvas jacket, but not zipped. Open. As if the cold didn't bother him. Or as if he wasn't thinking about the cold. I noticed because I was wearing two layers behind the bar and I was still cold. He was just, present. In the weather, in the night, as if there was no reason to resist any of it.\n\n"}
+              <span className="speaker-osei">OSEI:</span>{" When the police came to talk to you, what did you tell them?\n\n"}
+              <span className="speaker-subject">DELACROIX:</span>{" Same thing I'm telling you. Man came in. Drank alone. Said something to himself. Left. I told them I didn't think he was in trouble. They asked me what I meant. I said he didn't look like a man with a problem. He looked like a man who had solved one.\n\n"}
+              <span className="stage-direction">(Pause. Delacroix looked toward the door.)</span>{"\n\n"}
+              <span className="speaker-subject">DELACROIX:</span>{" I think about him sometimes. Late shifts, when the bar is empty and it's just me and the street noise. I wonder where he went. Not in a worried way. More like curiosity. Like whatever door he walked through, I almost want to know what's on the other side. Almost."}
+              {"\n\n"}
+              <div className="memo-private">
+                <div className="private-label">Post-Interview Note</div>
+                {"Delacroix is an observant witness. His description of Vane's demeanor on the night of January 6 is consistent with other accounts of subject's state in the weeks before disappearance: calm, deliberate, resolved. The detail about the coat worn open in the cold is consistent with the archivist's note about subject leaving the library without his coat in August 2021. The pattern is not one of absent-mindedness. It is one of a man whose attention had moved to a register in which the physical environment was secondary.\n\nDelacroix's observation that Vane \"looked like a man who had solved one\" aligns with Clara's description, with Hartley's description, and with Tureaud's instinct that subject was moving toward something rather than away.\n\nThe statement \"Well. That's that, then.\" Said to no one. Said to himself or to the air or to whatever he had been turning over in his mind. A period at the end of a sentence. A conclusion.\n\nHe finished his drink. He left a good tip. He walked toward the river.\n\nThis is the last record of Dr. Aldous Vane in the world of evidence. Everything after this is inference, silence, and the dark water of the Mississippi at midnight in January."}
+              </div>
+            </>
+          )}
+          {id !== "leonid" && id !== "clara" && id !== "mehta" && id !== "arceneaux" && id !== "hartley" && id !== "weiss" && id !== "tureaud" && id !== "delacroix" && (
             <div style={{ color: "#999", fontStyle: "italic" }}>
               [Interview with {interview.name}. Click names above to navigate between transcripts.]
             </div>
           )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Field Notes View ──
+function FieldNotesView({ dispatch }) {
+  const entries = [
+    { date: "MARCH 8, 2022", location: "Perrier Street, Uptown", summary: "First site visit. Subject's residence. Clara Vane met me on the porch, trimming the fence. House interior: clean, ordered, books everywhere. Shelves half empty; subject had given most of his professional library to a graduate student in November 2021. Study had the quality of a room that had been vacated deliberately. Not cleaned out. Simplified. The difference matters. A person fleeing leaves mess. A person completing something leaves order." },
+    { date: "MARCH 11, 2022", location: "NOPD Eighth District", summary: "Met with Det. M. Tureaud regarding case file transfer. File received. Tureaud's assessment: probable voluntary disappearance, low probability of foul play. He does not think subject went to the river. He thinks subject left the city. He has no evidence for this. He described it as instinct." },
+    { date: "MARCH 14, 2022", location: "Frenchmen Street", summary: "Canvass of Frenchmen Street corridor. Bartender identified: Raymond Delacroix. Walked subject's probable route toward the river. Frenchmen to Esplanade, Esplanade toward the Mississippi. The walk is approximately twelve minutes at normal pace. In January, after midnight, the area is minimally lit. A person could continue along the river in either direction without being observed. No physical evidence. The trail ends at the bar." },
+    { date: "MARCH 22, 2022", location: "Whitney Bank ATM, Magazine and Constantinople", summary: "Subject withdrew $400 at 11:52 PM, January 6, 2022. Maximum single withdrawal. Balance: $14,337.42. No subsequent transactions. ATM security camera still image: subject standing alone, no visible duress, calm, dark jacket, no hat. $400 in cash. Enough to travel. Enough to eat for a week. Enough to disappear on, if you know how to move lightly." },
+    { date: "APRIL 4, 2022", location: "Beaumont University, Thierry Hall", summary: "Subject's office (Room 308). Shelves one third full, mostly reference works. On the desk: a coffee mug (empty, clean), a pen holder, and a single Post-it note: \"The observer changes the experiment. W.J.\" W.J. is consistent with William James. The note is undated. It may have been there for years. It may have been left deliberately." },
+    { date: "APRIL 19, 2022", location: "Magazine Street corridor", summary: "Canvass of Magazine Street between Napoleon and Constantinople. Staff at the Garden District Book Shop recalled subject as a regular customer. \"Quiet. Always in the back section. Religious studies, philosophy. He'd stay for an hour sometimes.\" Last seen there: late November 2021." },
+    { date: "MAY 15, 2022", location: "Faulkner House Books, Pirate's Alley", summary: "Subject's last credit card purchase: October 3, 2021. $47.50. Proprietor remembers subject. \"Interested in older material. Not rare books exactly. More like books that had fallen out of circulation. Victorian era, that sort of thing.\" Subject seemed \"fine. Calm. Not in a hurry.\"" },
+    { date: "JUNE 3, 2022", location: "Bywater neighborhood, first approach", summary: "Drove through Bywater attempting to locate the Tuesday gathering. Clara stated subject began attending \"some kind of reading group\" in autumn 2020. She did not have the address. A neighborhood where a weekly gathering in a private home would be unremarkable. I will need a more specific address." },
+    { date: "JUNE 14, 2022", location: "Bywater, second approach", summary: "Contact through indirect referral. A woman stated: \"If you need to find it, you'll find it. If you're not supposed to find it, you won't.\" On a Tuesday at 7:30 PM, observed four individuals entering a double shotgun at 2847 Dauphine Street. They entered without knocking. The house was quiet throughout. Sound should carry from a double shotgun with single-pane windows. Either the conversation was very quiet, or the room was insulated, or there was no conversation occurring." },
+    { date: "JUNE 21, 2022", location: "Bywater, third visit", summary: "Returned to 2847 Dauphine on a non-Tuesday evening. Knocked. A man, elderly, gray beard, steady gaze. He said: \"You can come in on Tuesday, if you like.\" I said I was there as an investigator. He said: \"Yes. You can come in on Tuesday.\" I did not enter. On the walk back to my car I noticed I had been holding my breath. I cannot account for why.", highlight: true },
+    { date: "JUNE 28, 2022", location: "Magazine Street, coffee shop", summary: "Met Dr. Calloway informally. She could not discuss clinical details. She stated: \"The ideas he was engaging with are not, in themselves, pathological. The intensity of engagement was the clinical question.\" She said: \"He was the most intelligent person I have ever treated. That is not a compliment. Intelligence of that order, directed at that kind of material, with that kind of intensity, there is no clinical framework for what happens next.\"", highlight: true },
+  ];
+
+  return (
+    <div className="memo-wrap">
+      <div className="memo-page">
+        <div className="memo-letterhead">
+          <div className="firm-name">Osei Investigations LLC</div>
+          <div className="firm-details">3412 Magazine Street, Suite 4 {"\u00b7"} New Orleans, LA 70115 {"\u00b7"} License: C-2016-7743</div>
+        </div>
+        <hr className="memo-divider" />
+        <div className="memo-stamp">Field Notes</div>
+        <div className="memo-fields">
+          <strong>Case:</strong> NOPD-2022-004471 / Osei Investigations{"\n"}
+          <strong>Subject:</strong> Dr. Aldous Vane, Missing Person{"\n"}
+          <strong>Period:</strong> March 8 through June 28, 2022
+        </div>
+
+        <div style={{ display: "flex", gap: 4, marginBottom: 20, flexWrap: "wrap" }}>
+          <span
+            onClick={() => dispatch({ type: "navigate", view: VIEWS.PI_MEMO, subId: 1 })}
+            style={{ padding: "4px 10px", fontSize: 11, cursor: "pointer", background: "#f0f0f0", color: "#666", borderRadius: 2, fontFamily: "'Oswald', sans-serif" }}
+          >
+            Memos
+          </span>
+          <span
+            onClick={() => dispatch({ type: "navigate", view: VIEWS.INTERVIEW, subId: "leonid" })}
+            style={{ padding: "4px 10px", fontSize: 11, cursor: "pointer", background: "#f0f0f0", color: "#1B4332", borderRadius: 2, fontFamily: "'Oswald', sans-serif" }}
+          >
+            Interviews
+          </span>
+          <span style={{ padding: "4px 10px", fontSize: 11, background: "#1a1a1a", color: "#fff", borderRadius: 2, fontFamily: "'Oswald', sans-serif" }}>
+            Field Notes
+          </span>
+          <span
+            onClick={() => dispatch({ type: "navigate", view: VIEWS.EVIDENCE_INVENTORY })}
+            style={{ padding: "4px 10px", fontSize: 11, cursor: "pointer", background: "#f0f0f0", color: "#666", borderRadius: 2, fontFamily: "'Oswald', sans-serif" }}
+          >
+            Evidence
+          </span>
+        </div>
+
+        <div className="memo-body">
+          {entries.map((entry, i) => (
+            <div key={i} style={{ marginBottom: 24, paddingBottom: 20, borderBottom: i < entries.length - 1 ? "1px solid #ddd" : "none" }}>
+              <div style={{ fontFamily: "'Oswald', sans-serif", fontSize: 12, fontWeight: 500, color: "#333", letterSpacing: 0.5, marginBottom: 4 }}>
+                {entry.date}
+              </div>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: "#888", marginBottom: 8 }}>
+                {entry.location}
+              </div>
+              <div style={{ fontFamily: "'Source Serif Pro', serif", fontSize: 13, color: entry.highlight ? "#1a1a1a" : "#444", lineHeight: 1.7, fontWeight: entry.highlight ? 400 : 400 }}>
+                {entry.summary}
+              </div>
+            </div>
+          ))}
+          <div style={{ marginTop: 20, fontFamily: "'Source Serif Pro', serif", fontSize: 12, color: "#888", fontStyle: "italic", lineHeight: 1.6, paddingTop: 16, borderTop: "1px solid #ddd" }}>
+            These notes are working observations recorded during active investigation. They represent my process of understanding the case as it developed. Some observations recorded here do not appear in the formal memos because they do not constitute evidence. They constitute atmosphere. In this case, atmosphere may be the closest thing to evidence I have found.
+          </div>
+          <div style={{ marginTop: 12, fontFamily: "'Oswald', sans-serif", fontSize: 11, color: "#999", letterSpacing: 0.5 }}>
+            M. Osei {"\u00b7"} July 2022
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Evidence Inventory View ──
+function EvidenceInventoryView({ dispatch }) {
+  const sections = [
+    {
+      title: "SECTION 1: NOPD CASE FILE MATERIALS",
+      source: "Det. M. Tureaud, Eighth District. Received March 11, 2022.",
+      items: [
+        { id: "1.1", desc: "Missing Persons Report (MP-1), filed January 8, 2022, by Clara Vane.", sig: "LOW" },
+        { id: "1.2", desc: "Witness statement, Raymond Delacroix, bartender, Frere Jacques. Subject entered bar approximately 11:30 PM January 6, 2022. One whiskey. Fifteen minutes. \"Well. That's that, then.\" Departed alone toward Esplanade.", sig: "HIGH" },
+        { id: "1.3", desc: "ATM still image, Whitney Bank, Magazine and Constantinople. January 6, 2022, 11:52 PM. Subject alone. No duress visible.", sig: "MODERATE" },
+        { id: "1.4", desc: "Vehicle recovery report. 2015 Subaru Outback. Dauphine Street, Marigny. Keys in ignition. No evidence of foul play. Trunk: canvas bag with two books, umbrella, reading glasses.", sig: "HIGH" },
+        { id: "1.5", desc: "Cell phone trace. iPhone 12. Last pinged tower near Magazine Street corridor at approximately 12:15 AM, January 7, 2022. Signal lost. Phone never recovered.", sig: "HIGH" },
+      ]
+    },
+    {
+      title: "SECTION 2: FINANCIAL RECORDS",
+      source: "Clara Vane, with supplemental subpoena cooperation.",
+      items: [
+        { id: "2.1", desc: "Whitney Bank checking account. Final transaction: $400 ATM withdrawal, January 6, 2022. No subsequent activity.", sig: "HIGH" },
+        { id: "2.2", desc: "Visa credit card (Chase). Last transaction: October 3, 2021. Faulkner House Books. $47.50. Subject ceased using credit card three months before disappearance.", sig: "MODERATE" },
+        { id: "2.3", desc: "Beaumont University payroll. Direct deposit continued during medical leave. Subject was not spending money.", sig: "MODERATE" },
+        { id: "2.4", desc: "No secondary accounts, investments, or cryptocurrency identified. No financial transfers to third parties. Subject did not accumulate resources for planned departure. He left with $400 in cash.", sig: "MODERATE" },
+      ]
+    },
+    {
+      title: "SECTION 3: DIGITAL EVIDENCE",
+      source: "Clara Vane, NOPD file.",
+      items: [
+        { id: "3.1a", desc: "Laptop: Academic files. Manuscript drafts (The Interior Campaign, chapters 1 through 7, multiple versions), course materials, correspondence.", sig: "MODERATE" },
+        { id: "3.1b", desc: "Research notes folder: CONNECTIONS.docx. Approximately 14,000 words. Notes become increasingly personal and less analytical. Late entries read as personal testimony rather than scholarly observation.", sig: "HIGH" },
+        { id: "3.1c", desc: "Three unpublished blog drafts, November to December 2021. Voice markedly different from published posts: compressed, stripped of analytical apparatus, phenomenological rather than sociological.", sig: "HIGH" },
+        { id: "3.1d", desc: "Cipher file, uploaded to Beaumont University server December 2021. Encryption method not immediately identifiable. Deliberate placement for future discovery.", sig: "UNKNOWN" },
+        { id: "3.1e", desc: "Unsent email draft. Composed January 5, 2022, 11:58 PM. Addressed to Clara. Content not reproduced in this inventory.", sig: "HIGH" },
+        { id: "3.2", desc: "Phone (iPhone 12). Not recovered. Call log shows calls to one unregistered prepaid number: twelve calls, October 2021 to January 2022, duration two to forty-seven minutes.", sig: "HIGH" },
+      ]
+    },
+    {
+      title: "SECTION 4: PHYSICAL EVIDENCE FROM RESIDENCE",
+      source: "Clara Vane, with consent.",
+      items: [
+        { id: "4.1", desc: "Subject's study. Desk clear. Post-it note: \"The observer changes the experiment. W.J.\" Bookshelves one third full.", sig: "MODERATE" },
+        { id: "4.2", desc: "Annotated books: six volumes retained. Meister Eckhart, Pseudo-Dionysius, William James, Mary Anne Atwood, Corpus Hermeticum, one unidentified Latin volume from Vienna. Subject gave away 400 books and retained six. The selection is itself evidence.", sig: "HIGH" },
+        { id: "4.3", desc: "Clothing largely intact. Missing: one dark jacket, one pair of walking shoes. Subject did not pack a bag. Subject left with what he was wearing and $400 in cash.", sig: "HIGH" },
+      ]
+    },
+    {
+      title: "SECTION 5: BEAUMONT UNIVERSITY RECORDS",
+      source: "Office of Faculty Affairs.",
+      items: [
+        { id: "5.1", desc: "HR correspondence. Three letters, September through October 2021, documenting escalating institutional concern.", sig: "MODERATE" },
+        { id: "5.2", desc: "Library visitor log, Special Collections. 33 visits, January through November 2021. Final visit November 10. Archivist's note: \"Researcher became very still. Did not speak for approximately four minutes. Left without his coat.\"", sig: "HIGH" },
+        { id: "5.3", desc: "NEH grant file. Fellowship FA-57834-19, awarded 2019. Renewal application due April 2020. Not submitted. First professional failure in subject's career.", sig: "MODERATE" },
+      ]
+    },
+  ];
+
+  const sigColor = (sig) => {
+    if (sig === "HIGH") return "#c0392b";
+    if (sig === "MODERATE") return "#d4a017";
+    if (sig === "UNKNOWN") return "#7f8c8d";
+    return "#95a5a6";
+  };
+
+  return (
+    <div className="memo-wrap">
+      <div className="memo-page">
+        <div className="memo-letterhead">
+          <div className="firm-name">Osei Investigations LLC</div>
+          <div className="firm-details">3412 Magazine Street, Suite 4 {"\u00b7"} New Orleans, LA 70115 {"\u00b7"} License: C-2016-7743</div>
+        </div>
+        <hr className="memo-divider" />
+        <div className="memo-stamp">Evidence Inventory and Summary</div>
+        <div className="memo-fields">
+          <strong>Case:</strong> NOPD-2022-004471 / Osei Investigations{"\n"}
+          <strong>Client:</strong> Clara Vane{"\n"}
+          <strong>Subject:</strong> Dr. Aldous Vane, Missing Person{"\n"}
+          <strong>Compiled:</strong> November 2022
+        </div>
+
+        <div style={{ display: "flex", gap: 4, marginBottom: 20, flexWrap: "wrap" }}>
+          <span
+            onClick={() => dispatch({ type: "navigate", view: VIEWS.PI_MEMO, subId: 1 })}
+            style={{ padding: "4px 10px", fontSize: 11, cursor: "pointer", background: "#f0f0f0", color: "#666", borderRadius: 2, fontFamily: "'Oswald', sans-serif" }}
+          >
+            Memos
+          </span>
+          <span
+            onClick={() => dispatch({ type: "navigate", view: VIEWS.INTERVIEW, subId: "leonid" })}
+            style={{ padding: "4px 10px", fontSize: 11, cursor: "pointer", background: "#f0f0f0", color: "#1B4332", borderRadius: 2, fontFamily: "'Oswald', sans-serif" }}
+          >
+            Interviews
+          </span>
+          <span
+            onClick={() => dispatch({ type: "navigate", view: VIEWS.FIELD_NOTES })}
+            style={{ padding: "4px 10px", fontSize: 11, cursor: "pointer", background: "#f0f0f0", color: "#666", borderRadius: 2, fontFamily: "'Oswald', sans-serif" }}
+          >
+            Field Notes
+          </span>
+          <span style={{ padding: "4px 10px", fontSize: 11, background: "#1a1a1a", color: "#fff", borderRadius: 2, fontFamily: "'Oswald', sans-serif" }}>
+            Evidence
+          </span>
+        </div>
+
+        <div className="memo-body">
+          {sections.map((section, si) => (
+            <div key={si} style={{ marginBottom: 28 }}>
+              <div style={{ fontFamily: "'Oswald', sans-serif", fontSize: 13, fontWeight: 500, color: "#1a1a1a", letterSpacing: 0.5, marginBottom: 4 }}>
+                {section.title}
+              </div>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: "#888", marginBottom: 12 }}>
+                Source: {section.source}
+              </div>
+              {section.items.map((item, ii) => (
+                <div key={ii} style={{ display: "flex", gap: 12, marginBottom: 10, paddingBottom: 10, borderBottom: "1px solid #eee" }}>
+                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: "#666", minWidth: 36, flexShrink: 0 }}>
+                    {item.id}
+                  </div>
+                  <div style={{ fontFamily: "'Source Serif Pro', serif", fontSize: 12, color: "#444", lineHeight: 1.6, flex: 1 }}>
+                    {item.desc}
+                  </div>
+                  <div style={{ fontFamily: "'Oswald', sans-serif", fontSize: 10, color: sigColor(item.sig), minWidth: 70, textAlign: "right", flexShrink: 0, letterSpacing: 0.5 }}>
+                    {item.sig}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+
+          <div style={{ marginTop: 12, paddingTop: 16, borderTop: "2px solid #333" }}>
+            <div style={{ fontFamily: "'Oswald', sans-serif", fontSize: 13, fontWeight: 500, color: "#1a1a1a", letterSpacing: 0.5, marginBottom: 12 }}>
+              SECTION 7: NEGATIVE EVIDENCE
+            </div>
+            <div style={{ fontFamily: "'Source Serif Pro', serif", fontSize: 12, color: "#666", fontStyle: "italic", marginBottom: 12 }}>
+              The following evidence was sought and not found. In investigation, absence is data.
+            </div>
+            <div style={{ fontFamily: "'Source Serif Pro', serif", fontSize: 12, color: "#444", lineHeight: 1.8 }}>
+              {"No body recovered. No evidence of foul play. No secondary financial accounts. No extramarital relationship. No substance abuse. No travel documents used (passport current but unused since London 2019). No evidence of contact with any person after approximately midnight, January 7, 2022. No confirmed sightings through November 2022."}
+            </div>
+          </div>
+
+          <div style={{ marginTop: 24, paddingTop: 16, borderTop: "2px solid #333" }}>
+            <div style={{ fontFamily: "'Oswald', sans-serif", fontSize: 13, fontWeight: 500, color: "#1a1a1a", letterSpacing: 0.5, marginBottom: 12 }}>
+              SECTION 8: ASSESSMENT
+            </div>
+            <div style={{ fontFamily: "'Source Serif Pro', serif", fontSize: 13, color: "#1a1a1a", lineHeight: 1.8 }}>
+              {"The evidence does not support homicide. There is no physical evidence, no witness testimony, no motive, and no suspect. The evidence does not conclusively support suicide. There is no note, no prior history, no witness to self-harm, and no body. The evidence does not conclusively support voluntary disappearance in the conventional sense. Subject did not plan financially, did not pack, did not acquire travel documents, and did not establish a destination."}
+            </div>
+            <div style={{ fontFamily: "'Source Serif Pro', serif", fontSize: 13, color: "#1a1a1a", lineHeight: 1.8, marginTop: 12 }}>
+              {"What the evidence does support is a picture of a man who underwent a transformation of understanding over a period of approximately eighteen months, who systematically reduced his material attachments, who ceased professional and social participation, and who departed his known life with deliberation and without distress."}
+            </div>
+            <div style={{ fontFamily: "'Source Serif Pro', serif", fontSize: 13, color: "#1a1a1a", lineHeight: 1.8, marginTop: 12 }}>
+              {"Whether that departure was a product of mental illness, spiritual transformation, or something that the distinction between those categories cannot contain is beyond the scope of this investigation to determine."}
+            </div>
+            <div style={{ fontFamily: "'Source Serif Pro', serif", fontSize: 12, color: "#888", fontStyle: "italic", marginTop: 16 }}>
+              {"The evidence is cataloged. The case is closed. The question remains open."}
+            </div>
+          </div>
+
+          <div style={{ marginTop: 20, fontFamily: "'Oswald', sans-serif", fontSize: 11, color: "#999", letterSpacing: 0.5 }}>
+            M. Osei {"\u00b7"} Private Investigator {"\u00b7"} Louisiana License C-2016-7743 {"\u00b7"} November 2022
+          </div>
         </div>
       </div>
     </div>
@@ -5310,6 +5639,10 @@ function ViridiariumIgnis() {
         return <MarginaliaView dispatch={dispatch} />;
       case VIEWS.INTERVIEW:
         return <InterviewView dispatch={dispatch} subId={state.subId} />;
+      case VIEWS.FIELD_NOTES:
+        return <FieldNotesView dispatch={dispatch} />;
+      case VIEWS.EVIDENCE_INVENTORY:
+        return <EvidenceInventoryView dispatch={dispatch} />;
       case VIEWS.LIBRARY_LOG:
         return <LibraryLogView dispatch={dispatch} />;
       case VIEWS.SIGHTLINES:

@@ -80,14 +80,29 @@ const VIEWS = {
   EVIDENCE_INVENTORY: "evidence_inventory",
 };
 
+var DISCOVERABLE_VIEWS = [
+  VIEWS.BLOG_POST, VIEWS.FACULTY_PAGE, VIEWS.CLINICAL_NOTE, VIEWS.PI_MEMO,
+  VIEWS.EMAIL_DRAFT, VIEWS.CIPHER, VIEWS.FOIA, VIEWS.DRIVE_FOLDER,
+  VIEWS.MEETING_NOTES, VIEWS.MARGINALIA, VIEWS.INTERVIEW, VIEWS.CONNECTIONS,
+  VIEWS.DRAFT_IV, VIEWS.LIBRARY_LOG, VIEWS.SIGHTLINES, VIEWS.ENCLOSED_FIELD,
+  VIEWS.JAMES_PAPER, VIEWS.LEONID_MANUSCRIPT, VIEWS.CHEN_PAPER, VIEWS.HALE_PAPER,
+  VIEWS.CLARA_SUBSTACK, VIEWS.ENTROPIC_ATTRACTORS, VIEWS.MAP, VIEWS.TEXTS,
+  VIEWS.WHITEBOARD, VIEWS.ACCESS_LOG, VIEWS.FIELD_NOTES, VIEWS.EVIDENCE_INVENTORY,
+  VIEWS.SEVENTH,
+];
+
 function reducer(state, action) {
   switch (action.type) {
     case "navigate":
+      var newVisited = new Set(state.visited);
+      newVisited.add(action.view);
+      if (action.subId) newVisited.add(action.view + "_" + action.subId);
       return {
         ...state,
         history: [...state.history, { view: state.view, subId: state.subId }],
         view: action.view,
         subId: action.subId || null,
+        visited: newVisited,
       };
     case "back":
       if (state.history.length === 0) return state;
@@ -1779,6 +1794,62 @@ const SUBREDDIT_POSTS = [
     flair: "Evidence",
   },
   {
+    id: "collected_works_release",
+    user: "u/pelican_athanor",
+    time: "March 14, 2025",
+    title: "The Collected Works of Aldous Vane is now published. Beaumont University Press. Priya Mehta edited it. It contains everything.",
+    excerpt: "The papers. The blog posts. The unpublished drafts, including Draft IV. The meeting notes. The cipher file, decrypted. The unsent email. Avery's foreword is careful and institutional. Mehta's introduction is not. She knew him. She has his library. She has been reading what he was reading. If you have been following this case, this is the primary source document. Everything else is commentary.",
+    votes: 3412,
+    comments: 1847,
+    flair: "Evidence",
+    hot: true,
+    pinned: true,
+  },
+  {
+    id: "poole_book",
+    user: "u/grant_poole",
+    time: "September 3, 2024",
+    title: "My book is out. SIGHTLINES. I owe this community an explanation of what I found and what I still cannot explain.",
+    excerpt: "Some of you helped me. Some of you disagreed with me. Some of you were right to disagree. The book is the full version of the ACHERON investigation, plus new material: the Gateway Process connection, the Pat Price precedent, the three scenarios for what happened to Vane. I do not resolve it. I am not sure it can be resolved with the tools I have.",
+    votes: 2156,
+    comments: 1423,
+    flair: "ACHERON",
+    hot: true,
+  },
+  {
+    id: "lux_on_poole_book",
+    user: "u/lux_in_tenebris",
+    time: "September 14, 2024, 2:47 AM",
+    title: "Re: SIGHTLINES",
+    excerpt: "",
+    votes: 892,
+    comments: 447,
+    flair: null,
+    hot: true,
+  },
+  {
+    id: "reading_order",
+    user: "u/archive_deep",
+    time: "April 2, 2025",
+    title: "For new members: a reading order. Where to start if you just found us.",
+    excerpt: "This subreddit has three years of material. The Collected Works just came out. Poole's book has been out since September. Here is where to start and in what order, depending on what kind of reader you are.",
+    votes: 567,
+    comments: 234,
+    flair: "Case Overview",
+    pinned: true,
+  },
+  {
+    id: "collected_works_meeting_notes",
+    user: "u/Thoth_R",
+    time: "March 28, 2025",
+    title: "The meeting notes in the Collected Works are worse than I expected. He documents everything. He documents losing himself.",
+    excerpt: "I just finished reading the meeting notes section. Mehta published them in chronological order. March 2021 through December 2021. You can watch his handwriting change in the reproductions. You can watch the sociological vocabulary disappear. By November he has stopped using complete sentences. By December there are passages that read like someone taking dictation from inside a dream.",
+    votes: 1834,
+    comments: 923,
+    flair: "Evidence",
+    hot: true,
+  },
+  {
     id: "clara_substack",
     user: "u/lux_in_tenebris",
     time: "January 18, 2025",
@@ -1865,19 +1936,23 @@ function NavBreadcrumb({ history, dispatch, current }) {
 }
 
 // ── Subreddit Landing ──
-function SubredditView({ dispatch }) {
+function SubredditView({ dispatch, onlineCount, memberCount, visited }) {
   const [expanded, setExpanded] = useState(null);
+  var discoveredCount = 0;
+  if (visited) {
+    DISCOVERABLE_VIEWS.forEach(function(v) { if (visited.has(v)) discoveredCount++; });
+  }
 
   return (
     <div className="reddit-wrap">
       <div className="reddit-header">
         <h1>r/SolveCoagula</h1>
-        <span className="sub-desc">1,427 members · 23 online</span>
+        <span className="sub-desc">{memberCount ? memberCount.toLocaleString() : "1,427"} members · {onlineCount || 23} online</span>
       </div>
       <div className="reddit-body">
         <div className="reddit-sidebar">
           <h3>About this community</h3>
-          <div className="member-count">Created April 23, 2022 · 1,427 members</div>
+          <div className="member-count">Created April 23, 2022 · {memberCount ? memberCount.toLocaleString() : "1,427"} members</div>
           <p>Documenting the disappearance of Dr. Aldous Vane, Associate Professor of Religion, Psychology, and Social Thought at Beaumont University, New Orleans. Last confirmed sighting: January 6, 2022. NOPD case #22-00341 declared inactive February 2022. No body recovered. No note found. His wife, Clara Vane, does not believe he is dead.</p>
           <p style={{ marginTop: 8, color: "#d7dadc", fontSize: 12, lineHeight: 1.5 }}>This subreddit exists because the people closest to Vane believe his published work, his research notes, and the encrypted files on his university server contain an answer. We are reading what he wrote. We are following where it leads.</p>
 
@@ -1900,6 +1975,22 @@ function SubredditView({ dispatch }) {
               <div>The Teacher: <span style={{ color: "#4FBCFF" }}>Leonid (no surname, no affiliation)</span></div>
               <div>The Notes: <span style={{ color: "#4FBCFF" }}>Calloway clinical sessions</span></div>
               <div>The Theory: <span style={{ color: "#ff6666" }}>ACHERON / SIGHTLINES article</span></div>
+            </div>
+          </div>
+
+          <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #343536" }}>
+            <div style={{ fontSize: 11, color: "#818384", marginBottom: 8, fontWeight: 600, letterSpacing: 0.5 }}>PUBLISHED WORKS</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 4 }}>
+              <div style={{ background: "rgba(79,188,255,0.06)", border: "1px solid rgba(79,188,255,0.15)", borderRadius: 4, padding: "10px 12px" }}>
+                <a href="https://www.amazon.com" target="_blank" rel="noopener noreferrer" style={{ color: "#4FBCFF", fontSize: 13, fontWeight: 600, textDecoration: "none", lineHeight: 1.4, display: "block" }}>The Collected Works of Aldous Vane</a>
+                <div style={{ fontSize: 11, color: "#818384", marginTop: 4, lineHeight: 1.4 }}>Edited by Priya Mehta. Foreword by Thomas J. Avery. Beaumont University Press, 2025.</div>
+                <div style={{ fontSize: 11, color: "#666", marginTop: 4, fontStyle: "italic" }}>Three published papers. Fourteen blog posts. The unpublished drafts. The meeting notes. The cipher file. The unsent email. Everything he left behind.</div>
+              </div>
+              <div style={{ background: "rgba(139,0,0,0.08)", border: "1px solid rgba(139,0,0,0.2)", borderRadius: 4, padding: "10px 12px" }}>
+                <a href="https://www.amazon.com" target="_blank" rel="noopener noreferrer" style={{ color: "#ff6666", fontSize: 13, fontWeight: 600, textDecoration: "none", lineHeight: 1.4, display: "block" }}>SIGHTLINES: The Vane Disappearance, the Intelligence Community, and the War on Consciousness</a>
+                <div style={{ fontSize: 11, color: "#818384", marginTop: 4, lineHeight: 1.4 }}>By Grant Poole. Melville House, 2024.</div>
+                <div style={{ fontSize: 11, color: "#666", marginTop: 4, fontStyle: "italic" }}>The ACHERON documents. The intelligence history. The three scenarios. "Meticulously researched, compulsively readable, and sophisticated in its argumentation."</div>
+              </div>
             </div>
           </div>
 
@@ -1927,6 +2018,30 @@ function SubredditView({ dispatch }) {
               <div>u/bayou_rationalist</div>
             </div>
           </div>
+
+          {discoveredCount > 0 && (
+            <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #343536" }}>
+              <div style={{ fontSize: 11, color: "#818384", marginBottom: 8, fontWeight: 600, letterSpacing: 0.5 }}>DOCUMENTS FOUND</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ flex: 1, height: 4, background: "#343536", borderRadius: 2, overflow: "hidden" }}>
+                  <div style={{ width: (discoveredCount / DISCOVERABLE_VIEWS.length * 100) + "%", height: "100%", background: discoveredCount >= DISCOVERABLE_VIEWS.length ? "#FF4500" : "#4FBCFF", borderRadius: 2, transition: "width 0.5s" }} />
+                </div>
+                <span style={{ fontSize: 11, color: discoveredCount >= DISCOVERABLE_VIEWS.length ? "#FF4500" : "#818384", fontFamily: "'IBM Plex Mono', monospace" }}>{discoveredCount}/{DISCOVERABLE_VIEWS.length}</span>
+              </div>
+              {discoveredCount >= DISCOVERABLE_VIEWS.length && (
+                <div style={{ fontSize: 11, color: "#FF4500", marginTop: 6, fontStyle: "italic" }}>You have found everything. Or everything that can be found.</div>
+              )}
+              {discoveredCount > 0 && discoveredCount < 10 && (
+                <div style={{ fontSize: 11, color: "#555", marginTop: 6, fontStyle: "italic" }}>Not all pages are linked from the navigation.</div>
+              )}
+              {discoveredCount >= 10 && discoveredCount < 20 && (
+                <div style={{ fontSize: 11, color: "#555", marginTop: 6, fontStyle: "italic" }}>Some documents must be found. Others find you.</div>
+              )}
+              {discoveredCount >= 20 && discoveredCount < DISCOVERABLE_VIEWS.length && (
+                <div style={{ fontSize: 11, color: "#555", marginTop: 6, fontStyle: "italic" }}>The seventh has no name. But it is not nothing.</div>
+              )}
+            </div>
+          )}
 
           <span className="hidden-vane">someone is maintaining this subreddit who knows more than they post. watch pelican_athanor. watch the timestamps on lux_in_tenebris. always after midnight. always correct.</span>
         </div>
@@ -2544,6 +2659,145 @@ function SubredditView({ dispatch }) {
                       <div className="comment">
                         <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · January 20, 2025, 1:33 AM</div>
                         <div className="c-body">She knew. Not through his books. Through the garden. The garden was the same knowledge in a different language.</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "reading_order" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/archive_deep</span> · April 2, 2025</div>
+                        <div className="c-body">{"We get a lot of new members now that the Collected Works is published and Poole's book is in its third printing. Here's how to approach this material depending on what kind of reader you are.\n\nTHE CHRONOLOGICAL PATH (recommended for first-timers):\n1. The faculty page. Know who he was.\n2. The blog, posts 1 through 6. Watch the voice establish itself.\n3. The James paper (JAAR 2017). This is where he maps his own future without knowing it.\n4. The blog, posts 7 through 14. Watch the voice change.\n5. The Enclosed Field (MTSR 2021). This is the hinge.\n6. The Entropic Attractors paper (Foundations of Physics 2019). This is the physics.\n7. The clinical notes. Calloway saw it happening.\n8. The meeting notes. He documents losing himself.\n9. The cipher file. POORINSPIRIT.\n10. The unsent email. Read this last.\n\nTHE INTELLIGENCE PATH (if you read Poole's book first):\n1. Start with the SIGHTLINES article on this subreddit\n2. The FOIA documents\n3. Then follow the chronological path above\n4. You'll read everything differently knowing what Poole claims\n\nTHE DEEP PATH (if you've already read the Collected Works):\n1. Read every comment thread on this subreddit. The community found things Mehta didn't include.\n2. Osei's investigation file. The PI saw something he couldn't name.\n3. The Google Drive folder. The access logs. The timestamps.\n4. Then find the seventh."}</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · April 2, 2025</div>
+                        <div className="c-body">Pinning this. One addition: if you are reading the Collected Works and this subreddit simultaneously, pay attention to the dates. Everything here happened in real time. The arguments in these threads are the arguments of people who did not know what would happen next. We were wrong about some things. We were right about others. The threads are evidence of the investigation itself, not just the case.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/Thoth_R</span> · April 3, 2025</div>
+                        <div className="c-body">Missing from the list: the Leonid manuscript pages. archive_rabbit found them in the Bywater house. Twelve typed pages. No author. No date. This is what Leonid was teaching them. If you read the meeting notes and then read the manuscript, you can hear Vane trying to translate what Leonid was saying into academic language. And failing. And the failure is the point.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · April 3, 2025, 1:14 AM</div>
+                        <div className="c-body">There is no reading order. The material reads you.</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "collected_works_release" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · March 14, 2025</div>
+                        <div className="c-body">Three years. Three years of reading fragments, leaked documents, archived web pages, and FOIA requests. And now Priya Mehta has assembled them into a single volume. Beaumont University Press. Their own press publishing their own missing professor. Avery's foreword is institutional and careful. Mehta's introduction is not. She writes: "I was his student. He gave me his library. I do not know if he intended me to become its editor." The chronology at the back is devastating. Every date we argued about, confirmed.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/Thoth_R</span> · March 14, 2025</div>
+                        <div className="c-body">The reading list. Twenty-one items with Vane's own annotations. I've been tracking his sources for three years and he was reading things I never found. The annotation on Corbin's "Alone with the Alone" is three words long and it broke me. Also: the blog posts are presented with the original publication dates AND the dates Vane was actually writing them (recovered from file metadata). There's a gap. He was writing them weeks before posting. The delay was deliberate.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/archive_deep</span> · March 14, 2025</div>
+                        <div className="c-body">The cipher file is included with the decrypted text facing the encrypted original. POORINSPIRIT. Seeing it in print, in a university press edition, with an editorial note by Mehta explaining how the community found the key: that's something I never expected. We did that. This subreddit found the key. And now it's in the scholarly apparatus of an academic press edition.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/bayou_rationalist</span> · March 15, 2025</div>
+                        <div className="c-body">The unsent email is the last item in the book. Mehta placed it after the chronology, after the reading list, after everything. It's the last thing you read. And when you read it knowing everything that came before, knowing the timeline, knowing the clinical notes, knowing the meeting notes, it reads completely differently than when we first saw it. The person who wrote that email knew exactly what they were doing. The question is what they were doing.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/darkwater_nola</span> · March 15, 2025</div>
+                        <div className="c-body">I notice the Collected Works does not include the ACHERON documents. It does not reference Poole's investigation. It does not mention the intelligence connection. Avery's foreword mentions "the conspiracy theorists" exactly once, in a footnote. This is a scholarly edition presenting a scholarly record. The institutional framework is someone else's problem. Mehta chose that boundary. I respect it. I disagree with it.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · March 16, 2025, 3:22 AM</div>
+                        <div className="c-body">The work speaks. It always spoke. Now it speaks from a spine instead of from fragments. The difference is not the words. The difference is the weight in the hand.</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "poole_book" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/grant_poole</span> · September 3, 2024</div>
+                        <div className="c-body">{"I started this in November 2022 with the SIGHTLINES article. Some of you remember. The article was 6,000 words. The book is 350 pages. The difference is what I found after the article went public.\n\nThe ACHERON documents are real FOIA releases. The intelligence history is documented. The programs existed. MKULTRA, STARGATE, Gateway, AATIP: all real, all cited from primary sources. Every footnote in this book can be verified. That was the standard I held myself to.\n\nBut I also need to be honest about the limits. Chapter 18 is the chapter I almost didn't write. It's about what happens when you spend two years researching the intersection of consciousness and intelligence operations. The material has weight. It does something to you. I felt it. I named it. I do not fully understand it.\n\nThe three scenarios for Vane are in Chapter 16. I do not choose between them. I present the evidence for each. The reader decides.\n\nAMA if you want. I owe this community that."}</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · September 3, 2024</div>
+                        <div className="c-body">I've read it. The Pat Price chapter is devastating. The COINTELPRO chapter connects things I hadn't considered. The physics chapter is over my head but someone with that background needs to evaluate it. The question I have: Chapter 12. Leonid. You acknowledge that your framework may not contain him. How much of the book survives if Leonid is simply what he appears to be?</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/grant_poole</span> · September 3, 2024</div>
+                        <div className="c-body">All of the intelligence history survives. MKULTRA happened. STARGATE happened. The Gateway Process document is real. The post-1995 dispersal is documented. ACHERON is a real FOIA release. All of that is independent of Leonid. What doesn't survive is the application to Vane specifically. If Leonid has no institutional origin, then the framework explains the institutional interest but not what happened inside that interest. I end the book acknowledging this. It's the most honest thing I've written.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/Thoth_R</span> · September 3, 2024</div>
+                        <div className="c-body">The footnotes in this book are extraordinary. Actual FOIA case numbers. Actual Congressional hearing transcripts. Actual publication citations. I've been spot-checking and everything I've verified so far is accurate. Poole built this on primary sources. Whatever you think of his conclusions, the research is real.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/bayou_rationalist</span> · September 4, 2024</div>
+                        <div className="c-body">Question for Poole: the Entropic Attractors paper. You read it as a Rosetta Stone connecting consciousness research and UAP physics. Did you consult physicists? What did they say about Vane's formalism when read through your lens?</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/grant_poole</span> · September 4, 2024</div>
+                        <div className="c-body">I consulted three. Two said the math is sound but the application is speculative. One, who asked not to be named, said: "If this formalism is correct, it describes how consciousness couples to information at a level below quantum decoherence. That's not sociology. That's physics. And someone published it in a physics journal and no one noticed." That person has since declined further comment.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/darkwater_nola</span> · September 4, 2024</div>
+                        <div className="c-body">Page 287. You mention five people connected to the Beaumont research network who died between March 2021 and January 2022. You call it "circumstantial." You note my OSINT methodology and say it was "thorough but not dispositive." I'll take that. But I notice you didn't include the sixth death. The one I sent you privately. The one you told me you couldn't verify. Did you try?</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/grant_poole</span> · September 4, 2024</div>
+                        <div className="c-body">I tried. I could not verify it through the channels available to me. I will not publish what I cannot verify. You know why.</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "lux_on_poole_book" && (
+                    <div className="comment-section">
+                      <div style={{ padding: "12px 0", fontSize: 13, color: "#818384", fontStyle: "italic" }}>
+                        First post from u/lux_in_tenebris in 10 months. Posted 2:47 AM Central.
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · September 14, 2024, 2:47 AM</div>
+                        <div className="c-body">{"Poole's book is careful. The research is real. The programs are real. The history is accurate. The intelligence community studied consciousness for seventy years. This is documented. This is true.\n\nThe book is also wrong.\n\nNot wrong in its facts. Wrong in its frame. It requires that what happened to Vane is a product of what was done to him. Institutional interest. Operational cultivation. Asset development. The language is precise. The language is also a cage.\n\nConsider: what if nothing was done to him? What if the traditions he studied for twenty years were describing something real? Not metaphorically real. Not culturally real. Not psychologically real. Real. And what if spending twenty years building the most sophisticated analytical framework for studying that material brought him, finally, to the edge of the material itself? Not because someone led him there. Because the material leads everyone there who reads it with enough attention and enough time.\n\nPoole cannot consider this because his framework has no category for it. An investigative journalist has categories for institutional action, classified programs, operational deployment. He does not have a category for: the thing itself, without apparatus.\n\nThe ACHERON documents are interesting. They are not the interesting thing."}</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · September 14, 2024</div>
+                        <div className="c-body">This is the longest post lux has ever written. In three years. Read it again.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/Thoth_R</span> · September 14, 2024</div>
+                        <div className="c-body">"The thing itself, without apparatus." This is the argument Vane makes in The Enclosed Field. The knowledge that cannot be transmitted through the scholarly apparatus that made studying it possible. Lux is making Vane's argument. In Vane's language. On a subreddit about Vane's disappearance. At 2:47 in the morning.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/darkwater_nola</span> · September 14, 2024</div>
+                        <div className="c-body">With respect: "the thing itself, without apparatus" is also what you say when you want people to stop looking at the evidence. I don't know who lux is. I don't know what lux knows. But I know that every time someone posts documented, sourced, verifiable evidence of institutional involvement, lux appears and says the evidence is real but beside the point. That is a rhetorical move. It is not an argument.</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/grant_poole</span> · September 14, 2024</div>
+                        <div className="c-body">I address lux's critique in Chapter 12. I take it seriously. The framework that makes me effective may be the framework that makes me blind. I acknowledge that. But I also note: if lux is right, if the phenomenon is autonomous and has no institutional origin, then the intelligence community has been studying something real for seventy years. And something real happened to the people who got too close. The framework changes. The danger does not.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/small_voice_at_end</span> · September 15, 2024</div>
+                        <div className="c-body">I've read Poole's book and now I've read lux's response. They're both right. They're both describing the same thing from different positions. Poole sees the architecture. Lux sees the fire. The architecture was built to contain the fire. But the fire is not a product of the architecture. The fire was there first.</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "collected_works_meeting_notes" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/Thoth_R</span> · March 28, 2025</div>
+                        <div className="c-body">{"The meeting notes are arranged chronologically. March 2021 through December 2021. Ten months. Mehta's editorial note says she debated whether to include them. She included them because 'they are the only record of what he experienced in the period between the last blog post and the disappearance.'\n\nThe early notes (March through May) are observational. Sociological vocabulary intact. He describes the Tuesday gatherings as 'a small knowledge community organized around contemplative practice.' He names participants by initials. He notes group dynamics.\n\nBy June the vocabulary starts to shift. He writes 'what L. describes is not a tradition. It is a capacity.' L. is Leonid. He stops using 'community' and starts using 'circle.'\n\nBy August he has stopped taking notes during the meetings. The entries are written afterward, sometimes the next day. He writes: 'I cannot take notes during what L. says. The act of recording separates me from what is being transmitted. This is the problem I described in the MTSR paper. I am living it now.'\n\nBy October the entries are fragments. Half-sentences. Drawings. A circle with a dot in the center, repeated across three pages.\n\nThe November 28 entry is the last. It is one line: 'the substrate is not a metaphor.'\n\nDecember: nothing. January 6: gone."}</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · March 28, 2025</div>
+                        <div className="c-body">The Collected Works reproduces three pages of the original handwritten notes in facsimile. The handwriting in March is neat, contained, professorial. The handwriting in November barely stays on the lines. It's not deterioration. It's not tremor. The letters are formed correctly. They're just larger, looser, as if the hand writing them was operating with less resistance. As if the boundary between intention and action had thinned.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/bayou_rationalist</span> · March 29, 2025</div>
+                        <div className="c-body">The December 28 entry from the meeting notes, the one that says "You can remain as you have been, or you can proceed into what you have already begun. But you cannot do both, and you cannot return." That's in the Collected Works with a Mehta footnote: "This appears to be a direct quotation from Leonid. It is the last recorded statement attributed to him in Vane's papers." Nine days later Vane disappeared. Nine days.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/darkwater_nola</span> · March 29, 2025</div>
+                        <div className="c-body">Read that quotation from Leonid again. "You cannot do both, and you cannot return." In Poole's framework this is an operational threshold: extraction, isolation, or acceleration. In the subreddit's framework this is a spiritual crisis: the moment of irreversible transformation. In Calloway's framework this would be: the patient is being told by an influential figure that there is no exit. Every framework reads it differently. None of them can contain what it actually says.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · March 30, 2025, 2:11 AM</div>
+                        <div className="c-body">He was not told. He was recognized. There is a difference.</div>
                       </div>
                     </div>
                   )}
@@ -5529,7 +5783,28 @@ function ViridiariumIgnis() {
     view: VIEWS.SUBREDDIT,
     subId: null,
     history: [],
+    visited: new Set(),
   });
+  const [onlineCount, setOnlineCount] = useState(23);
+  const [memberCount, setMemberCount] = useState(1427);
+
+  useEffect(() => {
+    var onlineInterval = setInterval(function() {
+      setOnlineCount(function(c) {
+        var delta = Math.random() > 0.5 ? 1 : -1;
+        var newCount = c + delta;
+        if (newCount < 8) newCount = 8;
+        if (newCount > 47) newCount = 47;
+        return newCount;
+      });
+    }, 15000 + Math.random() * 30000);
+    var memberInterval = setInterval(function() {
+      if (Math.random() > 0.7) {
+        setMemberCount(function(c) { return c + 1; });
+      }
+    }, 60000 + Math.random() * 120000);
+    return function() { clearInterval(onlineInterval); clearInterval(memberInterval); };
+  }, []);
 
   useEffect(() => {
     const style = document.createElement("style");
@@ -5612,7 +5887,7 @@ function ViridiariumIgnis() {
   const renderView = () => {
     switch (state.view) {
       case VIEWS.SUBREDDIT:
-        return <SubredditView dispatch={dispatch} />;
+        return <SubredditView dispatch={dispatch} onlineCount={onlineCount} memberCount={memberCount} visited={state.visited} />;
       case VIEWS.BLOG_POST:
         return <BlogPostView dispatch={dispatch} subId={state.subId} />;
       case VIEWS.FACULTY_PAGE:
@@ -5678,10 +5953,18 @@ function ViridiariumIgnis() {
     }
   };
 
+  var depth = state.history.length;
+  var depthColor = depth <= 2 ? "transparent" : depth <= 5 ? "rgba(79,188,255,0.03)" : depth <= 10 ? "rgba(79,188,255,0.06)" : "rgba(255,69,0,0.04)";
+
   return (
-    <div className="vig-root">
+    <div className="vig-root" style={{ borderTop: depth > 5 ? ("2px solid " + (depth > 10 ? "rgba(255,69,0,0.3)" : "rgba(79,188,255,0.2)")) : "none" }}>
       <NavBreadcrumb history={state.history} dispatch={dispatch} current={state.view} />
       {renderView()}
+      {depth > 3 && state.view !== VIEWS.SUBREDDIT && (
+        <div style={{ position: "fixed", bottom: 12, right: 16, fontSize: 10, color: "#333", fontFamily: "'IBM Plex Mono', monospace", letterSpacing: 1, opacity: Math.min(0.6, depth * 0.05), transition: "opacity 0.5s" }}>
+          depth: {depth}
+        </div>
+      )}
     </div>
   );
 }

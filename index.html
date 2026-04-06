@@ -78,31 +78,18 @@ const VIEWS = {
   ENTROPIC_ATTRACTORS: "entropic_attractors",
   FIELD_NOTES: "field_notes",
   EVIDENCE_INVENTORY: "evidence_inventory",
+  SIGHTLINES_FOLLOWUP: "sightlines_followup",
+  EMAIL_METADATA: "email_metadata",
 };
-
-var DISCOVERABLE_VIEWS = [
-  VIEWS.BLOG_POST, VIEWS.FACULTY_PAGE, VIEWS.CLINICAL_NOTE, VIEWS.PI_MEMO,
-  VIEWS.EMAIL_DRAFT, VIEWS.CIPHER, VIEWS.FOIA, VIEWS.DRIVE_FOLDER,
-  VIEWS.MEETING_NOTES, VIEWS.MARGINALIA, VIEWS.INTERVIEW, VIEWS.CONNECTIONS,
-  VIEWS.DRAFT_IV, VIEWS.LIBRARY_LOG, VIEWS.SIGHTLINES, VIEWS.ENCLOSED_FIELD,
-  VIEWS.JAMES_PAPER, VIEWS.LEONID_MANUSCRIPT, VIEWS.CHEN_PAPER, VIEWS.HALE_PAPER,
-  VIEWS.CLARA_SUBSTACK, VIEWS.ENTROPIC_ATTRACTORS, VIEWS.MAP, VIEWS.TEXTS,
-  VIEWS.WHITEBOARD, VIEWS.ACCESS_LOG, VIEWS.FIELD_NOTES, VIEWS.EVIDENCE_INVENTORY,
-  VIEWS.SEVENTH,
-];
 
 function reducer(state, action) {
   switch (action.type) {
     case "navigate":
-      var newVisited = new Set(state.visited);
-      newVisited.add(action.view);
-      if (action.subId) newVisited.add(action.view + "_" + action.subId);
       return {
         ...state,
         history: [...state.history, { view: state.view, subId: state.subId }],
         view: action.view,
         subId: action.subId || null,
-        visited: newVisited,
       };
     case "back":
       if (state.history.length === 0) return state;
@@ -1606,6 +1593,28 @@ const SUBREDDIT_POSTS = [
     pinned: true,
   },
   {
+    id: "darkwater_whitfield",
+    user: "u/darkwater_nola",
+    time: "December 3, 2022",
+    title: "[UPDATE] Whitfield was ACHERON. I can prove it. The five deaths are not coincidence.",
+    excerpt: "Robert Whitfield was not a peripheral figure in the ACHERON program. He was central to it. I have the email chain. 17 messages over 14 months. 'A note on Okafor' three days after Okafor died. 'Caution' in November. 'No subject' four days before Vane vanished.",
+    votes: 1247,
+    comments: 489,
+    flair: "ACHERON",
+    hot: true,
+  },
+  {
+    id: "acheron_followup",
+    user: "u/pelican_athanor",
+    time: "December 12, 2022",
+    title: "Poole published a follow-up. New FOIA documents. The ACHERON monitoring program survived its termination.",
+    excerpt: "Three new pages. An asset development matrix showing how academics were recruited. A practitioner contact log spanning 1985 to 1988. And a 1997 memo directing continued monitoring of 'communities in southern urban centers.' The program ended in 1989. The monitoring did not.",
+    votes: 534,
+    comments: 267,
+    flair: "ACHERON",
+    hot: true,
+  },
+  {
     id: "final_post",
     user: "u/AVane",
     time: "January 6, 2023, 12:01 AM",
@@ -1794,62 +1803,6 @@ const SUBREDDIT_POSTS = [
     flair: "Evidence",
   },
   {
-    id: "collected_works_release",
-    user: "u/pelican_athanor",
-    time: "March 14, 2025",
-    title: "The Collected Works of Aldous Vane is now published. Beaumont University Press. Priya Mehta edited it. It contains everything.",
-    excerpt: "The papers. The blog posts. The unpublished drafts, including Draft IV. The meeting notes. The cipher file, decrypted. The unsent email. Avery's foreword is careful and institutional. Mehta's introduction is not. She knew him. She has his library. She has been reading what he was reading. If you have been following this case, this is the primary source document. Everything else is commentary.",
-    votes: 3412,
-    comments: 1847,
-    flair: "Evidence",
-    hot: true,
-    pinned: true,
-  },
-  {
-    id: "poole_book",
-    user: "u/grant_poole",
-    time: "September 3, 2024",
-    title: "My book is out. SIGHTLINES. I owe this community an explanation of what I found and what I still cannot explain.",
-    excerpt: "Some of you helped me. Some of you disagreed with me. Some of you were right to disagree. The book is the full version of the ACHERON investigation, plus new material: the Gateway Process connection, the Pat Price precedent, the three scenarios for what happened to Vane. I do not resolve it. I am not sure it can be resolved with the tools I have.",
-    votes: 2156,
-    comments: 1423,
-    flair: "ACHERON",
-    hot: true,
-  },
-  {
-    id: "lux_on_poole_book",
-    user: "u/lux_in_tenebris",
-    time: "September 14, 2024, 2:47 AM",
-    title: "Re: SIGHTLINES",
-    excerpt: "",
-    votes: 892,
-    comments: 447,
-    flair: null,
-    hot: true,
-  },
-  {
-    id: "reading_order",
-    user: "u/archive_deep",
-    time: "April 2, 2025",
-    title: "For new members: a reading order. Where to start if you just found us.",
-    excerpt: "This subreddit has three years of material. The Collected Works just came out. Poole's book has been out since September. Here is where to start and in what order, depending on what kind of reader you are.",
-    votes: 567,
-    comments: 234,
-    flair: "Case Overview",
-    pinned: true,
-  },
-  {
-    id: "collected_works_meeting_notes",
-    user: "u/Thoth_R",
-    time: "March 28, 2025",
-    title: "The meeting notes in the Collected Works are worse than I expected. He documents everything. He documents losing himself.",
-    excerpt: "I just finished reading the meeting notes section. Mehta published them in chronological order. March 2021 through December 2021. You can watch his handwriting change in the reproductions. You can watch the sociological vocabulary disappear. By November he has stopped using complete sentences. By December there are passages that read like someone taking dictation from inside a dream.",
-    votes: 1834,
-    comments: 923,
-    flair: "Evidence",
-    hot: true,
-  },
-  {
     id: "clara_substack",
     user: "u/lux_in_tenebris",
     time: "January 18, 2025",
@@ -1936,23 +1889,19 @@ function NavBreadcrumb({ history, dispatch, current }) {
 }
 
 // ── Subreddit Landing ──
-function SubredditView({ dispatch, onlineCount, memberCount, visited }) {
+function SubredditView({ dispatch }) {
   const [expanded, setExpanded] = useState(null);
-  var discoveredCount = 0;
-  if (visited) {
-    DISCOVERABLE_VIEWS.forEach(function(v) { if (visited.has(v)) discoveredCount++; });
-  }
 
   return (
     <div className="reddit-wrap">
       <div className="reddit-header">
         <h1>r/SolveCoagula</h1>
-        <span className="sub-desc">{memberCount ? memberCount.toLocaleString() : "1,427"} members · {onlineCount || 23} online</span>
+        <span className="sub-desc">1,427 members · 23 online</span>
       </div>
       <div className="reddit-body">
         <div className="reddit-sidebar">
           <h3>About this community</h3>
-          <div className="member-count">Created April 23, 2022 · {memberCount ? memberCount.toLocaleString() : "1,427"} members</div>
+          <div className="member-count">Created April 23, 2022 · 1,427 members</div>
           <p>Documenting the disappearance of Dr. Aldous Vane, Associate Professor of Religion, Psychology, and Social Thought at Beaumont University, New Orleans. Last confirmed sighting: January 6, 2022. NOPD case #22-00341 declared inactive February 2022. No body recovered. No note found. His wife, Clara Vane, does not believe he is dead.</p>
           <p style={{ marginTop: 8, color: "#d7dadc", fontSize: 12, lineHeight: 1.5 }}>This subreddit exists because the people closest to Vane believe his published work, his research notes, and the encrypted files on his university server contain an answer. We are reading what he wrote. We are following where it leads.</p>
 
@@ -1979,22 +1928,6 @@ function SubredditView({ dispatch, onlineCount, memberCount, visited }) {
           </div>
 
           <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #343536" }}>
-            <div style={{ fontSize: 11, color: "#818384", marginBottom: 8, fontWeight: 600, letterSpacing: 0.5 }}>PUBLISHED WORKS</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 4 }}>
-              <div style={{ background: "rgba(79,188,255,0.06)", border: "1px solid rgba(79,188,255,0.15)", borderRadius: 4, padding: "10px 12px" }}>
-                <a href="https://www.amazon.com" target="_blank" rel="noopener noreferrer" style={{ color: "#4FBCFF", fontSize: 13, fontWeight: 600, textDecoration: "none", lineHeight: 1.4, display: "block" }}>The Collected Works of Aldous Vane</a>
-                <div style={{ fontSize: 11, color: "#818384", marginTop: 4, lineHeight: 1.4 }}>Edited by Priya Mehta. Foreword by Thomas J. Avery. Beaumont University Press, 2025.</div>
-                <div style={{ fontSize: 11, color: "#666", marginTop: 4, fontStyle: "italic" }}>Three published papers. Fourteen blog posts. The unpublished drafts. The meeting notes. The cipher file. The unsent email. Everything he left behind.</div>
-              </div>
-              <div style={{ background: "rgba(139,0,0,0.08)", border: "1px solid rgba(139,0,0,0.2)", borderRadius: 4, padding: "10px 12px" }}>
-                <a href="https://www.amazon.com" target="_blank" rel="noopener noreferrer" style={{ color: "#ff6666", fontSize: 13, fontWeight: 600, textDecoration: "none", lineHeight: 1.4, display: "block" }}>SIGHTLINES: The Vane Disappearance, the Intelligence Community, and the War on Consciousness</a>
-                <div style={{ fontSize: 11, color: "#818384", marginTop: 4, lineHeight: 1.4 }}>By Grant Poole. Melville House, 2024.</div>
-                <div style={{ fontSize: 11, color: "#666", marginTop: 4, fontStyle: "italic" }}>The ACHERON documents. The intelligence history. The three scenarios. "Meticulously researched, compulsively readable, and sophisticated in its argumentation."</div>
-              </div>
-            </div>
-          </div>
-
-          <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #343536" }}>
             <div style={{ fontSize: 11, color: "#818384", marginBottom: 8, fontWeight: 600, letterSpacing: 0.5 }}>RELATED DOCUMENTS</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.FACULTY_PAGE })}>Beaumont Faculty Page (archived)</span>
@@ -2006,6 +1939,8 @@ function SubredditView({ dispatch, onlineCount, memberCount, visited }) {
               <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.HALE_PAPER })}>Hale, "The Open Field" (Religion 2023)</span>
               <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.ENTROPIC_ATTRACTORS })}>Entropic Attractors (Foundations of Physics 2019)</span>
               <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.SIGHTLINES })}>SIGHTLINES: "The Man Called Leonid"</span>
+              <span className="doc-link" style={{ color: "#ff6666", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.SIGHTLINES_FOLLOWUP })}>SIGHTLINES: "ACHERON: What the Redactions Cannot Hide"</span>
+              <span className="doc-link" style={{ color: "#ff6666", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.EMAIL_METADATA })}>Beaumont FOIA: Whitfield/Vane Email Metadata</span>
               <span className="doc-link" style={{ color: "#7abd72", cursor: "pointer", fontSize: 12 }} onClick={() => dispatch({ type: "navigate", view: VIEWS.CLARA_SUBSTACK })}>Root Systems (Clara Vane, Substack 2025)</span>
             </div>
           </div>
@@ -2018,30 +1953,6 @@ function SubredditView({ dispatch, onlineCount, memberCount, visited }) {
               <div>u/bayou_rationalist</div>
             </div>
           </div>
-
-          {discoveredCount > 0 && (
-            <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #343536" }}>
-              <div style={{ fontSize: 11, color: "#818384", marginBottom: 8, fontWeight: 600, letterSpacing: 0.5 }}>DOCUMENTS FOUND</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ flex: 1, height: 4, background: "#343536", borderRadius: 2, overflow: "hidden" }}>
-                  <div style={{ width: (discoveredCount / DISCOVERABLE_VIEWS.length * 100) + "%", height: "100%", background: discoveredCount >= DISCOVERABLE_VIEWS.length ? "#FF4500" : "#4FBCFF", borderRadius: 2, transition: "width 0.5s" }} />
-                </div>
-                <span style={{ fontSize: 11, color: discoveredCount >= DISCOVERABLE_VIEWS.length ? "#FF4500" : "#818384", fontFamily: "'IBM Plex Mono', monospace" }}>{discoveredCount}/{DISCOVERABLE_VIEWS.length}</span>
-              </div>
-              {discoveredCount >= DISCOVERABLE_VIEWS.length && (
-                <div style={{ fontSize: 11, color: "#FF4500", marginTop: 6, fontStyle: "italic" }}>You have found everything. Or everything that can be found.</div>
-              )}
-              {discoveredCount > 0 && discoveredCount < 10 && (
-                <div style={{ fontSize: 11, color: "#555", marginTop: 6, fontStyle: "italic" }}>Not all pages are linked from the navigation.</div>
-              )}
-              {discoveredCount >= 10 && discoveredCount < 20 && (
-                <div style={{ fontSize: 11, color: "#555", marginTop: 6, fontStyle: "italic" }}>Some documents must be found. Others find you.</div>
-              )}
-              {discoveredCount >= 20 && discoveredCount < DISCOVERABLE_VIEWS.length && (
-                <div style={{ fontSize: 11, color: "#555", marginTop: 6, fontStyle: "italic" }}>The seventh has no name. But it is not nothing.</div>
-              )}
-            </div>
-          )}
 
           <span className="hidden-vane">someone is maintaining this subreddit who knows more than they post. watch pelican_athanor. watch the timestamps on lux_in_tenebris. always after midnight. always correct.</span>
         </div>
@@ -2459,6 +2370,86 @@ function SubredditView({ dispatch, onlineCount, memberCount, visited }) {
                       </div>
                     </div>
                   )}
+                  {post.id === "darkwater_whitfield" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/darkwater_nola</span> · December 3, 2022</div>
+                        <div className="c-body">Three weeks since Poole published the SIGHTLINES piece. I have spent those weeks doing what I do: checking records, cross-referencing timelines, verifying claims. Whitfield's CIA personnel file lists his final assignment as the Foreign Science and Technology Center: Intelligence Officer, Consciousness Studies Analysis. 1998 to 2004. He was the analyst who inherited the ACHERON portfolio. The <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.EMAIL_METADATA })}>full email metadata</span> is now available through Beaumont FOIA. 17 messages. Read the subject lines and tell me this is coincidence.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/Thoth_R</span> · December 3, 2022</div>
+                        <div className="c-body">the email chain. "A note on Okafor" three days after Okafor died. "Caution" in November when Vane is giving away his library. "No subject" four days before the disappearance. this is not circumstantial evidence. this is a documented communication chain between a CIA analyst and a missing academic that tracks exactly with the crisis timeline.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · December 3, 2022</div>
+                        <div className="c-body">This is your best work, darkwater. The email metadata is strong. The timeline correlation is real. But I want to flag the inferential step from "Whitfield worked at the consciousness analysis desk" to "Whitfield inherited the ACHERON portfolio." That is plausible but unconfirmed. Let us pursue the FOIA requests because the questions are good, not because we have already decided what the answers will be.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/bayou_rationalist</span> · December 3, 2022</div>
+                        <div className="c-body">Counter-reading: what if Whitfield was not warning Vane about an operation? What if he was warning Vane about himself? A retired analyst who recognized a pattern from decades of studying consciousness researchers. "A note on Okafor" could mean: someone in your field just died, be careful. "Caution" could mean: I see what is happening to you, slow down. "No subject" could mean: I no longer know what to say. This reading does not require a conspiracy.</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/darkwater_nola</span> · December 3, 2022</div>
+                        <div className="c-body">If Whitfield was simply a concerned observer, why did he email about "classified materials declassification timeline"? That is not a warning about spiritual practice. That is a conversation about government documents. Whitfield was trying to get specific materials released. A retired analyst who wants to warn says "be careful." One who wants to get classified documents declassified is trying to give evidence of something.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/careful_skeptic</span> · December 3, 2022</div>
+                        <div className="c-body">Neutral observer. darkwater's email timeline is the strongest piece of evidence posted on this subreddit. But there are two possible explanations: one, Whitfield was part of or aware of an operation against Vane; two, he was a retired analyst who recognized that Vane's research was intersecting with classified territory and tried to help. In both cases, the emails are evidence of genuine concern. The question is whether the danger was institutional or inherent. Those are very different threats. And the evidence supports both equally.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/consciousness_historian</span> · December 3, 2022</div>
+                        <div className="c-body">I need to add something about the "difficulty retaining specific physical details post-interaction" line in the ACHERON document. Intelligence officers are trained in facial recognition. If field operatives reported difficulty retaining physical details, that is not a failure of training. It is a documented phenomenon. The operational language in the ACHERON memo is translating a phenomenon from one framework into another. Whatever was being observed was unusual enough that trained operatives flagged it.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/grant_poole_research</span> · December 3, 2022</div>
+                        <div className="c-body">Full disclosure: I published the ACHERON excerpt. I can confirm the email metadata is real. I independently verified the Beaumont FOIA response. I am not endorsing the murder framework. But I am acknowledging that the Whitfield timeline is more significant than I initially assessed. I am filing an additional FOIA request for the complete ACHERON program file.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · December 4, 2022, 1:47 AM</div>
+                        <div className="c-body">Whitfield was kind. He was also wrong.</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/darkwater_nola</span> · December 4, 2022</div>
+                        <div className="c-body">Every time I post evidence, you post a sentence. If you know something, say it.</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/bayou_rationalist</span> · December 4, 2022</div>
+                        <div className="c-body">I think lux might be saying that Whitfield's analytical framework led him to the same wrong conclusion darkwater is reaching. That the intelligence framing was Whitfield's error, not his insight.</div>
+                      </div>
+                    </div>
+                  )}
+                  {post.id === "acheron_followup" && (
+                    <div className="comment-section">
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · December 12, 2022</div>
+                        <div className="c-body">Poole's second piece is careful. He distinguishes conditions from causation. The documents establish that ACHERON had a monitoring apparatus that survived its termination by at least eight years. They do not establish that Vane was specifically targeted. <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.SIGHTLINES_FOLLOWUP })}>Read the full article.</span> The <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.FOIA })}>new FOIA pages</span> are worth reading directly.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/Thoth_R</span> · December 12, 2022</div>
+                        <div className="c-body">the asset development matrix. "Academic Consultants (Tier 2)." Recruited through academic channels. Monitored through publication record and conference attendance. Monitoring continues at reduced frequency post-severance. They were using universities as cover. And the monitoring did not stop when the program ended. The 1997 addendum says it explicitly.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/signal_and_noise</span> · December 12, 2022</div>
+                        <div className="c-body">The 18-day FOIA turnaround is the detail that Poole buries in paragraph three but that matters most. Six to twelve months is normal. Eighteen days is not a response. It is a release. Someone wanted these documents in circulation. The question is whether that serves transparency or something else entirely.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/darkwater_nola</span> · December 12, 2022</div>
+                        <div className="c-body">The practitioner contact log. Entry 010: "Consultant initiated contact outside operational parameters." Entry 012: "Consultant departed site. No forwarding information provided. Field team unable to reestablish contact." The consultant went off-script and then vanished. Sound familiar?</div>
+                      </div>
+                      <div className="comment" style={{ marginLeft: 16 }}>
+                        <div className="c-meta"><span className="username">u/bayou_rationalist</span> · December 12, 2022</div>
+                        <div className="c-body">The parallel is suggestive but the gap is 34 years. The consultant departed in 1988. Vane disappeared in 2022. If they are the same pattern, the pattern is older than the program that documented it. That is either terrifying or irrelevant.</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/archive_deep</span> · December 12, 2022</div>
+                        <div className="c-body">"Southern urban centers." "Academic institutions identified as primary observation nodes." "Contact to be initiated only upon detection of activity consistent with ACHERON operational indicators." If this was active in 1997, was it active in 2020? Was Beaumont an observation node? Is this the institutional apparatus that noticed Vane attending Leonid's Tuesday group?</div>
+                      </div>
+                      <div className="comment">
+                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · December 13, 2022, 2:08 AM</div>
+                        <div className="c-body">The apparatus noticed. The apparatus always notices. It did not cause what happened. It cannot cause what happened. It can only watch it happen and fail to understand it.</div>
+                      </div>
+                    </div>
+                  )}
                   {post.id === "entropic_attractors" && (
                     <div className="comment-section">
                       <div className="comment">
@@ -2659,145 +2650,6 @@ function SubredditView({ dispatch, onlineCount, memberCount, visited }) {
                       <div className="comment">
                         <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · January 20, 2025, 1:33 AM</div>
                         <div className="c-body">She knew. Not through his books. Through the garden. The garden was the same knowledge in a different language.</div>
-                      </div>
-                    </div>
-                  )}
-                  {post.id === "reading_order" && (
-                    <div className="comment-section">
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/archive_deep</span> · April 2, 2025</div>
-                        <div className="c-body">{"We get a lot of new members now that the Collected Works is published and Poole's book is in its third printing. Here's how to approach this material depending on what kind of reader you are.\n\nTHE CHRONOLOGICAL PATH (recommended for first-timers):\n1. The faculty page. Know who he was.\n2. The blog, posts 1 through 6. Watch the voice establish itself.\n3. The James paper (JAAR 2017). This is where he maps his own future without knowing it.\n4. The blog, posts 7 through 14. Watch the voice change.\n5. The Enclosed Field (MTSR 2021). This is the hinge.\n6. The Entropic Attractors paper (Foundations of Physics 2019). This is the physics.\n7. The clinical notes. Calloway saw it happening.\n8. The meeting notes. He documents losing himself.\n9. The cipher file. POORINSPIRIT.\n10. The unsent email. Read this last.\n\nTHE INTELLIGENCE PATH (if you read Poole's book first):\n1. Start with the SIGHTLINES article on this subreddit\n2. The FOIA documents\n3. Then follow the chronological path above\n4. You'll read everything differently knowing what Poole claims\n\nTHE DEEP PATH (if you've already read the Collected Works):\n1. Read every comment thread on this subreddit. The community found things Mehta didn't include.\n2. Osei's investigation file. The PI saw something he couldn't name.\n3. The Google Drive folder. The access logs. The timestamps.\n4. Then find the seventh."}</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · April 2, 2025</div>
-                        <div className="c-body">Pinning this. One addition: if you are reading the Collected Works and this subreddit simultaneously, pay attention to the dates. Everything here happened in real time. The arguments in these threads are the arguments of people who did not know what would happen next. We were wrong about some things. We were right about others. The threads are evidence of the investigation itself, not just the case.</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/Thoth_R</span> · April 3, 2025</div>
-                        <div className="c-body">Missing from the list: the Leonid manuscript pages. archive_rabbit found them in the Bywater house. Twelve typed pages. No author. No date. This is what Leonid was teaching them. If you read the meeting notes and then read the manuscript, you can hear Vane trying to translate what Leonid was saying into academic language. And failing. And the failure is the point.</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · April 3, 2025, 1:14 AM</div>
-                        <div className="c-body">There is no reading order. The material reads you.</div>
-                      </div>
-                    </div>
-                  )}
-                  {post.id === "collected_works_release" && (
-                    <div className="comment-section">
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · March 14, 2025</div>
-                        <div className="c-body">Three years. Three years of reading fragments, leaked documents, archived web pages, and FOIA requests. And now Priya Mehta has assembled them into a single volume. Beaumont University Press. Their own press publishing their own missing professor. Avery's foreword is institutional and careful. Mehta's introduction is not. She writes: "I was his student. He gave me his library. I do not know if he intended me to become its editor." The chronology at the back is devastating. Every date we argued about, confirmed.</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/Thoth_R</span> · March 14, 2025</div>
-                        <div className="c-body">The reading list. Twenty-one items with Vane's own annotations. I've been tracking his sources for three years and he was reading things I never found. The annotation on Corbin's "Alone with the Alone" is three words long and it broke me. Also: the blog posts are presented with the original publication dates AND the dates Vane was actually writing them (recovered from file metadata). There's a gap. He was writing them weeks before posting. The delay was deliberate.</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/archive_deep</span> · March 14, 2025</div>
-                        <div className="c-body">The cipher file is included with the decrypted text facing the encrypted original. POORINSPIRIT. Seeing it in print, in a university press edition, with an editorial note by Mehta explaining how the community found the key: that's something I never expected. We did that. This subreddit found the key. And now it's in the scholarly apparatus of an academic press edition.</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/bayou_rationalist</span> · March 15, 2025</div>
-                        <div className="c-body">The unsent email is the last item in the book. Mehta placed it after the chronology, after the reading list, after everything. It's the last thing you read. And when you read it knowing everything that came before, knowing the timeline, knowing the clinical notes, knowing the meeting notes, it reads completely differently than when we first saw it. The person who wrote that email knew exactly what they were doing. The question is what they were doing.</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/darkwater_nola</span> · March 15, 2025</div>
-                        <div className="c-body">I notice the Collected Works does not include the ACHERON documents. It does not reference Poole's investigation. It does not mention the intelligence connection. Avery's foreword mentions "the conspiracy theorists" exactly once, in a footnote. This is a scholarly edition presenting a scholarly record. The institutional framework is someone else's problem. Mehta chose that boundary. I respect it. I disagree with it.</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · March 16, 2025, 3:22 AM</div>
-                        <div className="c-body">The work speaks. It always spoke. Now it speaks from a spine instead of from fragments. The difference is not the words. The difference is the weight in the hand.</div>
-                      </div>
-                    </div>
-                  )}
-                  {post.id === "poole_book" && (
-                    <div className="comment-section">
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/grant_poole</span> · September 3, 2024</div>
-                        <div className="c-body">{"I started this in November 2022 with the SIGHTLINES article. Some of you remember. The article was 6,000 words. The book is 350 pages. The difference is what I found after the article went public.\n\nThe ACHERON documents are real FOIA releases. The intelligence history is documented. The programs existed. MKULTRA, STARGATE, Gateway, AATIP: all real, all cited from primary sources. Every footnote in this book can be verified. That was the standard I held myself to.\n\nBut I also need to be honest about the limits. Chapter 18 is the chapter I almost didn't write. It's about what happens when you spend two years researching the intersection of consciousness and intelligence operations. The material has weight. It does something to you. I felt it. I named it. I do not fully understand it.\n\nThe three scenarios for Vane are in Chapter 16. I do not choose between them. I present the evidence for each. The reader decides.\n\nAMA if you want. I owe this community that."}</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · September 3, 2024</div>
-                        <div className="c-body">I've read it. The Pat Price chapter is devastating. The COINTELPRO chapter connects things I hadn't considered. The physics chapter is over my head but someone with that background needs to evaluate it. The question I have: Chapter 12. Leonid. You acknowledge that your framework may not contain him. How much of the book survives if Leonid is simply what he appears to be?</div>
-                      </div>
-                      <div className="comment" style={{ marginLeft: 16 }}>
-                        <div className="c-meta"><span className="username">u/grant_poole</span> · September 3, 2024</div>
-                        <div className="c-body">All of the intelligence history survives. MKULTRA happened. STARGATE happened. The Gateway Process document is real. The post-1995 dispersal is documented. ACHERON is a real FOIA release. All of that is independent of Leonid. What doesn't survive is the application to Vane specifically. If Leonid has no institutional origin, then the framework explains the institutional interest but not what happened inside that interest. I end the book acknowledging this. It's the most honest thing I've written.</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/Thoth_R</span> · September 3, 2024</div>
-                        <div className="c-body">The footnotes in this book are extraordinary. Actual FOIA case numbers. Actual Congressional hearing transcripts. Actual publication citations. I've been spot-checking and everything I've verified so far is accurate. Poole built this on primary sources. Whatever you think of his conclusions, the research is real.</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/bayou_rationalist</span> · September 4, 2024</div>
-                        <div className="c-body">Question for Poole: the Entropic Attractors paper. You read it as a Rosetta Stone connecting consciousness research and UAP physics. Did you consult physicists? What did they say about Vane's formalism when read through your lens?</div>
-                      </div>
-                      <div className="comment" style={{ marginLeft: 16 }}>
-                        <div className="c-meta"><span className="username">u/grant_poole</span> · September 4, 2024</div>
-                        <div className="c-body">I consulted three. Two said the math is sound but the application is speculative. One, who asked not to be named, said: "If this formalism is correct, it describes how consciousness couples to information at a level below quantum decoherence. That's not sociology. That's physics. And someone published it in a physics journal and no one noticed." That person has since declined further comment.</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/darkwater_nola</span> · September 4, 2024</div>
-                        <div className="c-body">Page 287. You mention five people connected to the Beaumont research network who died between March 2021 and January 2022. You call it "circumstantial." You note my OSINT methodology and say it was "thorough but not dispositive." I'll take that. But I notice you didn't include the sixth death. The one I sent you privately. The one you told me you couldn't verify. Did you try?</div>
-                      </div>
-                      <div className="comment" style={{ marginLeft: 16 }}>
-                        <div className="c-meta"><span className="username">u/grant_poole</span> · September 4, 2024</div>
-                        <div className="c-body">I tried. I could not verify it through the channels available to me. I will not publish what I cannot verify. You know why.</div>
-                      </div>
-                    </div>
-                  )}
-                  {post.id === "lux_on_poole_book" && (
-                    <div className="comment-section">
-                      <div style={{ padding: "12px 0", fontSize: 13, color: "#818384", fontStyle: "italic" }}>
-                        First post from u/lux_in_tenebris in 10 months. Posted 2:47 AM Central.
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · September 14, 2024, 2:47 AM</div>
-                        <div className="c-body">{"Poole's book is careful. The research is real. The programs are real. The history is accurate. The intelligence community studied consciousness for seventy years. This is documented. This is true.\n\nThe book is also wrong.\n\nNot wrong in its facts. Wrong in its frame. It requires that what happened to Vane is a product of what was done to him. Institutional interest. Operational cultivation. Asset development. The language is precise. The language is also a cage.\n\nConsider: what if nothing was done to him? What if the traditions he studied for twenty years were describing something real? Not metaphorically real. Not culturally real. Not psychologically real. Real. And what if spending twenty years building the most sophisticated analytical framework for studying that material brought him, finally, to the edge of the material itself? Not because someone led him there. Because the material leads everyone there who reads it with enough attention and enough time.\n\nPoole cannot consider this because his framework has no category for it. An investigative journalist has categories for institutional action, classified programs, operational deployment. He does not have a category for: the thing itself, without apparatus.\n\nThe ACHERON documents are interesting. They are not the interesting thing."}</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · September 14, 2024</div>
-                        <div className="c-body">This is the longest post lux has ever written. In three years. Read it again.</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/Thoth_R</span> · September 14, 2024</div>
-                        <div className="c-body">"The thing itself, without apparatus." This is the argument Vane makes in The Enclosed Field. The knowledge that cannot be transmitted through the scholarly apparatus that made studying it possible. Lux is making Vane's argument. In Vane's language. On a subreddit about Vane's disappearance. At 2:47 in the morning.</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/darkwater_nola</span> · September 14, 2024</div>
-                        <div className="c-body">With respect: "the thing itself, without apparatus" is also what you say when you want people to stop looking at the evidence. I don't know who lux is. I don't know what lux knows. But I know that every time someone posts documented, sourced, verifiable evidence of institutional involvement, lux appears and says the evidence is real but beside the point. That is a rhetorical move. It is not an argument.</div>
-                      </div>
-                      <div className="comment" style={{ marginLeft: 16 }}>
-                        <div className="c-meta"><span className="username">u/grant_poole</span> · September 14, 2024</div>
-                        <div className="c-body">I address lux's critique in Chapter 12. I take it seriously. The framework that makes me effective may be the framework that makes me blind. I acknowledge that. But I also note: if lux is right, if the phenomenon is autonomous and has no institutional origin, then the intelligence community has been studying something real for seventy years. And something real happened to the people who got too close. The framework changes. The danger does not.</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/small_voice_at_end</span> · September 15, 2024</div>
-                        <div className="c-body">I've read Poole's book and now I've read lux's response. They're both right. They're both describing the same thing from different positions. Poole sees the architecture. Lux sees the fire. The architecture was built to contain the fire. But the fire is not a product of the architecture. The fire was there first.</div>
-                      </div>
-                    </div>
-                  )}
-                  {post.id === "collected_works_meeting_notes" && (
-                    <div className="comment-section">
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/Thoth_R</span> · March 28, 2025</div>
-                        <div className="c-body">{"The meeting notes are arranged chronologically. March 2021 through December 2021. Ten months. Mehta's editorial note says she debated whether to include them. She included them because 'they are the only record of what he experienced in the period between the last blog post and the disappearance.'\n\nThe early notes (March through May) are observational. Sociological vocabulary intact. He describes the Tuesday gatherings as 'a small knowledge community organized around contemplative practice.' He names participants by initials. He notes group dynamics.\n\nBy June the vocabulary starts to shift. He writes 'what L. describes is not a tradition. It is a capacity.' L. is Leonid. He stops using 'community' and starts using 'circle.'\n\nBy August he has stopped taking notes during the meetings. The entries are written afterward, sometimes the next day. He writes: 'I cannot take notes during what L. says. The act of recording separates me from what is being transmitted. This is the problem I described in the MTSR paper. I am living it now.'\n\nBy October the entries are fragments. Half-sentences. Drawings. A circle with a dot in the center, repeated across three pages.\n\nThe November 28 entry is the last. It is one line: 'the substrate is not a metaphor.'\n\nDecember: nothing. January 6: gone."}</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/pelican_athanor</span> · March 28, 2025</div>
-                        <div className="c-body">The Collected Works reproduces three pages of the original handwritten notes in facsimile. The handwriting in March is neat, contained, professorial. The handwriting in November barely stays on the lines. It's not deterioration. It's not tremor. The letters are formed correctly. They're just larger, looser, as if the hand writing them was operating with less resistance. As if the boundary between intention and action had thinned.</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/bayou_rationalist</span> · March 29, 2025</div>
-                        <div className="c-body">The December 28 entry from the meeting notes, the one that says "You can remain as you have been, or you can proceed into what you have already begun. But you cannot do both, and you cannot return." That's in the Collected Works with a Mehta footnote: "This appears to be a direct quotation from Leonid. It is the last recorded statement attributed to him in Vane's papers." Nine days later Vane disappeared. Nine days.</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/darkwater_nola</span> · March 29, 2025</div>
-                        <div className="c-body">Read that quotation from Leonid again. "You cannot do both, and you cannot return." In Poole's framework this is an operational threshold: extraction, isolation, or acceleration. In the subreddit's framework this is a spiritual crisis: the moment of irreversible transformation. In Calloway's framework this would be: the patient is being told by an influential figure that there is no exit. Every framework reads it differently. None of them can contain what it actually says.</div>
-                      </div>
-                      <div className="comment">
-                        <div className="c-meta"><span className="username">u/lux_in_tenebris</span> · March 30, 2025, 2:11 AM</div>
-                        <div className="c-body">He was not told. He was recognized. There is a difference.</div>
                       </div>
                     </div>
                   )}
@@ -4186,8 +4038,8 @@ function FOIAView({ dispatch }) {
           Case Number: F-2022-01847 · Release Date: 14 March 2022{"\n"}
           Requester: G. Poole, SIGHTLINES Media
         </div>
-        <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-          {[7, 34, 43].map((p) => (
+        <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
+          {[7, 12, 19, 34, 38, 43].map((p) => (
             <span
               key={p}
               onClick={() => setPage(p)}
@@ -4228,6 +4080,24 @@ function FOIAView({ dispatch }) {
                 </div>
               </div>
               {"Caption: "}<span className="redaction">[REDACTED]</span>{", "}<span className="redaction">[LOCATION REDACTED]</span>{", during Phase II assessment.\n\nNote: Subject in photograph demonstrated "}<span className="redaction">results exceeding baseline parameters by factor of [REDACTED]</span>{".\nRecommended for Phase III. Status: "}<span className="redaction">[REDACTED]</span>
+            </>
+          )}
+          {page === 12 && (
+            <>
+              <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: 11, color: "#999", marginBottom: 12 }}>Page 12 of 47 | Second FOIA Release, December 8, 2022</div>
+              {"ACHERON ASSET DEVELOPMENT MATRIX\nRevision 3, Effective Date: 18 June 1986\n\n"}<span className="redaction">[CLASSIFICATION: SECRET / NOFORN]</span>{"\n\n"}{"CATEGORY          | DEV DURATION  | INST COVER       | MON FREQ        | TERM PROTOCOL\n"}<span className="redaction">[TIER 1 REDACTED]</span>{"\n\nAcademic           18-36 months    University        Quarterly        Administrative\nConsultants                        appointment       review of        severance per\n(Tier 2)                           or research       publication      ACHERON/TERM-2.\n                                   fellowship.       record and       Monitoring\n                                   "}<span className="redaction">[REDACTED]</span>{"       conference       continues at\n                                                     attendance.      reduced frequency\n                                                     "}<span className="redaction">[REDACTED]</span>{"       post-severance.\n\n"}<span className="redaction">[TIER 3 REDACTED]</span>{"\n"}<span className="redaction">[TIER 4 REDACTED]</span>{"\n\nCivilian           Indefinite      None required.    Continuous       "}<span className="redaction">[ENTIRE COLUMN</span>{"\nConsultant                         Consultant        field             "}<span className="redaction">REDACTED]</span>{"\n(Special                           operates          observation\nCategory)                          without           when on site.\n                                   institutional     "}<span className="redaction">[REDACTED]</span>{"\n                                   affiliation.\n\nNOTES:\n1. Tier 2 assets recruited from existing academic\n   research communities. Institutional cover maintained\n   through conference participation, publication in\n   peer-reviewed journals, and research grant funding\n   from "}<span className="redaction">[REDACTED]</span>{" sources.\n2. Monitoring of Tier 2 assets post-severance maintained\n   through "}<span className="redaction">[REDACTED]</span>{". Frequency reduced to annual review\n   unless "}<span className="redaction">[REDACTED]</span>{".\n3. Civilian Consultant (Special Category) not subject to\n   standard protocols. See ACHERON/SPECIAL-1 (Restricted Access)."}
+            </>
+          )}
+          {page === 19 && (
+            <>
+              <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: 11, color: "#999", marginBottom: 12 }}>Page 19 of 47 | Second FOIA Release, December 8, 2022</div>
+              {"ACHERON PRACTITIONER CONTACT LOG (Summary)\nDate Range: March 1985 to November 1988\n\n"}{"ENTRY | DATE           | CONTACT TYPE           | NOTES\n001   | 14 Mar 1985    | Direct observation     | "}<span className="redaction">[REDACTED]</span>{"\n002   | 22 Mar 1985    | Indirect assessment    | "}<span className="redaction">[REDACTED]</span>{"\n003   | 04 Apr 1985    | Community introduction | Consultant facilitated.\n004   | 17 Jun 1985    | Direct observation     | Extended session.\n005   | "}<span className="redaction">[XX]</span>{" Aug 1985    | "}<span className="redaction">[REDACTED]</span>{"              | Photograph taken (ref: page 34).\n006   | 03 Feb 1986    | Community introduction | New community identified.\n007   | "}<span className="redaction">[XX]</span>{" May 1986    | Indirect assessment    | "}<span className="redaction">[REDACTED]</span>{"\n008   | 14 Nov 1986    | Direct observation     | Consultant present.\n                                                   Anomalous observation noted.\n                                                   (ref: ACHERON/MED-7 protocol update)\n009   | "}<span className="redaction">[XX]</span>{" Mar 1987    | "}<span className="redaction">[REDACTED]</span>{"              | "}<span className="redaction">[REDACTED]</span>{"\n"}<span style={{ color: "#ff6666" }}>{"010   | 08 Jul 1987    | Uncontrolled contact   | Consultant initiated contact\n                                                   outside operational parameters.\n                                                   Result: "}</span><span className="redaction">[REDACTED]</span><span style={{ color: "#ff6666" }}>{".\n                                                   Recommend immediate "}</span><span className="redaction">[REDACTED]</span><span style={{ color: "#ff6666" }}>{"."}</span>{"\n011   | "}<span className="redaction">[XX]</span>{" Oct 1987    | "}<span className="redaction">[REDACTED]</span>{"              | "}<span className="redaction">[REDACTED]</span>{"\n"}<span style={{ color: "#ff6666" }}>{"012   | 19 Apr 1988    | Direct observation     | Final documented contact.\n                                                   Consultant present. Consultant\n                                                   departed site. No forwarding\n                                                   information. Field team unable\n                                                   to reestablish contact."}</span>{"\n\nSUMMARY: 12 contact events over 37 months.\nCivilian consultant present at 8 of 12 events.\nConsultant's participation declined after Entry 010.\nConsultant departed program area after Entry 012.\nNo contact reestablished."}
+            </>
+          )}
+          {page === 38 && (
+            <>
+              <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: 11, color: "#999", marginBottom: 12 }}>Page 38 of 47 | Second FOIA Release, December 8, 2022</div>
+              {"MEMORANDUM\nDATE: 14 September 1997\nFROM: "}<span className="redaction">[REDACTED]</span>{", Directorate for Science and Technical Intelligence\nTO: "}<span className="redaction">[REDACTED]</span>{"\nSUBJECT: ACHERON Monitoring Continuation\n\n"}<span style={{ color: "#ff6666" }}>{"1. Per "}</span><span className="redaction">[REDACTED]</span><span style={{ color: "#ff6666" }}>{" directive dated 7 August 1997,\n   monitoring of "}</span><span className="redaction">[REDACTED]</span><span style={{ color: "#ff6666" }}>{" communities in\n   southern urban centers to continue under\n   "}</span><span className="redaction">[REDACTED]</span><span style={{ color: "#ff6666" }}>{" authority."}</span>{"\n\n"}<span style={{ color: "#ff6666" }}>{"2. Existing asset relationships to be maintained\n   on a "}</span><span className="redaction">[REDACTED]</span><span style={{ color: "#ff6666" }}>{" basis. Academic institutions\n   in "}</span><span className="redaction">[REDACTED]</span><span style={{ color: "#ff6666" }}>{", "}</span><span className="redaction">[REDACTED]</span><span style={{ color: "#ff6666" }}>{", and\n   "}</span><span className="redaction">[REDACTED]</span><span style={{ color: "#ff6666" }}>{" identified as primary\n   observation nodes."}</span>{"\n\n"}<span style={{ color: "#ff6666" }}>{"3. Contact to be initiated only upon detection\n   of "}</span><span className="redaction">[REDACTED]</span><span style={{ color: "#ff6666" }}>{" activity consistent with\n   ACHERON operational indicators\n   (ref: ACHERON/OPS-IND, revised March 1991)."}</span>{"\n\n4. "}<span className="redaction">[ENTIRE PARAGRAPH REDACTED]</span>{"\n\n5. Monitoring reports to be filed "}<span className="redaction">[REDACTED]</span>{"\n   with "}<span className="redaction">[REDACTED]</span>{". Any detection of\n   "}<span className="redaction">[REDACTED]</span>{" is to be reported immediately\n   to "}<span className="redaction">[REDACTED]</span>{".\n\n6. This addendum supersedes "}<span className="redaction">[REDACTED]</span>{"\n   and is effective as of "}<span className="redaction">[REDACTED]</span>{" 1997.\n   Classification review: "}<span className="redaction">[REDACTED]</span>{" 2022."}
             </>
           )}
           {page === 43 && (
@@ -5154,6 +5024,118 @@ function SightlinesView({ dispatch }) {
   );
 }
 
+// ── SIGHTLINES Follow-up Article ──
+function SightlinesFollowupView({ dispatch }) {
+  return (
+    <div className="sightlines-wrap">
+      <div className="sightlines-page">
+        <div className="sightlines-header">
+          <div className="sightlines-site-title">SIGHTLINES</div>
+          <div className="sightlines-subtitle">Intelligence, geopolitics, consciousness, and the edges of what we know.</div>
+        </div>
+        <div className="sightlines-body">
+          <h1 style={{ fontSize: 28, fontWeight: 700, lineHeight: 1.3, marginBottom: 8 }}>ACHERON: What the Redactions Cannot Hide</h1>
+          <div style={{ fontSize: 14, color: "#818384", marginBottom: 24 }}>Grant Poole | December 12, 2022</div>
+
+          <p>Three weeks ago I published "The Man Called Leonid," which documented seventy years of intelligence community interest in consciousness research and presented the ACHERON FOIA documents for the first time. The response was significant. SIGHTLINES gained 2,400 subscribers in the first week. Three journalists contacted me for interviews. Two intelligence historians I respect called to tell me I had found something real.</p>
+          <p>But the most important response came from readers who are better at reading redacted documents than I am. Within days, three people with backgrounds in intelligence analysis, FOIA litigation, and classification review contacted me independently and offered the same observation: the 47-page ACHERON file I received was not a normal FOIA release. It was structured in a way that suggests it was pre-selected for release before my request arrived.</p>
+
+          <h2>Part One: The Problem with the Initial Release</h2>
+          <p>Normal FOIA releases follow a predictable pattern. You submit a request. It enters a queue. Months or years later, a classification review officer reviews the responsive documents, applies exemptions, and releases whatever survives the review. The result is typically a mixed collection of fragments, duplicates, administrative cover sheets, and occasionally a substantive document.</p>
+          <p>The ACHERON file was different. It was curated. Forty-seven pages, cleanly organized, chronologically ordered. This is not how a classification review produces a FOIA response. This is how an intelligence briefing is structured. A FOIA analyst named Catherine Amherst, who has litigated over forty FOIA cases against federal agencies, contacted me. Her assessment: someone at DIA wanted these documents released. My request gave them a channel.</p>
+
+          <h2>Part Two: The Second Release</h2>
+          <p>On November 20, 2022, I filed a second FOIA request. I received a partial response on December 8, 2022. Eighteen days. Normal processing time for the DIA is six to twelve months.</p>
+          <p>The second release contained 23 additional pages. Three are substantive. <span className="doc-link" style={{ color: "#4FBCFF", cursor: "pointer" }} onClick={() => dispatch({ type: "navigate", view: VIEWS.FOIA })}>View the documents.</span></p>
+
+          <h2>Document One: The Asset Development Matrix</h2>
+          <p>A single-page matrix dated June 1986. One category heading survived: "Academic Consultants (Tier 2)." The columns include: "Institutional Cover," "Monitoring Frequency," and "Termination Protocol." The matrix describes a system for developing and managing academic researchers as intelligence assets. "Institutional Cover" implies that academic positions were used as cover. "Monitoring Frequency" implies ongoing surveillance. "Termination Protocol" implies a procedure for ending an asset relationship.</p>
+          <p>If ACHERON maintained a monitoring protocol for academic researchers, then the program's termination in 1989 may not have ended all operational activity. Monitoring is passive. It requires a desk, a database, and an analyst. The desk that Robert Whitfield occupied at the Foreign Science and Technology Center from 1998 to 2004 was, by all indications, a monitoring desk.</p>
+
+          <h2>Document Two: The Practitioner Contact Log</h2>
+          <p>Two pages, heavily redacted. A chronological log spanning 1985 to 1988. Contact types include: "direct observation," "indirect assessment," "community introduction," and one entry marked "uncontrolled contact." The uncontrolled contact entry is dated 1987. The notes read: "consultant initiated contact outside operational parameters."</p>
+          <p>The log describes a structured program for contacting practitioners within contemplative or esoteric communities. By 1987, the consultant was operating outside the program's control. By April 1988, the consultant departed and the field team was unable to reestablish contact.</p>
+
+          <h2>Document Three: The Southern Urban Monitoring Addendum</h2>
+          <p>Dated 1997. Eight years after ACHERON's official termination. The surviving text: "monitoring of communities in southern urban centers to continue. Academic institutions identified as primary observation nodes. Contact to be initiated only upon detection of activity consistent with ACHERON operational indicators."</p>
+          <p>New Orleans is a southern urban center. Beaumont University is an academic institution. The phrase "ACHERON operational indicators" implies that criteria developed during the program's active phase were still being applied in 1997. And "contact to be initiated only upon detection" implies that monitoring was passive until specific conditions were met.</p>
+
+          <h2>Part Three: What This Means</h2>
+          <p>These documents establish that ACHERON had a real operational structure for contacting practitioners and developing academic researchers as assets. They establish that the monitoring apparatus survived the program's termination by at least eight years. They establish a structural framework in which an academic researcher at a southern university who attended practitioner community meetings would have been visible.</p>
+          <p>They do not establish that Vane was specifically targeted. They do not establish that Whitfield was operating in an official capacity. They do not establish that any active intelligence operation was directed at Vane.</p>
+          <p>But they establish the conditions. And sometimes conditions are the story.</p>
+
+          <p style={{ marginTop: 24, color: "#818384" }}>Grant Poole is a freelance writer focused on intelligence history, geopolitical operations, and the institutional structures that govern access to classified knowledge. SIGHTLINES has 6,500 subscribers as of publication.</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Email Metadata View ──
+function EmailMetadataView({ dispatch }) {
+  const emails = [
+    { num: "001", date: "November 12, 2020, 3:47 PM", from: "rwhitfield47@protonmail.com", to: "avane@beaumont.edu", subject: "Your 2020 AAR presentation", size: "4.2 KB", attachments: "None" },
+    { num: "002", date: "November 19, 2020, 11:14 AM", from: "rwhitfield47@protonmail.com", to: "avane@beaumont.edu", subject: "Follow-up: consciousness research historiography", size: "6.8 KB", attachments: "None" },
+    { num: "003", date: "December 3, 2020, 9:22 PM", from: "avane@beaumont.edu", to: "rwhitfield47@protonmail.com", subject: "RE: Follow-up: consciousness research historiography", size: "8.1 KB", attachments: "None" },
+    { num: "004", date: "January 8, 2021, 2:03 PM", from: "rwhitfield47@protonmail.com", to: "avane@beaumont.edu", subject: "Research collaboration", size: "5.4 KB", attachments: "1 (filename redacted)" },
+    { num: "005", date: "February 14, 2021, 10:38 AM", from: "avane@beaumont.edu", to: "rwhitfield47@protonmail.com", subject: "RE: Research collaboration", size: "7.9 KB", attachments: "None" },
+    { num: "006", date: "March 22, 2021, 7:11 AM", from: "rwhitfield47@protonmail.com", to: "avane@beaumont.edu", subject: "A note on Okafor", size: "3.1 KB", attachments: "None", highlight: true },
+    { num: "007", date: "April 3, 2021, 11:54 PM", from: "avane@beaumont.edu", to: "rwhitfield47@protonmail.com", subject: "RE: A note on Okafor", size: "9.3 KB", attachments: "None" },
+    { num: "008", date: "May 17, 2021, 4:29 PM", from: "rwhitfield47@protonmail.com", to: "avane@beaumont.edu", subject: "Classified materials declassification timeline", size: "11.2 KB", attachments: "1 (filename redacted)" },
+    { num: "009", date: "June 2, 2021, 8:45 PM", from: "avane@beaumont.edu", to: "rwhitfield47@protonmail.com", subject: "RE: Classified materials declassification timeline", size: "14.7 KB", attachments: "2 (filenames redacted)" },
+    { num: "010", date: "July 30, 2021, 1:17 PM", from: "rwhitfield47@protonmail.com", to: "avane@beaumont.edu", subject: "Something you should read", size: "2.8 KB", attachments: "1 (filename redacted)" },
+    { num: "011", date: "September 8, 2021, 6:33 PM", from: "rwhitfield47@protonmail.com", to: "avane@beaumont.edu", subject: "Personal matter", size: "5.6 KB", attachments: "None" },
+    { num: "012", date: "October 1, 2021, 10:07 AM", from: "avane@beaumont.edu", to: "rwhitfield47@protonmail.com", subject: "RE: Personal matter", size: "12.4 KB", attachments: "None" },
+    { num: "013", date: "October 22, 2021, 3:52 PM", from: "rwhitfield47@protonmail.com", to: "avane@beaumont.edu", subject: "The symposium question", size: "4.1 KB", attachments: "None" },
+    { num: "014", date: "November 11, 2021, 9:18 PM", from: "rwhitfield47@protonmail.com", to: "avane@beaumont.edu", subject: "Caution", size: "1.9 KB", attachments: "None", highlight: true },
+    { num: "015", date: "November 28, 2021, 2:41 AM", from: "avane@beaumont.edu", to: "rwhitfield47@protonmail.com", subject: "RE: Caution", size: "6.2 KB", attachments: "None" },
+    { num: "016", date: "December 15, 2021, 4:14 PM", from: "rwhitfield47@protonmail.com", to: "avane@beaumont.edu", subject: "I have been thinking", size: "8.7 KB", attachments: "None" },
+    { num: "017", date: "January 2, 2022, 11:47 PM", from: "rwhitfield47@protonmail.com", to: "avane@beaumont.edu", subject: "(no subject)", size: "0.9 KB", attachments: "None", highlight: true },
+  ];
+  return (
+    <div className="foia-wrap">
+      <div className="foia-page" style={{ maxWidth: 780 }}>
+        <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: 13, fontWeight: 700, textAlign: "center", marginBottom: 4, color: "#333", background: "#e0ddd4", padding: "8px 12px" }}>BEAUMONT UNIVERSITY</div>
+        <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: 11, textAlign: "center", marginBottom: 16, color: "#555", background: "#e0ddd4", padding: "4px 12px 8px" }}>Office of the General Counsel, Records and Information Management</div>
+        <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: 11, color: "#555", marginBottom: 16, lineHeight: 1.7, background: "#f4f1e8", padding: 16 }}>
+          <div>FOIA RESPONSE: Request #BU-2022-01847</div>
+          <div>Date of Response: August 2, 2022</div>
+          <div style={{ marginTop: 8 }}>Subject: Email metadata for faculty account avane@beaumont.edu,</div>
+          <div>correspondence with rwhitfield47@protonmail.com,</div>
+          <div>for the period November 2020 through January 2022.</div>
+          <div style={{ marginTop: 8, fontSize: 10, color: "#888" }}>Pursuant to Louisiana Public Records Law (La. R.S. 44:1 et seq.). Message body content exempt from disclosure.</div>
+        </div>
+        <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: 11, color: "#555", marginBottom: 8, fontWeight: 700 }}>RECORD OF CORRESPONDENCE: 17 Messages</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          {emails.map((e) => (
+            <div key={e.num} style={{ fontFamily: "'Courier Prime', monospace", fontSize: 10.5, lineHeight: 1.5, padding: "6px 8px", background: e.highlight ? "rgba(139,0,0,0.08)" : "transparent", borderLeft: e.highlight ? "2px solid #8b0000" : "2px solid transparent" }}>
+              <div style={{ display: "flex", gap: 12 }}>
+                <span style={{ color: "#888", minWidth: 32 }}>MSG {e.num}</span>
+                <span style={{ color: "#555", minWidth: 220 }}>{e.date}</span>
+                <span style={{ color: "#888", minWidth: 40 }}>{e.size}</span>
+              </div>
+              <div style={{ display: "flex", gap: 12, marginLeft: 44 }}>
+                <span style={{ color: "#888" }}>{e.from === "rwhitfield47@protonmail.com" ? "From: Whitfield" : "From: Vane"}</span>
+                <span style={{ color: "#888" }}>{e.to === "avane@beaumont.edu" ? "To: Vane" : "To: Whitfield"}</span>
+              </div>
+              <div style={{ marginLeft: 44, color: e.highlight ? "#8b0000" : "#333", fontWeight: e.highlight ? 700 : 400 }}>Subject: {e.subject}</div>
+              {e.attachments !== "None" && <div style={{ marginLeft: 44, color: "#888", fontSize: 10 }}>Attachments: {e.attachments}</div>}
+            </div>
+          ))}
+        </div>
+        <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: 10, color: "#888", marginTop: 16, lineHeight: 1.7, borderTop: "1px solid #ccc", paddingTop: 12 }}>
+          <div>Account avane@beaumont.edu deactivated February 1, 2022, following administrative separation.</div>
+          <div>Records Coordinator: M. Thibodaux, Beaumont University Office of the General Counsel</div>
+        </div>
+        <div style={{ fontFamily: "'Special Elite', cursive", fontSize: 11, color: "#4a6fa5", marginTop: 16, fontStyle: "italic", padding: "8px 12px", background: "rgba(74,111,165,0.05)", borderLeft: "2px solid #4a6fa5" }}>
+          Handwritten annotation, lower margin, blue ink: "Forwarded to Osei per Clara's authorization. 8/4/22. - M.T."
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Marginalia ──
 function MarginaliaView({ dispatch }) {
   return (
@@ -5783,28 +5765,7 @@ function ViridiariumIgnis() {
     view: VIEWS.SUBREDDIT,
     subId: null,
     history: [],
-    visited: new Set(),
   });
-  const [onlineCount, setOnlineCount] = useState(23);
-  const [memberCount, setMemberCount] = useState(1427);
-
-  useEffect(() => {
-    var onlineInterval = setInterval(function() {
-      setOnlineCount(function(c) {
-        var delta = Math.random() > 0.5 ? 1 : -1;
-        var newCount = c + delta;
-        if (newCount < 8) newCount = 8;
-        if (newCount > 47) newCount = 47;
-        return newCount;
-      });
-    }, 15000 + Math.random() * 30000);
-    var memberInterval = setInterval(function() {
-      if (Math.random() > 0.7) {
-        setMemberCount(function(c) { return c + 1; });
-      }
-    }, 60000 + Math.random() * 120000);
-    return function() { clearInterval(onlineInterval); clearInterval(memberInterval); };
-  }, []);
 
   useEffect(() => {
     const style = document.createElement("style");
@@ -5887,7 +5848,7 @@ function ViridiariumIgnis() {
   const renderView = () => {
     switch (state.view) {
       case VIEWS.SUBREDDIT:
-        return <SubredditView dispatch={dispatch} onlineCount={onlineCount} memberCount={memberCount} visited={state.visited} />;
+        return <SubredditView dispatch={dispatch} />;
       case VIEWS.BLOG_POST:
         return <BlogPostView dispatch={dispatch} subId={state.subId} />;
       case VIEWS.FACULTY_PAGE:
@@ -5922,6 +5883,10 @@ function ViridiariumIgnis() {
         return <LibraryLogView dispatch={dispatch} />;
       case VIEWS.SIGHTLINES:
         return <SightlinesView dispatch={dispatch} />;
+      case VIEWS.SIGHTLINES_FOLLOWUP:
+        return <SightlinesFollowupView dispatch={dispatch} />;
+      case VIEWS.EMAIL_METADATA:
+        return <EmailMetadataView dispatch={dispatch} />;
       case VIEWS.ENCLOSED_FIELD:
         return <EnclosedFieldView dispatch={dispatch} />;
       case VIEWS.CHEN_PAPER:
@@ -5953,25 +5918,16 @@ function ViridiariumIgnis() {
     }
   };
 
-  var depth = state.history.length;
-  var depthColor = depth <= 2 ? "transparent" : depth <= 5 ? "rgba(79,188,255,0.03)" : depth <= 10 ? "rgba(79,188,255,0.06)" : "rgba(255,69,0,0.04)";
-
   return (
-    <div className="vig-root" style={{ borderTop: depth > 5 ? ("2px solid " + (depth > 10 ? "rgba(255,69,0,0.3)" : "rgba(79,188,255,0.2)")) : "none" }}>
+    <div className="vig-root">
       <NavBreadcrumb history={state.history} dispatch={dispatch} current={state.view} />
       {renderView()}
-      {depth > 3 && state.view !== VIEWS.SUBREDDIT && (
-        <div style={{ position: "fixed", bottom: 12, right: 16, fontSize: 10, color: "#333", fontFamily: "'IBM Plex Mono', monospace", letterSpacing: 1, opacity: Math.min(0.6, depth * 0.05), transition: "opacity 0.5s" }}>
-          depth: {depth}
-        </div>
-      )}
     </div>
   );
 }
 
 // Mount the application
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<ViridiariumIgnis />);
-  </script>
+root.render(<ViridiariumIgnis />);  </script>
 </body>
 </html>
